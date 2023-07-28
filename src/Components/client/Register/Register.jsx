@@ -47,7 +47,7 @@ function UserRegister() {
       .then((res) => {
         console.log(res);
         if (res.data) {
-          navigate("/home");
+          navigate("/login");
         } else {
           setErrMsg("Something went wrong");
         }
