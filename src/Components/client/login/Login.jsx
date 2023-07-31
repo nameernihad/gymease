@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import userAxios from "../../../Axios/userAxios.js";
-import { useNavigate } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ClientLogin } from "../../../Redux/ClientAuth.js";
 import { toast } from "react-toastify";
@@ -27,7 +27,6 @@ function UserLogin() {
 
   useEffect(() => {
     if (user) {
-      console.log(user, ":user");
       axios
         .get(
           `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
@@ -40,6 +39,19 @@ function UserLogin() {
         )
         .then((res) => {
           setProfile(res.data);
+          userAxios
+            .post("/loginWithGoogle", {
+              name: res.data.name,
+              email: res.data.email,
+              picture: res.data.picture,
+            })
+            .then((result) => {
+              if (result.data.token) {
+                const token = result.token;
+                dispatch(ClientLogin({ token: token }));
+                navigate("/home");
+              }
+            });
         })
         .catch((err) => console.log(err));
     }
