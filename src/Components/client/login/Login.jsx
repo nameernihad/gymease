@@ -5,7 +5,9 @@ import { useDispatch } from "react-redux";
 import { ClientLogin } from "../../../Redux/ClientAuth.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import { useEffect } from "react";
+import axios from "axios";
 
 function UserLogin() {
   const [email, setEmail] = useState("");
@@ -15,6 +17,33 @@ function UserLogin() {
   const [passwordError, setPasswordError] = useState("");
   const [errMsg, setErrMsg] = useState("");
 
+  const [user, setUser] = useState([]);
+  const [profile, setProfile] = useState([]);
+
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log("Login Failed:", error),
+  });
+
+  useEffect(() => {
+    if (user) {
+      console.log(user, ":user");
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          setProfile(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -43,9 +72,7 @@ function UserLogin() {
       }
     } catch (error) {
       if (error.response && error.response.data) {
-        // Check if "message" exists in the response data
         if (error.response.data.message) {
-          // Check if the "message" property is an array
           if (Array.isArray(error.response.data.message)) {
             setErrMsg(error.response.data.message.join(", "));
           } else {
@@ -60,28 +87,14 @@ function UserLogin() {
     }
   };
 
-  // useEffect hook to show the toast error message
   React.useEffect(() => {
     if (errMsg) {
       toast.error(errMsg);
     }
   }, [errMsg]);
 
-  const responseMessage = (response) => {
-    console.log(response);
-  };
-  const errorMessage = (error) => {
-    console.log(error);
-  };
-
   return (
     <div className="">
-      <div>
-        <h2>React Google Login</h2>
-        <br />
-        <br />
-        <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
-      </div>
       <div
         className="flex items-center min-h-screen p-4 bg-gray-100 lg:justify-center"
         style={{
@@ -155,7 +168,8 @@ function UserLogin() {
                   <span className="h-px bg-gray-400 w-14"></span>
                 </span>
                 <div className="flex flex-col space-y-4">
-                  <a
+                  <p
+                    onClick={() => login()}
                     href="#"
                     className="flex items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-blue-600 rounded-md group hover:bg-blue-600 focus:outline-none"
                   >
@@ -167,7 +181,7 @@ function UserLogin() {
                     <span className="text-sm font-medium text-blue-500 group-hover:text-white">
                       Google
                     </span>
-                  </a>
+                  </p>
 
                   <a
                     href="#"
