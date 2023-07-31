@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import trainerAxios from "../../../Axios/trainerAxios";
+import { useDispatch } from "react-redux";
+import { TrainerauthLogin } from "../../../Redux/TrainerAuth";
 
 function TrainerLogin() {
   const [email, setEmail] = useState("");
@@ -9,8 +11,10 @@ function TrainerLogin() {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [errMsg, setErrMsg] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const loginForm = (event) => {
     event.preventDefault();
@@ -29,8 +33,13 @@ function TrainerLogin() {
 
     trainerAxios.post("/", { email, password }).then((res) => {
       console.log(res);
-      if (res.data) {
-        navigate("/admin/home");
+      const result = res.data;
+      if (result.token) {
+        const token = result.token;
+        dispatch(TrainerauthLogin({ token: token }));
+        navigate("/trainer/home");
+      } else {
+        setErrMsg(result.message);
       }
     });
   };

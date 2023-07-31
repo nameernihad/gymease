@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import userAxios from "../../../Axios/userAxios.js";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { ClientLogin } from "../../../Redux/ClientAuth.js";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { GoogleLogin } from "@react-oauth/google";
 
 function UserLogin() {
   const [email, setEmail] = useState("");
@@ -9,10 +13,12 @@ function UserLogin() {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [errMsg, setErrMsg] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const loginForm = (event) => {
+  const loginForm = async (event) => {
     event.preventDefault();
     setEmailError("");
     setPasswordError("");
@@ -27,16 +33,55 @@ function UserLogin() {
       return;
     }
 
-    userAxios.post("/login", { email, password }).then((res) => {
-      console.log(res);
-      if (res.data) {
+    try {
+      const res = await userAxios.post("/login", { email, password });
+      const result = res.data;
+      if (result.token) {
+        const token = result.token;
+        dispatch(ClientLogin({ token: token }));
         navigate("/home");
       }
-    });
+    } catch (error) {
+      if (error.response && error.response.data) {
+        // Check if "message" exists in the response data
+        if (error.response.data.message) {
+          // Check if the "message" property is an array
+          if (Array.isArray(error.response.data.message)) {
+            setErrMsg(error.response.data.message.join(", "));
+          } else {
+            setErrMsg(error.response.data.message.toString());
+          }
+        } else {
+          setErrMsg("An error occurred while processing your request.");
+        }
+      } else {
+        setErrMsg("An error occurred while processing your request.");
+      }
+    }
+  };
+
+  // useEffect hook to show the toast error message
+  React.useEffect(() => {
+    if (errMsg) {
+      toast.error(errMsg);
+    }
+  }, [errMsg]);
+
+  const responseMessage = (response) => {
+    console.log(response);
+  };
+  const errorMessage = (error) => {
+    console.log(error);
   };
 
   return (
     <div className="">
+      <div>
+        <h2>React Google Login</h2>
+        <br />
+        <br />
+        <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+      </div>
       <div
         className="flex items-center min-h-screen p-4 bg-gray-100 lg:justify-center"
         style={{
@@ -99,6 +144,8 @@ function UserLogin() {
                   Log in
                 </button>
               </div>
+              {/* {errMsg && <p className="text-red-500 text-sm">{errMsg}</p>} */}
+
               <div className="flex flex-col space-y-5">
                 <span className="flex items-center justify-center space-x-2">
                   <span className="h-px bg-gray-400 w-14"></span>

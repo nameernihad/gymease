@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import adminAxios from "../../../Axios/adminAxios";
+import { useDispatch } from "react-redux";
+import { AdminauthLogin } from "../../../Redux/AdminAuth";
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -9,8 +11,10 @@ function AdminLogin() {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [errMsg, setErrMsg] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const loginForm = (event) => {
     event.preventDefault();
@@ -29,8 +33,14 @@ function AdminLogin() {
 
     adminAxios.post("/", { email, password }).then((res) => {
       console.log(res);
-      if (res.data) {
+      const result = res.data;
+      if (result.token) {
+        const token = result.token;
+        dispatch(AdminauthLogin({ token: token }));
+
         navigate("/admin/home");
+      } else {
+        setErrMsg(result.message);
       }
     });
   };

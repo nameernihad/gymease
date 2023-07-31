@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import userAxios from "../../../Axios/userAxios.js";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function UserRegister() {
   const [email, setEmail] = useState("");
@@ -47,10 +49,35 @@ function UserRegister() {
       .then((res) => {
         console.log(res);
         if (res.data) {
+          toast.success("Sign-up successful! You can now log in.", {
+            position: "bottom-left",
+            autoClose: 5000,
+            hideProgressBar: true,
+          });
           navigate("/login");
         } else {
           setErrMsg("Something went wrong");
+          toast.error(errMsg, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+          });
         }
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response);
+          setErrMsg("Error: " + error.response.data.message);
+        } else if (error.request) {
+          setErrMsg("Network Error: Please check your internet connection.");
+        } else {
+          setErrMsg("An error occurred while processing your request.");
+        }
+        toast.error(errMsg, {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+        });
       });
   };
 
