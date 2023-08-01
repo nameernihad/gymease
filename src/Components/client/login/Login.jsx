@@ -46,8 +46,9 @@ function UserLogin() {
               picture: res.data.picture,
             })
             .then((result) => {
+              console.log(result);
               if (result.data.token) {
-                const token = result.token;
+                const token = result.data.token;
                 dispatch(ClientLogin({ token: token }));
                 navigate("/home");
               }

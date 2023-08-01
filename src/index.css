@@ -1,3 +1,9 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+.sidebar-link:hover {
+  background-color: white;
+  color: #ff9800; /* Amber 500 */
+  transition: background-color 0.2s, color 0.2s;
+}

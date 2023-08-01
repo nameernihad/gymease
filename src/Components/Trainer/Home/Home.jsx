@@ -15,7 +15,7 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Welcome to UserHome!</h1>
+      <h1>Welcome to TrainerHome!</h1>
       <button className="w-60 bg-ambere-500 rounded-xl" onClick={handleLogout}>
         Logout
       </button>
