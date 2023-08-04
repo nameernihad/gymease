@@ -1,67 +1,58 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import Drawer from "../Home/sidebarAdmin";
 import { AdminauthLogout } from "../../../Redux/AdminAuth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
-const Navbar = ({ onShowSideBar }) => {
+const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onUpdateState = () => {
-    onShowSideBar(true);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setIsDrawerOpen(!isDrawerOpen);
   };
+
   const handleLogout = () => {
     dispatch(AdminauthLogout());
     navigate("/admin/login");
   };
 
   return (
-    <nav className="bg-blue-900 text-white p-4 flex items-center justify-between fixed top-0 w-full">
-      <div className="flex items-center ">
-        <FontAwesomeIcon
-          icon={faBars}
-          className="mr-2"
-          onClick={onUpdateState}
+    <div className="flex items-center justify-between p-4 bg-amber-500 text-white transition-all duration-500">
+      <button
+        className={`text-amber-500 bg-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-white focus:outline-none dark:focus:ring-amber-600 ${
+          isDrawerOpen ? "active" : ""
+        } transform hover:scale-105 transition-transform`}
+        type="button"
+        onClick={handleDrawerToggle}
+      >
+        <FontAwesomeIcon icon={faBars} />
+      </button>
+      <div>
+        <input
+          type="text"
+          className="px-3 py-2 mr-2 text-slate-500 bg-gray-200 rounded-lg dark:bg-white focus:ring-2 focus:ring-blue-400 focus:outline-none transition-all duration-500"
+          placeholder="Search"
         />
-        <h1 className="text-xl font-bold">Admin Dashboard</h1>
-      </div>
-      <div className="flex items-center">
-        <ul className="flex space-x-4">
-          <li>
-            <a href="#" className="hover:text-blue-500">
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="#" className="hover:text-blue-500">
-              Users
-            </a>
-          </li>
-          <li>
-            <a href="#" className="hover:text-blue-500">
-              Workouts
-            </a>
-          </li>
-          {/* Add more navigation links as needed */}
-        </ul>
-        <div className="ml-4">
-          {/* Add search bar component here */}
-          <input
-            type="text"
-            placeholder="Search"
-            className="px-4 py-2 bg-blue-800 text-white rounded-md focus:outline-none focus:ring focus:border-blue-500"
-          />
-        </div>
+
         <button
+          className="text-amber-500 bg-white font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-50 transition-all duration-500 transform hover:scale-105"
+          type="button"
           onClick={handleLogout}
-          className="px-4 py-2 ml-4 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300"
         >
           Logout
         </button>
       </div>
-    </nav>
+      {isDrawerOpen && (
+        <div className="drawer-wrapper transition-all duration-500 ease-in-out">
+          <Drawer onClose={() => setIsDrawerOpen(false)} />
+        </div>
+      )}
+    </div>
   );
 };
 
