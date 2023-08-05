@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,59 +7,62 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import adminAxios from "../../../Axios/adminAxios";
 
 const columns = [
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "code", label: "ISO\u00a0Code", minWidth: 100 },
+  { id: "name", label: "Trainer Name", minWidth: 170 },
+  { id: "email", label: "Email", minWidth: 100 },
   {
-    id: "population",
-    label: "Population",
+    id: "phone",
+    label: "Phone",
     minWidth: 170,
     align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "size",
-    label: "Size\u00a0(km\u00b2)",
+    id: "isTrainer",
+    label: "Is Trainer",
     minWidth: 170,
     align: "right",
-    format: (value) => value.toLocaleString("en-US"),
+    format: (value) => (value ? "Yes" : "No"),
   },
   {
-    id: "density",
-    label: "Density",
+    id: "isBlock",
+    label: "Is Block",
     minWidth: 170,
     align: "right",
-    format: (value) => value.toFixed(2),
+    format: (value) => (value ? "Yes" : "No"),
   },
 ];
 
-function createData(name, code, population, size) {
-  const density = population / size;
-  return { name, code, population, size, density };
-}
+const TrainerListing = () => {
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-const rows = [
-  createData("India", "IN", 1324171354, 3287263),
-  createData("China", "CN", 1403500365, 9596961),
-  createData("Italy", "IT", 60483973, 301340),
-  createData("United States", "US", 327167434, 9833520),
-  createData("Canada", "CA", 37602103, 9984670),
-  createData("Australia", "AU", 25475400, 7692024),
-  createData("Germany", "DE", 83019200, 357578),
-  createData("Ireland", "IE", 4857000, 70273),
-  createData("Mexico", "MX", 126577691, 1972550),
-  createData("Japan", "JP", 126317000, 377973),
-  createData("France", "FR", 67022000, 640679),
-  createData("United Kingdom", "GB", 67545757, 242495),
-  createData("Russia", "RU", 146793744, 17098246),
-  createData("Nigeria", "NG", 200962417, 923768),
-  createData("Brazil", "BR", 210147125, 8515767),
-];
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-export default function StickyHeadTable() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const fetchData = async () => {
+    try {
+      const response = await adminAxios.get("/getAllTrainer");
+      if (
+        typeof response.data === "object" &&
+        Array.isArray(response.data.Trainerdetails)
+      ) {
+        // Extract the Trainerdetails array from the response
+        const trainersArray = response.data.Trainerdetails;
+        setData(trainersArray);
+      } else {
+        console.error(
+          "Invalid response format: Expected a JSON object with Trainerdetails array"
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -80,7 +83,11 @@ export default function StickyHeadTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{
+                    minWidth: column.minWidth,
+                    backgroundColor: "#f5f5f5", // Set the background color here
+                    fontWeight: "bold", // Optionally set other styles for the table head
+                  }}
                 >
                   {column.label}
                 </TableCell>
@@ -88,31 +95,33 @@ export default function StickyHeadTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+            {data.map((trainer) => {
+              return (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={trainer._id} // Use the _id as the unique key
+                >
+                  <TableCell>{trainer.name}</TableCell>
+                  <TableCell>{trainer.email}</TableCell>
+                  <TableCell align="right">{trainer.phone}</TableCell>
+                  <TableCell align="right">
+                    {trainer.isTrainer.toString()}
+                  </TableCell>
+                  <TableCell align="right">
+                    {trainer.isBlock.toString()}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={data.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -120,4 +129,6 @@ export default function StickyHeadTable() {
       />
     </Paper>
   );
-}
+};
+
+export default TrainerListing;
