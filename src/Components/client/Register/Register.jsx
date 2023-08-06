@@ -49,7 +49,7 @@ function UserRegister() {
       .then((res) => {
         console.log(res);
         if (res.data) {
-          toast.success("Sign-up successful! You can now log in.", {
+          toast.success(res.data.message, {
             position: "bottom-left",
             autoClose: 5000,
             hideProgressBar: true,
@@ -116,7 +116,7 @@ function UserRegister() {
             <input
               id="email"
               name="email"
-              type="email"
+              type="text"
               autoComplete="email"
               className="w-full py-2 text-white bg-gray-100 bg-opacity-30 rounded-md shadow-sm focus:ring-1 focus:ring-amber-500 focus:outline-none text-center"
               onChange={(e) => setEmail(e.target.value)}

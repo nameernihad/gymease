@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import adminAxios from "../../../Axios/adminAxios";
 
 function UserList() {
   const [userdetails, setuserdetails] = useState([]);
-  const [blockStatusMap, setBlockStatusMap] = useState({});
 
   const handleBlockToggle = (userId) => {
-    const currentStatus = blockStatusMap[userId];
-    adminAxios
-      .put(`/blockuser/${userId}`, { state: !currentStatus })
-      .then((res) => {
-        console.log(res.data);
-        setBlockStatusMap({
-          ...blockStatusMap,
-          [userId]: res.data.status,
-        });
+    adminAxios.put(`/blockuser/${userId}`).then((res) => {
+      console.log(res.data);
+      toast.success(res.data.message);
 
-        toast.success(res.data.message);
-      });
+      setuserdetails((prevUserDetails) =>
+        prevUserDetails.map((user) =>
+          user._id === userId ? { ...user, isBlock: !user.isBlock } : user
+        )
+      );
+    });
   };
 
   useEffect(() => {
@@ -73,37 +70,31 @@ function UserList() {
                   <button
                     type="button"
                     className={`${
-                      blockStatusMap[user._id]
-                        ? "text-green-700"
-                        : "text-red-700"
+                      user.isBlock ? "text-green-700" : "text-red-700"
                     } hover:text-white border  ${
-                      blockStatusMap[user._id]
-                        ? "hover:bg-green-800 "
-                        : "hover:bg-red-800 "
+                      user.isBlock ? "hover:bg-green-800 " : "hover:bg-red-800 "
                     } focus:outline-none ${
-                      blockStatusMap[user._id]
+                      user.isBlock
                         ? "focus:ring-green-300"
                         : "focus:ring-red-300"
                     } font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ${
-                      blockStatusMap[user._id]
+                      user.isBlock
                         ? "dark:border-green-500"
                         : "dark:border-red-500"
                     } ${
-                      blockStatusMap[user._id]
-                        ? "dark:text-green-500"
-                        : "dark:text-red-500"
+                      user.isBlock ? "dark:text-green-500" : "dark:text-red-500"
                     } dark:hover:text-white ${
-                      blockStatusMap[user._id]
+                      user.isBlock
                         ? "dark:hover:bg-green-600"
                         : "dark:hover:bg-red-600"
                     } ${
-                      blockStatusMap[user._id]
+                      user.isBlock
                         ? "dark:focus:ring-green-800"
                         : "dark:focus:ring-red-800"
                     }`}
                     onClick={() => handleBlockToggle(user._id)}
                   >
-                    {blockStatusMap[user._id] ? "Unblock" : "Block"}
+                    {user.isBlock ? "Unblock" : "Block"}
                   </button>
                 </div>
               </td>

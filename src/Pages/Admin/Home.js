@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import Navbar from "../../Components/admin/Home/adminNav";
-import UserList from "../../Components/admin/Home/userList";
-import TrainerList from "../../Components/admin/Home/trainerList";
+import AdminDashboard from "../../Components/admin/Home/adminDashboard";
 
 function AdminHome() {
   return (
     <div>
-      <UserList />
-      <TrainerList />
+      <AdminDashboard />
     </div>
   );
 }
