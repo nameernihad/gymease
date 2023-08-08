@@ -48,7 +48,7 @@ function UserRegister() {
       .post("/register", { name, email, phone, password })
       .then((res) => {
         console.log(res);
-        if (res.data) {
+        if (res.data.user) {
           toast.success(res.data.message, {
             position: "bottom-left",
             autoClose: 5000,

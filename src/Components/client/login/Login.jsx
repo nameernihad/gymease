@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import { useEffect } from "react";
 import axios from "axios";
+import ForgotPasswordModal from "./forgetPassEmail.jsx";
 
 function UserLogin() {
   const [email, setEmail] = useState("");
@@ -19,6 +20,8 @@ function UserLogin() {
 
   const [user, setUser] = useState([]);
   const [profile, setProfile] = useState([]);
+
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
 
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
@@ -79,6 +82,7 @@ function UserLogin() {
     try {
       const res = await userAxios.post("/login", { email, password });
       const result = res.data;
+      console.log(result);
       if (result.token) {
         const token = result.token;
         dispatch(ClientLogin({ token: token }));
@@ -151,6 +155,7 @@ function UserLogin() {
                   <a
                     href="#"
                     className="text-sm text-sky-500 hover:underline focus:text-blue-800"
+                    onClick={() => setShowForgotPasswordModal(true)}
                   >
                     Forgot Password?
                   </a>
@@ -213,6 +218,11 @@ function UserLogin() {
                 </div>
               </div>
             </form>
+            {showForgotPasswordModal && (
+              <ForgotPasswordModal
+                onClose={() => setShowForgotPasswordModal(false)}
+              />
+            )}
           </div>
           <div className="p-4 py-6 md:w-96 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly">
             <div className="image-container">
