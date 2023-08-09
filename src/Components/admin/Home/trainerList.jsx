@@ -86,7 +86,7 @@ const TrainerListing = () => {
                   {columns.map((column) => (
                     <TableCell
                       key={column.id}
-                      align={column.align}
+                      align="center" // Center-align the heading
                       style={{
                         minWidth: column.minWidth,
                         backgroundColor: "#666666",
@@ -108,11 +108,11 @@ const TrainerListing = () => {
                       tabIndex={-1}
                       key={trainer._id}
                     >
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{trainer.name}</TableCell>
-                      <TableCell>{trainer.email}</TableCell>
-                      <TableCell align="right">{trainer.phone}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">{index + 1}</TableCell>
+                      <TableCell align="center">{trainer.name}</TableCell>
+                      <TableCell align="center">{trainer.email}</TableCell>
+                      <TableCell align="center">{trainer.phone}</TableCell>
+                      <TableCell align="center">
                         <button
                           type="button"
                           className={`${
@@ -145,9 +145,9 @@ const TrainerListing = () => {
                           onClick={() => handleBlockToggle(trainer._id)}
                         >
                           {trainer.isBlock ? "Unblock" : "Block"}
-                        </button>
+                        </button>{" "}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <FontAwesomeIcon icon={faArrowRight} />
                       </TableCell>
                     </TableRow>

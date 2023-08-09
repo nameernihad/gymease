@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import UserList from "../Components/admin/Home/userList";
 import TrainerList from "../Components/admin/Home/trainerList";
 import Navbar from "../Components/admin/Home/adminNav";
+import WorkoutListing from "../Components/admin/Home/workOut";
 
 function AdminRoutes() {
   const IsAdminAuth = useSelector((state) => state.Admin);
@@ -32,7 +33,7 @@ function AdminRoutes() {
         />
         <Route
           path="/workoutsList"
-          element={IsAdminAuth.Token ? <AdminHome /> : <Login />}
+          element={IsAdminAuth.Token ? <WorkoutListing /> : <Login />}
         />
       </Routes>
     </>

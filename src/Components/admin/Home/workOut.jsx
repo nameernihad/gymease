@@ -7,62 +7,88 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import adminAxios from "../../../Axios/adminAxios";
-import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFilter,
+  faPenToSquare,
+  faPlus,
+  faSort,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import adminAxios from "../../../Axios/adminAxios";
+import WorkoutFormModal from "./addWorkoutModal"; // Import your workout form modal component
+import { toast } from "react-toastify";
+import EditWorkoutModal from "./addWorkoutModal";
 
 const columns = [
   { id: "index", label: "Si/no", minWidth: 50 },
-  { id: "name", label: "Trainer Name", minWidth: 170 },
-  { id: "description", label: "Email", minWidth: 100 },
+  { id: "name", label: "Workout Name", minWidth: 170 },
+  { id: "description", label: "Description", minWidth: 100 },
+  { id: "gif", label: "gif", minWidth: 100 },
   {
-    id: "phone",
-    label: "Phone",
+    id: "Category",
+    label: "Category",
     minWidth: 170,
     align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "status",
-    label: "Status",
+    id: "Level",
+    label: "Level",
     minWidth: 170,
     align: "right",
     format: (value) => (value ? "Yes" : "No"),
   },
   {
-    id: "view",
-    label: "View",
+    id: "Count/Timer",
+    label: "Count/Timer",
+    minWidth: 170,
+    align: "right",
+    format: (value) => (value ? "Yes" : "No"),
+  },
+  {
+    id: "Delete",
+    label: "Delete",
+    minWidth: 170,
+    align: "right",
+    format: (value) => (value ? "Yes" : "No"),
+  },
+  {
+    id: "Edit",
+    label: "Edit",
     minWidth: 170,
     align: "right",
     format: (value) => (value ? "Yes" : "No"),
   },
 ];
 
-const TrainerListing = () => {
-  const [data, setData] = useState([]);
+const WorkoutListing = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [trainerdetails, settrainerdetails] = useState([]);
-
-  const handleBlockToggle = (userId) => {
-    adminAxios.put(`/blocktrainer/${userId}`).then((res) => {
-      console.log(res.data);
-      toast.success(res.data.message);
-
-      settrainerdetails((prevtrainerDetails) =>
-        prevtrainerDetails.map((user) =>
-          user._id === userId ? { ...user, isBlock: !user.isBlock } : user
-        )
-      );
-    });
-  };
+  const [workoutdetails, setWorkoutDetails] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [EditModalOpen, setEditModalOpen] = useState(false);
 
   useEffect(() => {
     adminAxios.get("/getAllWorkouts").then((res) => {
-      settrainerdetails(res.data.Trainerdetails);
+      setWorkoutDetails(res.data.workout);
     });
   }, []);
+
+  const handleDeleteWorkout = (workoutId) => {
+    adminAxios
+      .delete(`/deleteWorkout/${workoutId}`)
+      .then((res) => {
+        toast.success(res.data.message);
+
+        setWorkoutDetails((prevWorkoutDetails) =>
+          prevWorkoutDetails.filter((workout) => workout._id !== workoutId)
+        );
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -73,102 +99,132 @@ const TrainerListing = () => {
     setPage(0);
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
-      <div
-        style={{ display: "flex", justifyContent: "center", padding: "20px" }}
-      >
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
-          <TableContainer sx={{ maxHeight: 440 }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{
-                        minWidth: column.minWidth,
-                        backgroundColor: "#666666",
-                        fontWeight: "bold",
-                        color: "white",
-                      }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {trainerdetails.map((trainer, index) => {
-                  return (
+      <div className="bg-slate-100 h-screen p-4">
+        <div className="flex justify-between items-center mb-4 px-5 pt-5 ">
+          <div className="flex items-center">
+            <button className="text-slate-600">
+              <FontAwesomeIcon icon={faSort} className="mr-1" />
+              Sort
+            </button>
+            <button className="text-slate-600 ml-4">
+              <FontAwesomeIcon icon={faFilter} className="mr-1" />
+              Filter
+            </button>
+          </div>
+          <button
+            className="bg-amber-500 text-white py-2 px-4 rounded"
+            onClick={openModal}
+          >
+            <FontAwesomeIcon icon={faPlus} className="mr-2" />
+            Add Workout
+          </button>
+        </div>
+
+        <div className="flex justify-center">
+          <Paper sx={{ width: "100%", overflow: "hidden" }}>
+            <TableContainer sx={{ maxHeight: 440 }}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{
+                          minWidth: column.minWidth,
+                          backgroundColor: "#666666",
+                          fontWeight: "bold",
+                          color: "white",
+                          textAlign: "center",
+                        }}
+                      >
+                        {column.label}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {workoutdetails.map((workout, index) => (
                     <TableRow
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={trainer._id}
+                      key={workout._id}
                     >
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{trainer.name}</TableCell>
-                      <TableCell>{trainer.email}</TableCell>
-                      <TableCell align="right">{trainer.phone}</TableCell>
-                      <TableCell align="right">
-                        <button
-                          type="button"
-                          className={`${
-                            trainer.isBlock ? "text-green-700" : "text-red-700"
-                          } hover:text-white border  ${
-                            trainer.isBlock
-                              ? "hover:bg-green-800 "
-                              : "hover:bg-red-800 "
-                          } focus:outline-none ${
-                            trainer.isBlock
-                              ? "focus:ring-green-300"
-                              : "focus:ring-red-300"
-                          } font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ${
-                            trainer.isBlock
-                              ? "dark:border-green-500"
-                              : "dark:border-red-500"
-                          } ${
-                            trainer.isBlock
-                              ? "dark:text-green-500"
-                              : "dark:text-red-500"
-                          } dark:hover:text-white ${
-                            trainer.isBlock
-                              ? "dark:hover:bg-green-600"
-                              : "dark:hover:bg-red-600"
-                          } ${
-                            trainer.isBlock
-                              ? "dark:focus:ring-green-800"
-                              : "dark:focus:ring-red-800"
-                          }`}
-                          onClick={() => handleBlockToggle(trainer._id)}
-                        >
-                          {trainer.isBlock ? "Unblock" : "Block"}
-                        </button>
+                      <TableCell style={{ textAlign: "center" }}>
+                        {index + 1}
                       </TableCell>
-                      <TableCell align="right">
-                        <FontAwesomeIcon icon={faArrowRight} />
+                      <TableCell style={{ textAlign: "center" }}>
+                        {workout.name}
+                      </TableCell>
+                      <TableCell style={{ textAlign: "center" }}>
+                        {workout.description}
+                      </TableCell>
+                      <TableCell style={{ textAlign: "center" }}>
+                        {workout.gif}
+                      </TableCell>
+                      <TableCell align="right" style={{ textAlign: "center" }}>
+                        {workout.category[0]}
+                      </TableCell>
+                      <TableCell align="right" style={{ textAlign: "center" }}>
+                        {workout.Level}
+                      </TableCell>
+
+                      <TableCell align="right" style={{ textAlign: "center" }}>
+                        {workout.count ? workout.count : workout.timer}
+                        {workout.count ? "(Count)" : "(Timer)"}
+                      </TableCell>
+                      <TableCell align="right" style={{ textAlign: "center" }}>
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          className="text-red-500"
+                          size="lg"
+                          onClick={() => {
+                            handleDeleteWorkout(workout._id);
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell align="right" style={{ textAlign: "center" }}>
+                        <FontAwesomeIcon
+                          icon={faPenToSquare}
+                          className="text-green-500"
+                          size="lg"
+                        />
                       </TableCell>
                     </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={trainerdetails.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={workoutdetails.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
+        </div>
       </div>
+      <WorkoutFormModal
+        setWorkOut={setWorkoutDetails}
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+      />
     </>
   );
 };
 
-export default TrainerListing;
+export default WorkoutListing;
