@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import adminAxios from "../../../Axios/adminAxios";
+import { useNavigate } from "react-router-dom";
 
 function UserList() {
   const [userdetails, setuserdetails] = useState([]);
+  const navigate = useNavigate();
 
   const handleBlockToggle = (userId) => {
     adminAxios.put(`/blockuser/${userId}`).then((res) => {
@@ -26,6 +28,10 @@ function UserList() {
       setuserdetails(res.data.userList);
     });
   }, []);
+
+  const navigateToSingleView = (userId) => {
+    navigate(`/userView/${userId}`);
+  };
 
   return (
     <div className="relative overflow-x-auto shadow-md">
@@ -98,7 +104,12 @@ function UserList() {
                   </button>
                 </div>
               </td>
-              <td className="px-6 py-4">
+              <td
+                className="px-6 py-4"
+                onClick={() => {
+                  navigateToSingleView(user._id);
+                }}
+              >
                 <FontAwesomeIcon icon={faArrowRight} />
               </td>
             </tr>
