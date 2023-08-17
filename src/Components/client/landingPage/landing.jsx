@@ -3,15 +3,19 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import BlogPostCard from "./InfoCard";
-import { motion, useScroll } from "framer-motion";
+import { motion } from "framer-motion";
+import AboutContentImageSection from "./about";
+import ImageWithBotton from "./image&start";
+import PricingSection from "./Package";
+import Footer from "./footer";
 
 export default function CustomCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const { scrollYProgress } = useScroll();
+
   const sliderRef = useRef(null);
   const variants = {
-    hidden: { opacity: 0, x: -500 }, // Start from left side with opacity 0
-    visible: { opacity: 1, x: 0 }, // Move to normal position with opacity 1
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 },
   };
 
   const settings = {
@@ -25,6 +29,7 @@ export default function CustomCarousel() {
     beforeChange: (current, next) => setActiveIndex(next),
     afterChange: (current) => setActiveIndex(current),
     nextArrow: null,
+    prevArrow: null,
   };
 
   const slides = [
@@ -98,21 +103,45 @@ export default function CustomCarousel() {
         </div>
       </div>
       <div className="flex items-center justify-center h-16 bg-black">
-        <p className="font-mono text-4xl text-white">WHAT YOU GET HERE</p>
+        <p className="font-dancing-script  text-4xl  text-amber-500">
+          WHAT YOU GET HERE
+        </p>
       </div>
       <div className="bg-black mt-0 w-full">
         <div className="bg-transparent ">
           <motion.div
             className="bg-transparent"
             initial="hidden"
-            animate="visible"
             variants={variants}
-            transition={{ duration: 0.8 }}
+            whileInView={"visible"}
+            transition={{ duration: 0.5 }}
           >
             <BlogPostCard />
           </motion.div>
         </div>
+        <div>
+          <AboutContentImageSection />
+        </div>
+        <div>
+          <ImageWithBotton />
+        </div>
       </div>
+      <div className="flex items-center justify-center h-16 bg-black">
+        <p className="font-dancing-script  text-4xl  text-amber-500">
+          Choose The Right Plan
+        </p>
+      </div>
+      <div className="bg-black">
+        <PricingSection />
+      </div>
+      <div className="bg-black">
+        <Footer />
+      </div>
+      <style>
+        {`.slick-next {
+          display: none !important;
+        }`}
+      </style>
     </>
   );
 }

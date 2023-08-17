@@ -13,7 +13,7 @@ function UserRoutes() {
     <div>
       <Routes>
         <Route path="/home" element={IsAuth.Token ? <Home /> : <Login />} />
-        <Route path="/" element={IsAuth.Token ? <LandingPage /> : <Login />} />
+        <Route path="/" element={IsAuth.Token ? <Home /> : <LandingPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={IsAuth.Token ? <Home /> : <Login />} />
         <Route path="/restPass/:id" element={<PasswordResetPage />} />
