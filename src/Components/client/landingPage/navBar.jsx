@@ -1,24 +1,30 @@
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState("Home");
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleNavLinkClick = (link) => {
+    setActiveLink(link);
   };
 
   return (
     <>
       <nav className="bg-transparent absolute top-0 z-10 w-full">
         <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
-          <a href="#" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img src="/Images/logoMain.png" className="h-10 mr-3" alt="Logo" />
             <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
               Gym Ease
             </span>
-          </a>
+          </Link>
           <button
             data-collapse-toggle="navbar-dropdown"
             type="button"
@@ -50,20 +56,25 @@ function Navbar() {
           >
             <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
               <li>
-                <a
-                  href="#"
-                  className="block py-2 pl-3 pr-4 text-white rounded md:text-amber-700 md:p-0 md:text-amber-500"
+                <Link
+                  to="/"
+                  className={`block py-2 pl-3 pr-4 text-white rounded md:p-0 ${
+                    activeLink === "Home" ? "md:text-amber-700" : ""
+                  }`}
+                  onClick={() => handleNavLinkClick("Home")}
                   aria-current="page"
                 >
                   Home
-                </a>
+                </Link>
               </li>
               <li>
                 <div className="relative">
                   <button
                     id="dropdownNavbarLink"
                     data-dropdown-toggle="dropdownNavbar"
-                    className="flex items-center justify-between w-full py-2 pl-3 pr-4 text-white hover:text-amber-700 rounded md:border-0  md:p-0 md:w-auto"
+                    className={`flex items-center justify-between w-full py-2 pl-3 pr-4 text-white hover:text-amber-700 rounded md:border-0  md:p-0 md:w-auto ${
+                      activeLink === "Dropdown" ? "text-amber-700" : ""
+                    }`}
                     aria-controls="dropdownNavbar"
                     aria-expanded={isDropdownOpen}
                     onClick={toggleDropdown}
@@ -78,59 +89,88 @@ function Navbar() {
                     id="dropdownNavbar"
                   >
                     <ul
-                      className="py-2 text-sm text-gray-700 "
+                      className="py-2 text-sm text-gray-700"
                       aria-labelledby="dropdownNavbarLink"
                     >
                       <li>
-                        <a href="#" className="block px-4 py-2 text-white">
+                        <Link
+                          to="/dashboard"
+                          className="block px-4 py-2 text-white"
+                        >
                           Dashboard
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a href="#" className="block px-4 py-2  text-white">
+                        <Link
+                          to="/settings"
+                          className="block px-4 py-2 text-white"
+                        >
                           Settings
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a href="#" className="block px-4 py-2  text-white">
+                        <Link
+                          to="/earnings"
+                          className="block px-4 py-2 text-white"
+                        >
                           Earnings
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                     <div className="py-1">
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm  text-gray-700 text-white"
+                      <Link
+                        to="/signout"
+                        className="block px-4 py-2 text-sm text-gray-700 text-white"
                       >
                         Sign out
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="block py-2 pl-3 pr-4 text-white rounded hover:text-amber-700 md:p-0"
+                <Link
+                  to="/services"
+                  className={`block py-2 pl-3 pr-4 text-white rounded hover:text-amber-700 md:p-0 ${
+                    activeLink === "Services" ? "md:text-amber-700" : ""
+                  }`}
+                  onClick={() => handleNavLinkClick("Services")}
                 >
                   Services
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="block py-2 pl-3 pr-4 text-white rounded hover:text-amber-700 md:p-0"
+                <Link
+                  to="/about"
+                  className={`block py-2 pl-3 pr-4 text-white rounded hover:text-amber-700 md:p-0 ${
+                    activeLink === "About" ? "md:text-amber-700" : ""
+                  }`}
+                  onClick={() => handleNavLinkClick("About")}
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/pricing"
+                  className={`block py-2 pl-3 pr-4 text-white rounded hover:text-amber-700 md:p-0 ${
+                    activeLink === "Pricing" ? "md:text-amber-700" : ""
+                  }`}
+                  onClick={() => handleNavLinkClick("Pricing")}
                 >
                   Pricing
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="block py-2 pl-3 pr-4 text-white rounded hover:text-amber-700 md:p-0"
+                <Link
+                  to="/contact"
+                  className={`block py-2 pl-3 pr-4 text-white rounded hover:text-amber-700 md:p-0 ${
+                    activeLink === "Contact" ? "md:text-amber-700" : ""
+                  }`}
+                  onClick={() => handleNavLinkClick("Contact")}
                 >
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
