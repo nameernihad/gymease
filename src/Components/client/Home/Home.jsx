@@ -4,12 +4,14 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ClientLogout } from "../../../Redux/ClientAuth";
 import { googleLogout } from "@react-oauth/google";
+import WorkoutCatogery from "./workoutCatogery";
 
 import NavBar from "../landingPage/navBar";
 import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import BeforeWorkout from "./beforeWorkout";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -69,53 +71,79 @@ const Home = () => {
   ];
 
   return (
-    <div>
-      <div>
-        <NavBar />
-      </div>
-      <div>
-        <div className="bg-black">
-          <Slider ref={sliderRef} {...settings} autoplay pauseOnHover={false}>
-            {slides.map((slide, index) => (
-              <div className="carousel-item relative" key={index}>
-                <div className="relative">
-                  <img
-                    alt="..."
-                    src={slide.imageUrl}
-                    className="w-full h-screen object-cover"
-                  />
-                  {index !== slides.length - 1 && (
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50"></div>
-                  )}
+    <>
+      <div className="bg-black">
+        <div>
+          <NavBar />
+        </div>
+        <div>
+          <div className="bg-black">
+            <Slider ref={sliderRef} {...settings} autoplay pauseOnHover={false}>
+              {slides.map((slide, index) => (
+                <div className="carousel-item relative" key={index}>
+                  <div className="relative">
+                    <img
+                      alt="..."
+                      src={slide.imageUrl}
+                      className="w-full h-screen object-cover"
+                    />
+                    {index !== slides.length - 1 && (
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50"></div>
+                    )}
+                  </div>
+                  <div className="carousel-content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white bg-black bg-opacity-50 p-4 rounded">
+                    <h1 className="text-3xl font-bold mb-2">{slide.title}</h1>
+                    <p className="text-lg mb-4">{slide.description}</p>
+                    <button className="bg-transparent hover:bg-amber-500 text-amber-700 font-semibold hover:text-white py-2 px-4 border border-amber-500 hover:border-transparent rounded">
+                      Get Started Now
+                    </button>
+                  </div>
                 </div>
-                <div className="carousel-content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white bg-black bg-opacity-50 p-4 rounded">
-                  <h1 className="text-3xl font-bold mb-2">{slide.title}</h1>
-                  <p className="text-lg mb-4">{slide.description}</p>
-                  <button className="bg-transparent hover:bg-amber-500 text-amber-700 font-semibold hover:text-white py-2 px-4 border border-amber-500 hover:border-transparent rounded">
-                    Get Started Now
-                  </button>
-                </div>
-              </div>
-            ))}
-          </Slider>
-          <div className="carousel-pagination absolute bottom-16 left-1/2 transform -translate-x-1/2 w-full flex justify-center">
-            <ul className="slick-dots">
-              {slides.map((_, dotIndex) => (
-                <li
-                  key={dotIndex}
-                  className={dotIndex === activeIndex ? "slick-active" : ""}
-                >
-                  <button className="w-4 h-4 rounded-full bg-white"></button>
-                </li>
               ))}
-            </ul>
+            </Slider>
+            <div className="carousel-pagination absolute bottom-16 left-1/2 transform -translate-x-1/2 w-full flex justify-center">
+              <ul className="slick-dots">
+                {slides.map((_, dotIndex) => (
+                  <li
+                    key={dotIndex}
+                    className={dotIndex === activeIndex ? "slick-active" : ""}
+                  >
+                    <button className="w-4 h-4 rounded-full bg-white"></button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      <button className="w-60 bg-ambere-500 rounded-xl" onClick={handleLogout}>
+        <div>
+          <WorkoutCatogery />
+        </div>
+        <div className="flex items-center justify-center h-16 bg-black">
+          <p className="font-dancing-script  text-3xl  text-amber-500">
+            Before Starting Your Workout
+          </p>
+        </div>
+        <div className="bg-black">
+          <BeforeWorkout />
+        </div>
+        <div className="flex items-center justify-center h-16 my-10 bg-black">
+          <p className="font-dancing-script bg-black  text-3xl  text-amber-500">
+            Before Starting Your Workout
+          </p>
+        </div>
+        {/* <button className="w-60 bg-ambere-500 rounded-xl" onClick={handleLogout}>
         Logout
-      </button>
-    </div>
+      </button> */}
+      </div>
+      <style>
+        {`
+          .slick-next {
+            right: 0 !important;
+            display: none; /* Hide the next button */
+          }
+        `}
+      </style>
+    </>
   );
 };
 
