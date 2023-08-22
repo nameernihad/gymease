@@ -12,6 +12,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import BeforeWorkout from "./beforeWorkout";
+import TrainerCard from "./TrainerListing";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -74,7 +75,7 @@ const Home = () => {
     <>
       <div className="bg-black">
         <div>
-          <NavBar />
+          <NavBar logout={handleLogout} />
         </div>
         <div>
           <div className="bg-black">
@@ -115,10 +116,13 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div>
+        <div className="mx-3 flex-grow flex flex-col gap-y-20 justify-center items-center">
+          <p className="font-dancing-script  text-3xl   text-amber-500">
+            Select Your Category,As Your Level{" "}
+          </p>
           <WorkoutCatogery />
         </div>
-        <div className="flex items-center justify-center h-16 bg-black">
+        <div className="flex items-center justify-center h-16 my-10 bg-black">
           <p className="font-dancing-script  text-3xl  text-amber-500">
             Before Starting Your Workout
           </p>
@@ -128,8 +132,12 @@ const Home = () => {
         </div>
         <div className="flex items-center justify-center h-16 my-10 bg-black">
           <p className="font-dancing-script bg-black  text-3xl  text-amber-500">
-            Before Starting Your Workout
+            Select Your Trainer
           </p>
+        </div>
+        <div className="bg-black">
+          {" "}
+          <TrainerCard />
         </div>
         {/* <button className="w-60 bg-ambere-500 rounded-xl" onClick={handleLogout}>
         Logout

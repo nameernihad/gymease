@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import PasswordResetPage from "../Components/resetPassword/resetPassword";
 import LandingPage from "../Pages/Client/landing";
 import About from "../Pages/Client/About";
+import UploadImage from "../Components/uploadImage";
+import UserProfile from "../Components/client/UserProfile/UserProfile";
 
 function UserRoutes() {
   const IsAuth = useSelector((state) => state.Client);
@@ -19,6 +21,11 @@ function UserRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={IsAuth.Token ? <Home /> : <Login />} />
         <Route path="/restPass/:id" element={<PasswordResetPage />} />
+        <Route path="/uploadImage" element={<UploadImage />} />
+        <Route
+          path="/profile"
+          element={IsAuth.Token ? <UserProfile /> : <Login />}
+        />
       </Routes>
     </div>
   );

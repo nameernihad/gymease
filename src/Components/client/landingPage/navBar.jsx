@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ logout }) {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("Home");
 
@@ -51,7 +51,9 @@ function Navbar() {
             </svg>
           </button>
           <div
-            className={`w-full md:w-auto ${isDropdownOpen ? "block" : ""}`}
+            className={`w-full md:w-auto ${
+              isDropdownOpen ? "block" : ""
+            } flex gap-10 `}
             id="navbar-dropdown"
           >
             <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
@@ -117,13 +119,11 @@ function Navbar() {
                         </Link>
                       </li>
                     </ul>
-                    <div className="py-1">
-                      <Link
-                        to="/signout"
-                        className="block px-4 py-2 text-sm text-gray-700 text-white"
-                      >
-                        Sign out
-                      </Link>
+                    <div
+                      className="py-1 block px-4 py-2 text-sm text-gray-700 text-white"
+                      onClick={logout}
+                    >
+                      Sign out
                     </div>
                   </div>
                 </div>
@@ -173,6 +173,22 @@ function Navbar() {
                 </Link>
               </li>
             </ul>
+            <Link to="/profile">
+              <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                <svg
+                  class="absolute w-12 h-12 text-gray-400 -left-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </Link>
           </div>
         </div>
       </nav>

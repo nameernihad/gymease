@@ -19,7 +19,7 @@ const PasswordResetPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await userAxios.patch(`/restPass/${id}`, { password });
+    const res = await userAxios.patch(`/resetPass/${id}`, { password });
     console.log(res.data);
     if (password !== confirmPassword) {
       setMessage("Passwords do not match.");

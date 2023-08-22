@@ -7,25 +7,25 @@ const adminInstance = axios.create({
 
 export default adminInstance;
 
-adminInstance.interceptors.request.use(
-  (config) => {
-    const adminCredentials = localStorage.getItem("persist:Admin");
-    const adminCredentialObject = JSON.parse(adminCredentials);
-    const adminToken = adminCredentialObject?.Token.replace(/^"(.*)"$/, "$1");
+// adminInstance.interceptors.request.use(
+//   (config) => {
+//     const adminCredentials = localStorage.getItem("persist:Admin");
+//     const adminCredentialObject = JSON.parse(adminCredentials);
+//     const adminToken = adminCredentialObject?.Token.replace(/^"(.*)"$/, "$1");
 
-    config.headers["Admin"] = `Bearer ${adminToken}`;
+//     config.headers["Admin"] = `Bearer ${adminToken}`;
 
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-adminInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
+// adminInstance.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );

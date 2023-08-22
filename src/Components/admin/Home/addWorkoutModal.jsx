@@ -6,6 +6,40 @@ import { toast } from "react-toastify";
 
 const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
   const [selectedOption, setSelectedOption] = useState("timer");
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const base64 = await convertBase64(file);
+      setLoading(true);
+      const response = await adminAxios.post("/uploadImage", { image: base64 });
+      setImageUrl(response.data);
+      alert("Image uploaded successfully");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const [formData, setFormData] = useState({
     name: "",
@@ -42,7 +76,7 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
       description: e.target.description.value,
       category: e.target.category.value,
       level: e.target.level.value,
-      // Add other fields as needed
+      gif: imageUrl,
     };
 
     setFormData(updatedFormData);
@@ -179,7 +213,7 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
                 id="image-upload"
                 name="image-upload"
                 accept="image/*"
-                // Rest of the input attributes...
+                onChange={handleImageUpload}
               />
             </div>
 
