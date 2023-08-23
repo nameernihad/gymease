@@ -54,6 +54,7 @@ function UserProfile() {
         .then((res) => {
           if (res.data.user) {
             console.log(res.data.user);
+
             toast.success(res.data.message, {
               position: "bottom-left",
               autoClose: 5000,

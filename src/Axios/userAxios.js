@@ -12,7 +12,7 @@ userInstance.interceptors.request.use(
     const userCredentialObject = JSON.parse(userCredentials);
     const userToken = userCredentialObject?.Token.replace(/^"(.*)"$/, "$1");
 
-    config.headers["Token"] = `Bearer ${userToken}`;
+    config.headers["client"] = `Bearer ${userToken}`;
 
     return config;
   },

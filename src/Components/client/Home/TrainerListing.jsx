@@ -1,16 +1,26 @@
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import adminAxios from "../../../Axios/adminAxios";
+import userAxios from "../../../Axios/userAxios";
+import { Navigate } from "react-router-dom";
 
-const TrainerCard = () => {
+const TrainerCard = ({ logout }) => {
   const [trainerdetails, settrainerdetails] = useState([]);
   useEffect(() => {
-    adminAxios.get("/getAllTrainer").then((res) => {
-      settrainerdetails(res.data.Trainerdetails);
-    });
+    userAxios
+      .get("/getAllTrainer")
+      .then((res) => {
+        console.log(res);
+        settrainerdetails(res.data.Trainerdetails);
+      })
+      .catch((err) => {
+        console.log(err.response.status, "hgggggggggggggggggggggggggggggggggg");
+        if (err.response.status === 401 || err.response.status === 403) {
+          localStorage.removeItem("persist:Client");
+          Navigate("/login");
+        }
+      });
   }, []);
-  console.log(trainerdetails);
 
   return (
     <div className="overflow-x-auto bg-black p-4">

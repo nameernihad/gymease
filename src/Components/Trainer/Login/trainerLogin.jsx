@@ -32,7 +32,7 @@ function TrainerLogin() {
     }
 
     trainerAxios.post("/", { email, password }).then((res) => {
-      console.log(res);
+      console.log(res.data);
       const result = res.data;
       if (result.token) {
         const token = result.token;

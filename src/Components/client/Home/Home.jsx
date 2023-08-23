@@ -137,7 +137,7 @@ const Home = () => {
         </div>
         <div className="bg-black">
           {" "}
-          <TrainerCard />
+          <TrainerCard logout={handleLogout} />
         </div>
         {/* <button className="w-60 bg-ambere-500 rounded-xl" onClick={handleLogout}>
         Logout

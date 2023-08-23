@@ -24,9 +24,14 @@ function UserList() {
   };
 
   useEffect(() => {
-    adminAxios.get("/getAllUsers").then((res) => {
-      setuserdetails(res.data.userList);
-    });
+    adminAxios
+      .get("/getAllUsers")
+      .then((res) => {
+        setuserdetails(res.data.userList);
+      })
+      .catch((err) => {
+        console.log(err, "erooooooooooorooooooo");
+      });
   }, []);
 
   const navigateToSingleView = (userId) => {
