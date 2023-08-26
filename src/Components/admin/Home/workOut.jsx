@@ -171,7 +171,7 @@ const WorkoutListing = () => {
                         {workout.description}
                       </TableCell>
                       <TableCell style={{ textAlign: "center" }}>
-                        {workout.gif}
+                        <img src={workout.gif} alt="" className="w-40 h-32" />
                       </TableCell>
                       <TableCell align="right" style={{ textAlign: "center" }}>
                         {workout.category[0]}

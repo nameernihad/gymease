@@ -2,9 +2,11 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import userAxios from "../../../Axios/userAxios";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const TrainerCard = ({ logout }) => {
+  const navigate = useNavigate(); // Get the navigate function
+
   const [trainerdetails, settrainerdetails] = useState([]);
   useEffect(() => {
     userAxios
@@ -14,10 +16,8 @@ const TrainerCard = ({ logout }) => {
         settrainerdetails(res.data.Trainerdetails);
       })
       .catch((err) => {
-        console.log(err.response.status, "hgggggggggggggggggggggggggggggggggg");
+        console.log(err, "erorrrrooooooooooooor");
         if (err.response.status === 401 || err.response.status === 403) {
-          localStorage.removeItem("persist:Client");
-          Navigate("/login");
         }
       });
   }, []);

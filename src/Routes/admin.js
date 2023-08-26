@@ -9,6 +9,8 @@ import Navbar from "../Components/admin/Home/adminNav";
 import WorkoutListing from "../Components/admin/Home/workOut";
 import UserView from "../Components/client/userSingeView/userView";
 import UserSingleView from "../Pages/Admin/userSingleView";
+import CategoryListing from "../Components/admin/Home/categoryList";
+import LevelListing from "../Components/admin/Home/level";
 
 function AdminRoutes() {
   const IsAdminAuth = useSelector((state) => state.Admin);
@@ -36,6 +38,14 @@ function AdminRoutes() {
         <Route
           path="/workoutsList"
           element={IsAdminAuth.Token ? <WorkoutListing /> : <Login />}
+        />
+        <Route
+          path="/Catogory"
+          element={IsAdminAuth.Token ? <CategoryListing /> : <Login />}
+        />
+        <Route
+          path="/Level"
+          element={IsAdminAuth.Token ? <LevelListing /> : <Login />}
         />
         <Route
           path="/userView/:userId"

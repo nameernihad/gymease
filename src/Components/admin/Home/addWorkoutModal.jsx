@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import adminAxios from "../../../Axios/adminAxios";
+import axios from "axios";
 import { toast } from "react-toastify";
 
 const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
@@ -31,15 +32,19 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
     try {
       const base64 = await convertBase64(file);
       setLoading(true);
-      const response = await adminAxios.post("/uploadImage", { image: base64 });
+      const response = await axios.post(
+        "http://localhost:4000/admin/uploadImage",
+        { image: base64 }
+      );
       setImageUrl(response.data);
-      alert("Image uploaded successfully");
+      toast.success("Image uploaded successfully");
     } catch (error) {
       console.error("Error uploading image:", error);
     } finally {
       setLoading(false);
     }
   };
+  // console.log(imageUrl);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -145,16 +150,21 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
                   >
                     Category
                   </label>
-                  <input
-                    type="text"
+                  <select
                     id="category"
                     name="category"
-                    autoComplete="off"
                     value={formData.category}
                     onChange={handleInputChange}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    placeholder="Enter workout category"
-                  />
+                  >
+                    <option value="">Select a category</option>
+                    <option value="fullbody">Full Body</option>
+                    <option value="chest">Chest</option>
+                    <option value="arms">Arms</option>
+                    <option value="abs">Abs</option>
+                    <option value="legs">Legs</option>
+                    <option value="back">Back</option>
+                  </select>
                 </div>
               </div>
               <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
@@ -201,21 +211,28 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
             </div>
 
             {/* Media */}
-            <div className="space-y-6 mb-8">
-              <label
-                htmlFor="image-upload"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Upload Image
-              </label>
-              <input
-                type="file"
-                id="image-upload"
-                name="image-upload"
-                accept="image/*"
-                onChange={handleImageUpload}
-              />
-            </div>
+
+            {loading ? (
+              <div className="flex item-center justify-center w-14 h-14">
+                <img src="/Images/Pulse-1s-200px.gif" alt="" />
+              </div>
+            ) : (
+              <div className="space-y-6 mb-8">
+                <label
+                  htmlFor="image-upload"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Upload Image
+                </label>
+                <input
+                  type="file"
+                  id="image-upload"
+                  name="image-upload"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                />
+              </div>
+            )}
 
             {/* Timer and Count */}
             <div className="space-y-6">
@@ -290,6 +307,14 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
           </div>
         </form>
       </div>
+
+      {/* {loading ? (
+        <div className="flex item-center justify-center">
+          <img src="https://i.gifer.com/ZKZg.gif" alt="" />
+        </div>
+      ) : (
+        <EditWorkoutModal />
+      )} */}
     </div>
   );
 };
