@@ -8,6 +8,8 @@ import PasswordResetPage from "../Components/resetPassword/resetPassword";
 import LandingPage from "../Pages/Client/landing";
 import About from "../Pages/Client/About";
 import UserProfile from "../Components/client/UserProfile/UserProfile";
+import CategoryPage from "../Pages/Client/category";
+import Workout from "../Pages/Client/workout";
 
 function UserRoutes() {
   const IsAuth = useSelector((state) => state.Client);
@@ -23,6 +25,14 @@ function UserRoutes() {
         <Route
           path="/profile"
           element={IsAuth.Token ? <UserProfile /> : <Login />}
+        />
+        <Route
+          path="/Category/:id"
+          element={IsAuth.Token ? <CategoryPage /> : <Login />}
+        />
+        <Route
+          path="/workout/:cateId/:id"
+          element={IsAuth.Token ? <Workout /> : <Login />}
         />
       </Routes>
     </div>

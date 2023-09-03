@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import adminAxios from "../../../Axios/adminAxios";
@@ -9,6 +9,18 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
   const [selectedOption, setSelectedOption] = useState("timer");
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [levels, setLevels] = useState([]);
+
+  useEffect(() => {
+    adminAxios.get("/getAllCategory").then((res) => {
+      setCategories(res.data.allcategory);
+    });
+
+    adminAxios.get("/getAllLevel").then((res) => {
+      setLevels(res.data.allLevel);
+    });
+  }, []);
 
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -32,10 +44,7 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
     try {
       const base64 = await convertBase64(file);
       setLoading(true);
-      const response = await axios.post(
-        "http://localhost:4000/admin/uploadImage",
-        { image: base64 }
-      );
+      const response = await adminAxios.post("uploadImage", { image: base64 });
       setImageUrl(response.data);
       toast.success("Image uploaded successfully");
     } catch (error) {
@@ -44,7 +53,6 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
       setLoading(false);
     }
   };
-  // console.log(imageUrl);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -158,12 +166,11 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
                     <option value="">Select a category</option>
-                    <option value="fullbody">Full Body</option>
-                    <option value="chest">Chest</option>
-                    <option value="arms">Arms</option>
-                    <option value="abs">Abs</option>
-                    <option value="legs">Legs</option>
-                    <option value="back">Back</option>
+                    {categories.map((category) => (
+                      <option key={category._id} value={category.name}>
+                        {category.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -182,9 +189,11 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
                     onChange={handleInputChange}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
-                    <option value="Beginner">Beginner</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Advanced">Advanced</option>
+                    {levels.map((level) => (
+                      <option key={level._id} value={level.name}>
+                        {level.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 {/* ... Other fields ... */}
@@ -218,6 +227,18 @@ const EditWorkoutModal = ({ isOpen, closeModal, setWorkOut }) => {
               </div>
             ) : (
               <div className="space-y-6 mb-8">
+                {imageUrl && (
+                  <img
+                    src={imageUrl}
+                    alt="Image Preview"
+                    style={{
+                      maxWidth: "100px",
+                      maxHeight: "100px",
+                      display: "block",
+                      margin: "0 auto",
+                    }}
+                  />
+                )}
                 <label
                   htmlFor="image-upload"
                   className="block text-sm font-medium text-gray-700"

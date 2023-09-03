@@ -4,10 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import adminAxios from "../../../Axios/adminAxios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function UserList() {
   const [userdetails, setuserdetails] = useState([]);
+
   const navigate = useNavigate();
 
   const handleBlockToggle = (userId) => {
@@ -30,7 +31,7 @@ function UserList() {
         setuserdetails(res.data.userList);
       })
       .catch((err) => {
-        console.log(err, "erooooooooooorooooooo");
+        console.log(err.message);
       });
   }, []);
 

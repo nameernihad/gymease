@@ -1,10 +1,10 @@
 import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ClientLogout } from "../../../Redux/ClientAuth";
 import { googleLogout } from "@react-oauth/google";
-import WorkoutCatogery from "./workoutCatogery";
 
 import NavBar from "../landingPage/navBar";
 import Slider from "react-slick";
@@ -13,6 +13,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import BeforeWorkout from "./beforeWorkout";
 import TrainerCard from "./TrainerListing";
+import WorkoutLevel from "./workoutLevel";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -120,7 +121,8 @@ const Home = () => {
           <p className="font-dancing-script  text-3xl   text-amber-500">
             Select Your Category,As Your Level{" "}
           </p>
-          <WorkoutCatogery />
+
+          <WorkoutLevel />
         </div>
         <div className="flex items-center justify-center h-16 my-10 bg-black">
           <p className="font-dancing-script  text-3xl  text-amber-500">
