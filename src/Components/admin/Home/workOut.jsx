@@ -71,6 +71,7 @@ const WorkoutListing = () => {
 
   useEffect(() => {
     adminAxios.get("/getAllWorkouts").then((res) => {
+      console.log(res.data.workout);
       setWorkoutDetails(res.data.workout);
     });
   }, []);
@@ -174,10 +175,10 @@ const WorkoutListing = () => {
                         <img src={workout.gif} alt="" className="w-40 h-32" />
                       </TableCell>
                       <TableCell align="right" style={{ textAlign: "center" }}>
-                        {workout.category[0]}
+                        {workout.category.name}
                       </TableCell>
                       <TableCell align="right" style={{ textAlign: "center" }}>
-                        {workout.Level}
+                        {workout.level.name}
                       </TableCell>
 
                       <TableCell align="right" style={{ textAlign: "center" }}>

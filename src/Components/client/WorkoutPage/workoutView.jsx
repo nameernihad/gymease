@@ -4,34 +4,25 @@ import adminAxios from "../../../Axios/adminAxios";
 
 function WorkoutView() {
   const Id = useParams();
+  console.log(Id);
   const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0);
   const [level, setLevel] = useState("");
   const [category, setCategory] = useState("");
   const [workouts, setWorkouts] = useState([]);
 
   useEffect(() => {
-    adminAxios.get(`/getLevelById/${Id.id}`).then((res) => {
-      setLevel(res.data.Level.name);
-    });
-  }, []);
-
-  useEffect(() => {
-    adminAxios.get(`/getCategoryById/${Id.cateId}`).then((res) => {
-      setCategory(res.data.Category.name);
-    });
-  }, []);
-
-  useEffect(() => {
     adminAxios
-      .get(`/filteredWorkout/${level}/${category}`)
+      .get(`/filteredWorkout/${Id.id}/${Id.cateId}`)
       .then((response) => {
+        console.log(response.data.filteredWorkout);
+        console.log("response.data.filteredWorkout");
         setWorkouts(response.data.filteredWorkout);
         setCurrentWorkoutIndex(0);
       })
       .catch((error) => {
         console.error("Error fetching workouts:", error);
       });
-  }, [level, category]);
+  }, []);
 
   const totalWorkouts = workouts.length;
   const currentWorkout = workouts[currentWorkoutIndex];
@@ -50,7 +41,8 @@ function WorkoutView() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white rounded-lg p-6 shadow-md max-w-4xl w-full">
         <h2 className="text-2xl font-semibold mb-4 break-words">
-          Workout View - {level} - {category}
+          Workout View - {currentWorkout?.level?.name} -{" "}
+          {currentWorkout?.category?.name}
         </h2>
 
         <div className="mb-6">

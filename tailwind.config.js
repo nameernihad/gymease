@@ -7,6 +7,12 @@ module.exports = {
         barriecito: ["Barriecito", "cursive"],
         "dancing-script": ["Dancing Script", "cursive"],
       },
+      placeholder: {
+        "gray-400": {
+          color: "#ccc", // Placeholder text color
+          padding: "8px", // Adjust padding as needed
+        },
+      },
     },
   },
   plugins: [],

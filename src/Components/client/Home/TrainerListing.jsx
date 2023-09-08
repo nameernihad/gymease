@@ -16,7 +16,7 @@ const TrainerCard = ({ logout }) => {
         settrainerdetails(res.data.Trainerdetails);
       })
       .catch((err) => {
-        console.log(err, "erorrrrooooooooooooor");
+        console.log(err.message, "erorrrrooooooooooooor");
         if (err.response.status === 401 || err.response.status === 403) {
         }
       });
