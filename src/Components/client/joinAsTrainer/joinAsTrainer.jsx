@@ -1,9 +1,12 @@
-import { faFile } from "@fortawesome/free-solid-svg-icons";
+import { faFile, faFileImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import Navbar from "../landingPage/navBar";
 import Footer from "../landingPage/footer";
+import { toast } from "react-toastify";
+import adminAxios from "../../../Axios/adminAxios";
+import { Login } from "@mui/icons-material";
 
 const handleCertificationFileChange = (e) => {
   const files = Array.from(e.target.files);
@@ -11,7 +14,6 @@ const handleCertificationFileChange = (e) => {
 };
 
 export default function JoinAsTrainer() {
-  const [username, setUsername] = useState("");
   const [about, setAbout] = useState("");
   const [experienceYears, setExperienceYears] = useState(0);
   const [experienceMonths, setExperienceMonths] = useState(0);
@@ -25,6 +27,8 @@ export default function JoinAsTrainer() {
     "6 Months": "",
     "1 Year": "",
   });
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   const durationNames = Object.keys(paymentAmounts);
 
@@ -36,10 +40,62 @@ export default function JoinAsTrainer() {
   };
 
   const handleAddPayment = () => {
-    // You can now access paymentAmounts, which contains payment amounts for each duration
     console.log(paymentAmounts);
   };
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
 
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleImageUpload = async (event, imageType) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const base64 = await convertBase64(file);
+      setLoading(true);
+      const response = await adminAxios.post("uploadImage", { image: base64 });
+      setImageUrl(response.data);
+
+      // Determine which image type is being uploaded
+      if (imageType === "profilePhoto") {
+        setProfilePhoto(response.data);
+      } else if (imageType === "coverPhoto") {
+        setCoverPhoto(response.data);
+      } else if (imageType === "certification") {
+        // Handle certification image upload
+        // Add your logic to update certifications state here
+      }
+
+      toast.success("Image uploaded successfully");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleProfilePhotoUploader = (event) => {
+    handleImageUpload(event, "profilePhoto");
+  };
+
+  const handleCoverUploader = (event) => {
+    handleImageUpload(event, "coverPhoto");
+  };
+
+  const handleCertificationUploader = (event) => {
+    handleImageUpload(event, "certification");
+  };
   return (
     <>
       <Navbar />
@@ -64,29 +120,42 @@ export default function JoinAsTrainer() {
               >
                 Profile Photo
               </label>
-              <div className="mt-2 flex items-center gap-x-3">
-                {profilePhoto ? (
-                  <img
-                    src={profilePhoto}
-                    alt="Profile"
-                    className="h-12 w-12 rounded-full"
-                  />
-                ) : (
-                  <UserCircleIcon
-                    className="h-16 w-16 text-gray-300"
-                    aria-hidden="true"
-                  />
-                )}
-                <button
-                  type="button"
-                  className="rounded-md bg-amber-500 px-2.5 py-1.5 text-sm sm:text-base md:text-lg font-semibold text-white shadow-sm ring-1 ring-inset hover:bg-amber-600"
-                  onClick={() => {
-                    // Implement photo upload logic here
-                  }}
-                >
-                  Change Photo
-                </button>
-              </div>
+              {loading ? (
+                <div className="flex item-center justify-center w-14 h-14">
+                  <img src="/Images/Pulse-1s-200px.gif" alt="" />
+                </div>
+              ) : (
+                <div className="mt-2 flex items-center gap-x-3">
+                  {profilePhoto ? (
+                    <img
+                      src={`${profilePhoto}`}
+                      alt="Profile"
+                      className="h-12 w-12 rounded-full"
+                    />
+                  ) : (
+                    <UserCircleIcon
+                      className="h-16 w-16 text-gray-300"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <label
+                    htmlFor="photo"
+                    className="relative cursor-pointer rounded-md bg-amber-500 px-2.5 py-1.5 text-sm sm:text-base md:text-lg font-semibold text-white shadow-sm ring-1 ring-inset hover:bg-amber-600"
+                  >
+                    <span>
+                      <FontAwesomeIcon icon={faFileImage} />
+                      {profilePhoto ? "Change Photo" : "Upload Photo"}{" "}
+                    </span>
+                    <input
+                      id="photo"
+                      name="photo"
+                      type="file"
+                      className="sr-only"
+                      onChange={handleProfilePhotoUploader}
+                    />
+                  </label>
+                </div>
+              )}
             </div>
             <div className="sm:col-span-4 mt-8">
               <label
@@ -152,7 +221,7 @@ export default function JoinAsTrainer() {
             </div>
 
             <div className="mt-8 grid grid-cols-1 gap-4 ">
-              <div className="sm:col-span-4">{/* Other fields */}</div>
+              <div className="sm:col-span-4"></div>
               <div className="col-span-full mt-8">
                 <label
                   htmlFor="experience"
@@ -227,9 +296,7 @@ export default function JoinAsTrainer() {
                       type="file"
                       className="sr-only"
                       multiple
-                      onChange={(e) => {
-                        // Implement certification file upload logic here
-                      }}
+                      onChange={handleCertificationUploader}
                     />
                   </label>
                 </div>
@@ -241,9 +308,9 @@ export default function JoinAsTrainer() {
                 >
                   Payment Duration
                 </label>
-                <div className="mt-2">
+                <div className="mt-2 flex items-center">
                   {durationNames.map((duration) => (
-                    <div key={duration} className="flex items-center mt-4">
+                    <div key={duration} className="mr-4">
                       <span className="text-white">{duration}</span>
                       <input
                         type="number"
@@ -252,7 +319,7 @@ export default function JoinAsTrainer() {
                         onChange={(e) =>
                           handlePaymentAmountChange(duration, e.target.value)
                         }
-                        className="border rounded-md ml-4 px-2 py-1 text-black placeholder-gray-400 focus:ring-2 focus-ring-inset focus-ring-amber-600 text-sm sm:text-base"
+                        className="border rounded-md ml-2 px-2 py-1 text-black placeholder-gray-400 focus:ring-2 focus-ring-inset focus-ring-amber-600 text-sm sm:text-base w-32"
                       />
                     </div>
                   ))}
@@ -315,9 +382,7 @@ export default function JoinAsTrainer() {
                         name="file-upload"
                         type="file"
                         className="sr-only"
-                        onChange={(e) => {
-                          // Implement cover photo upload logic here
-                        }}
+                        onChange={handleCoverUploader}
                       />
                     </label>
                     <p className="pl-1">or drag and drop</p>
