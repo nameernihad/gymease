@@ -14,40 +14,36 @@ import { Login } from "@mui/icons-material";
 import { useEffect } from "react";
 import userAxios from "../../../Axios/userAxios";
 
-const handleCertificationFileChange = (e) => {
-  const files = Array.from(e.target.files);
-  // Handle selected files
-};
-
 export default function JoinAsTrainer() {
   const [about, setAbout] = useState("");
-  const [experienceYears, setExperienceYears] = useState(0);
-  const [experienceMonths, setExperienceMonths] = useState(0);
-  const [experienceDays, setExperienceDays] = useState(0);
+  const [paymentAmount, setPaymentAmount] = useState({
+    oneMonth: "",
+    sixMonths: "",
+    oneYear: "",
+  });
+
+  const [experience, setExperience] = useState({
+    years: 0,
+    months: 0,
+    days: 0,
+  });
   const [experienceDetails, setExperienceDetails] = useState("");
   const [certifications, setCertifications] = useState([]);
   const [profilePhoto, setProfilePhoto] = useState("");
   const [coverPhoto, setCoverPhoto] = useState("");
-  const [paymentAmounts, setPaymentAmounts] = useState({
-    "One Month": "",
-    "6 Months": "",
-    "1 Year": "",
-  });
+  const [gender, setGender] = useState("");
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
-  const durationNames = Object.keys(paymentAmounts);
+  const durationNames = Object.keys(paymentAmount);
 
   const handlePaymentAmountChange = (duration, amount) => {
-    setPaymentAmounts({
-      ...paymentAmounts,
+    setPaymentAmount({
+      ...paymentAmount,
       [duration]: amount,
     });
   };
 
-  const handleAddPayment = () => {
-    console.log(paymentAmounts);
-  };
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -89,10 +85,6 @@ export default function JoinAsTrainer() {
     }
   };
 
-  useEffect(() => {
-    console.log(coverPhoto);
-  }, [coverPhoto]);
-
   const handleProfilePhotoUploader = (event) => {
     handleImageUpload(event, "profilePhoto");
   };
@@ -111,21 +103,20 @@ export default function JoinAsTrainer() {
     try {
       const payload = {
         about,
-        experienceYears,
-        experienceMonths,
-        experienceDays,
-        experienceDetails,
+        experience: experience,
         certifications,
         profilePhoto,
         coverPhoto,
-        paymentAmounts,
+        paymentDetails: paymentAmount,
         imageUrl,
+        gender,
       };
+      console.log("Payload sent to backend:", payload);
 
       const response = await userAxios.post("/joinAsTrainer", payload);
 
-      if (response.status === 200) {
-        console.log("Data submitted successfully:", response.data);
+      if (response.status === 201) {
+        toast.success(`Request successfully submitted`);
       } else {
         console.error("Failed to submit data:", response.data);
       }
@@ -133,11 +124,15 @@ export default function JoinAsTrainer() {
       console.error("Error submitting data:", error);
     }
   };
+
   return (
     <>
       <Navbar />
 
-      <form className=" pt-20 px-14 bg-gray-900 text-white">
+      <form
+        className=" pt-20 px-14 bg-gray-900 text-white"
+        onSubmit={handleSubmit}
+      >
         <div className="space-y-8 md:space-y-12">
           <div className="border-b border-gray-900/10 pb-8 md:pb-12">
             <div className="col-span-full mt-8 relative">
@@ -222,7 +217,7 @@ export default function JoinAsTrainer() {
               </div>
             </div>
 
-            <div className="sm:col-span-4 mt-12">
+            <div className="sm:col-span-4 mt-8">
               <label
                 htmlFor="gender"
                 className="block text-sm sm:text-base md:text-lg font-medium leading-6 text-white"
@@ -236,6 +231,8 @@ export default function JoinAsTrainer() {
                       type="radio"
                       name="gender"
                       value="male"
+                      checked={gender === "male"} // Check if gender is "male"
+                      onChange={() => setGender("male")} // Set gender to "male" when selected
                       className="text-amber-600 form-radio"
                     />
                     <span className="ml-2 text-white">Male</span>
@@ -245,6 +242,8 @@ export default function JoinAsTrainer() {
                       type="radio"
                       name="gender"
                       value="female"
+                      checked={gender === "female"} // Check if gender is "female"
+                      onChange={() => setGender("female")} // Set gender to "female" when selected
                       className="text-amber-600 form-radio"
                     />
                     <span className="ml-2 text-white">Female</span>
@@ -254,6 +253,8 @@ export default function JoinAsTrainer() {
                       type="radio"
                       name="gender"
                       value="other"
+                      checked={gender === "other"} // Check if gender is "other"
+                      onChange={() => setGender("other")} // Set gender to "other" when selected
                       className="text-amber-600 form-radio"
                     />
                     <span className="ml-2 text-white">Other</span>
@@ -287,60 +288,58 @@ export default function JoinAsTrainer() {
 
             <div className="mt-8 grid grid-cols-1 gap-4 ">
               <div className="sm:col-span-4"></div>
-              <div className="col-span-full mt-8">
+              <div className="mt-8 flex items-center gap-x-3">
                 <label
-                  htmlFor="experience"
-                  className="block text-sm sm:text-base md:text-lg font-medium leading-6 text-white"
+                  htmlFor="experience-years"
+                  className="block text-sm font-medium leading-6 text-white"
                 >
-                  Experience
+                  Years
                 </label>
-                <div className="mt-2 flex items-center gap-x-3">
-                  <label
-                    htmlFor="experience-years"
-                    className="block text-sm font-medium leading-6 text-white"
-                  >
-                    Years
-                  </label>
-                  <input
-                    type="number"
-                    name="experience-years"
-                    id="experience-years"
-                    className="block w-1/12 rounded-md border-0 py-1.5 text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="Years"
-                    value={experienceYears}
-                    onChange={(e) => setExperienceYears(e.target.value)}
-                  />
-                  <label
-                    htmlFor="experience-months"
-                    className="block text-sm font-medium leading-6 text-white"
-                  >
-                    Months
-                  </label>
-                  <input
-                    type="number"
-                    name="experience-months"
-                    id="experience-months"
-                    className="block w-1/12 rounded-md border-0 py-1.5  text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="Months"
-                    value={experienceMonths}
-                    onChange={(e) => setExperienceMonths(e.target.value)}
-                  />
-                  <label
-                    htmlFor="experience-days"
-                    className="block text-sm font-medium leading-6 text-white"
-                  >
-                    Days
-                  </label>
-                  <input
-                    type="number"
-                    name="experience-days"
-                    id="experience-days"
-                    className="block w-1/12 rounded-md border-0 py-1.5  text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="Days"
-                    value={experienceDays}
-                    onChange={(e) => setExperienceDays(e.target.value)}
-                  />
-                </div>
+                <input
+                  type="number"
+                  name="experience-years"
+                  id="experience-years"
+                  className="block w-1/12 rounded-md border-0 py-1.5 text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  placeholder="Years"
+                  value={experience.years}
+                  onChange={(e) =>
+                    setExperience({ ...experience, years: e.target.value })
+                  }
+                />
+                <label
+                  htmlFor="experience-months"
+                  className="block text-sm font-medium leading-6 text-white"
+                >
+                  Months
+                </label>
+                <input
+                  type="number"
+                  name="experience-months"
+                  id="experience-months"
+                  className="block w-1/12 rounded-md border-0 py-1.5  text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  placeholder="Months"
+                  value={experience.months}
+                  onChange={(e) =>
+                    setExperience({ ...experience, months: e.target.value })
+                  }
+                />
+                <label
+                  htmlFor="experience-days"
+                  className="block text-sm font-medium leading-6 text-white"
+                >
+                  Days
+                </label>
+                <input
+                  type="number"
+                  name="experience-days"
+                  id="experience-days"
+                  className="block w-1/12 rounded-md border-0 py-1.5  text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  placeholder="Days"
+                  value={experience.days}
+                  onChange={(e) =>
+                    setExperience({ ...experience, days: e.target.value })
+                  }
+                />
               </div>
 
               <div className="sm:col-span-4 mt-8 ms-2">
@@ -391,7 +390,7 @@ export default function JoinAsTrainer() {
                       <input
                         type="number"
                         placeholder="Payment Amount"
-                        value={paymentAmounts[duration]}
+                        value={paymentAmount[duration]}
                         onChange={(e) =>
                           handlePaymentAmountChange(duration, e.target.value)
                         }
@@ -443,7 +442,7 @@ export default function JoinAsTrainer() {
           </button>
           <button
             type="submit"
-            className="rounded-md bg-amber-600 px-4 py-2 text-base sm:text-lg md:text-xl font-semibold text-white shadow-sm hover:bg-amber-500 focus:ring focus:ring-amber-600 focus:outline-none focus:ring-offset-2 focus:ring-offset-gray-100"
+            className="rounded-md bg-amber-600 px-4 py-2 text-base sm:text-lg md:text-xl font-semibold text-white shadow-sm hover:bg-amber-500  "
           >
             Save
           </button>

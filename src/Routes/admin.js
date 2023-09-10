@@ -11,6 +11,8 @@ import UserView from "../Components/client/userSingeView/userView";
 import UserSingleView from "../Pages/Admin/userSingleView";
 import CategoryListing from "../Components/admin/Home/categoryList";
 import LevelListing from "../Components/admin/Home/level";
+import TrainerEntry from "../Components/admin/Home/trainerList";
+import TrainerRequestList from "../Components/admin/Home/trainerEntry";
 
 function AdminRoutes() {
   const IsAdminAuth = useSelector((state) => state.Admin);
@@ -50,6 +52,10 @@ function AdminRoutes() {
         <Route
           path="/userView/:userId"
           element={IsAdminAuth.Token ? <UserSingleView /> : <Login />}
+        />
+        <Route
+          path="/newEntry"
+          element={IsAdminAuth.Token ? <TrainerRequestList /> : <Login />}
         />
       </Routes>
     </>
