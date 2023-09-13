@@ -81,7 +81,7 @@ function Navbar({ logout }) {
                     aria-expanded={isDropdownOpen}
                     onClick={toggleDropdown}
                   >
-                    Dropdown
+                    Services
                     <FontAwesomeIcon className="ml-2" icon={faChevronDown} />
                   </button>
                   <div
@@ -96,10 +96,10 @@ function Navbar({ logout }) {
                     >
                       <li>
                         <Link
-                          to="/dashboard"
+                          to="/joinAsTrianer"
                           className="block px-4 py-2 text-white"
                         >
-                          Dashboard
+                          Join As Trainer
                         </Link>
                       </li>
                       <li>
@@ -128,17 +128,7 @@ function Navbar({ logout }) {
                   </div>
                 </div>
               </li>
-              <li>
-                <Link
-                  to="/services"
-                  className={`block py-2 pl-3 pr-4 text-white rounded hover:text-amber-700 md:p-0 ${
-                    activeLink === "Services" ? "md:text-amber-700" : ""
-                  }`}
-                  onClick={() => handleNavLinkClick("Services")}
-                >
-                  Services
-                </Link>
-              </li>
+
               <li>
                 <Link
                   to="/about"

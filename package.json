@@ -39,6 +39,7 @@
     "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.11",
+    "tw-elements-react": "^1.0.0-alpha1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
