@@ -1,41 +1,47 @@
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faStar,
+  faUser,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import userAxios from "../../../Axios/userAxios";
+import adminAxios from "../../../Axios/adminAxios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const TrainerCard = ({ logout }) => {
   const navigate = useNavigate(); // Get the navigate function
 
-  const [trainerdetails, settrainerdetails] = useState([]);
+  const [trainerdetails, setTrainerDetails] = useState([]);
+
   useEffect(() => {
-    userAxios
-      .get("/getAllTrainer")
-      .then((res) => {
-        console.log(res);
-        settrainerdetails(res.data.Trainerdetails);
-      })
-      .catch((err) => {
-        console.log(err.message, "erorrrrooooooooooooor");
-        if (err.response.status === 401 || err.response.status === 403) {
-        }
-      });
+    userAxios.get("/getAllTrainer").then((res) => {
+      console.log(res.data);
+      setTrainerDetails(res.data.Trainerdetails);
+    });
   }, []);
 
   return (
-    <div className="overflow-x-auto bg-black p-4">
-      <div className="flex overflow-x-scroll scrollbar-hide">
+    <div className="overflow-x-auto bg-black p-4 pt-5">
+      <div className="flex overflow-x-scroll p-5 scrollbar-hide">
         {trainerdetails.map((trainer, index) => (
           <div
             key={index}
-            className="flex flex-col items-center w-80 h-96 p-4 shadow dark:bg-gray-800 dark:border-gray-700 border  rounded-lg shadow-md mx-2"
+            className="flex flex-col items-center w-80 h-96 p-4 shadow dark:bg-gray-800 dark:border-gray-700 border rounded-lg shadow-md mx-2"
           >
             <div className="w-40 h-40 rounded-full overflow-hidden mb-4">
-              <img
-                src="https://media.istockphoto.com/id/1401908127/photo/portrait-of-one-serious-asian-trainer-alone-in-gym-handsome-focused-coach-standing-with-arms.webp?b=1&s=170667a&w=0&k=20&c=tzWSAc5SBE-yNedN4L95JLoBwDZ3oT09oFPu-eDvRuk="
-                alt={trainer.name}
-                className="w-full h-full object-cover"
-              />
+              {trainer.profilePhoto ? (
+                <img
+                  src={trainer.profilePhoto}
+                  alt={trainer.user.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faUser}
+                  className="w-full h-full text-gray-500 bg-gray-300"
+                />
+              )}
             </div>
             <div className="flex mb-3">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -49,8 +55,31 @@ const TrainerCard = ({ logout }) => {
               ))}
             </div>
             <h3 className="text-lg font-semibold text-gray-300">
-              {trainer.name}
+              {trainer.user.name}
             </h3>
+            <p className="text-gray-500">Gender: {trainer.gender}</p>
+            <p className="text-gray-500">
+              Experience:
+              {trainer.experience.years && (
+                <span>
+                  {trainer.experience.years} years{" "}
+                  {trainer.experience.months && trainer.experience.months > 0
+                    ? `${trainer.experience.months} months`
+                    : ""}
+                </span>
+              )}
+            </p>
+            <button
+              type="button"
+              class="text-amber-400 mt-3   text-xs hover:text-white border border-amber-400 hover:bg-amber-500 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg px-2.5 py-1.5 text-center mr-2 mb-2 dark:border-amber-300 dark:text-amber-300 dark:hover:text-white dark:hover:bg-amber-400"
+            >
+              Payment{" "}
+              <FontAwesomeIcon
+                icon={faChevronRight}
+                className="ml-1 text-white"
+              />
+            </button>
+            {/* Add more fields as needed */}
           </div>
         ))}
       </div>

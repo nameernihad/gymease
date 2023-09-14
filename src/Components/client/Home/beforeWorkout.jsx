@@ -14,7 +14,12 @@ function BeforeWorkout() {
   return (
     <div className="flex justify-center items-center bg-black h-screen">
       <div className="mx-6 my-10">
-        <YouTube videoId={videoId} opts={opts} />
+        {/* <YouTube videoId={videoId} opts={opts} /> */}
+        <video
+          src="/Images/beforeWorkout.mp4"
+          controls
+          controlsList="nodownload"
+        ></video>
       </div>
     </div>
   );

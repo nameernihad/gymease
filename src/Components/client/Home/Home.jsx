@@ -137,7 +137,7 @@ const Home = () => {
             Select Your Trainer
           </p>
         </div>
-        <div className="bg-black">
+        <div className="bg-black ">
           {" "}
           <TrainerCard logout={handleLogout} />
         </div>

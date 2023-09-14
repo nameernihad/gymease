@@ -39,7 +39,6 @@ const TrainerRequestList = () => {
   const [selectedRequest, setSelectedRequest] = useState(null);
 
   useEffect(() => {
-    // Fetch all requests initially
     adminAxios.get("/trainerRequest").then((res) => {
       setRequests(res.data.allTrainerRequest.allRequest || []);
     });
