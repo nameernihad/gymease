@@ -11,6 +11,7 @@ import UserProfile from "../Components/client/UserProfile/UserProfile";
 import CategoryPage from "../Pages/Client/category";
 import Workout from "../Pages/Client/workout";
 import JoinAsTrainer from "../Components/client/joinAsTrainer/joinAsTrainer";
+import TrainerList from "../Pages/Client/ListTrainer";
 
 function UserRoutes() {
   const IsAuth = useSelector((state) => state.Client);
@@ -38,6 +39,10 @@ function UserRoutes() {
         <Route
           path="/joinAsTrianer"
           element={IsAuth.Token ? <JoinAsTrainer /> : <Login />}
+        />
+        <Route
+          path="/ListTrainer"
+          element={IsAuth.Token ? <TrainerList /> : <Login />}
         />
       </Routes>
     </div>

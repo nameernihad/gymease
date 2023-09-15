@@ -142,13 +142,13 @@ function Navbar({ logout }) {
               </li>
               <li>
                 <Link
-                  to="/pricing"
+                  to="/ListTrainer"
                   className={`block py-2 pl-3 pr-4 text-white rounded hover:text-amber-700 md:p-0 ${
                     activeLink === "Pricing" ? "md:text-amber-700" : ""
                   }`}
                   onClick={() => handleNavLinkClick("Pricing")}
                 >
-                  Pricing
+                  MentorShip
                 </Link>
               </li>
               <li>

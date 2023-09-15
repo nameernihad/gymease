@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -141,9 +142,6 @@ const Home = () => {
           {" "}
           <TrainerCard logout={handleLogout} />
         </div>
-        {/* <button className="w-60 bg-ambere-500 rounded-xl" onClick={handleLogout}>
-        Logout
-      </button> */}
       </div>
       <style>
         {`
