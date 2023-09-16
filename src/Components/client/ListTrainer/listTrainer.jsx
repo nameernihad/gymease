@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
+import StarIcon from "@mui/icons-material/Star";
 import Navbar from "../landingPage/navBar";
 import userAxios from "../../../Axios/userAxios";
 
@@ -69,16 +72,17 @@ function ListTrainer() {
 
       {/* List of Trainers */}
       <div className="flex justify-between">
-        <div className="flex-grow p-4 w- h-full">
+        <div className="flex-grow p-4 w-full">
           {trainerdetails.map((trainer) => (
             <div
               key={trainer.id}
               className="flex flex-col items-center bg-black border border-gray-300 rounded-lg shadow-md md:flex-row md:max-w-4xl hover:bg-gray-950 mb-4 p-6 w-full"
+              style={{ height: "350px" }} // Set a fixed card height
             >
               {/* Trainer Image */}
               <img
-                className="object-cover h-full w-auto rounded-t-lg h-96 md:h-full md:w-48 md:rounded-none md:rounded-l-lg"
-                src={trainer.profilePhoto} // Use the actual image URL from the API
+                className="object-cover h-40 w-auto rounded-t-lg md:h-full md:w-48 md:rounded-none md:rounded-l-lg"
+                src={trainer.profilePhoto}
                 alt={trainer.user.name}
               />
               {/* Trainer Details */}
@@ -90,24 +94,41 @@ function ListTrainer() {
                 <p className="mb-3 font-normal">
                   Experience: {trainer.experience.years}
                 </p>
-                <div className="mb-3">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <i
-                      key={i}
-                      className={`fas fa-star ${
-                        i <= Math.floor(trainer.rating)
-                          ? "text-amber-500"
-                          : "text-gray-300"
-                      }`}
-                    ></i>
-                  ))}
-                  <span className="text-white">({trainer.rating})</span>
+                <div
+                  className="mb-3 flex"
+                  style={{ maxHeight: "100px", overflow: "hidden" }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: "8px", // Add margin-right to create a small gap
+                    }}
+                  >
+                    <Rating
+                      name="text-feedback"
+                      value={trainer.avgRating}
+                      readOnly
+                      precision={0.5}
+                      emptyIcon={
+                        <StarIcon style={{ color: "gray", opacity: 0.55 }} />
+                      }
+                    />
+                  </Box>
+                  <span className="text-white">({trainer.avgRating || 0})</span>
                 </div>
-                <p className="mb-3 font-normal">Description: {trainer.about}</p>
+
+                <p
+                  className="mb-3 font-normal"
+                  style={{ overflow: "hidden", textOverflow: "ellipsis" }}
+                >
+                  Description: {trainer.about}
+                </p>
               </div>
             </div>
           ))}
         </div>
+
         {/* Selected Filters and Sort Option */}
         <div className="bg-slate-950 text-white rounded-md my-3 p-4 w-1/4 ml-4">
           <h2 className="text-2xl font-semibold mb-2">Applied Filters</h2>
