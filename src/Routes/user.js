@@ -13,6 +13,7 @@ import Workout from "../Pages/Client/workout";
 import JoinAsTrainer from "../Components/client/joinAsTrainer/joinAsTrainer";
 import TrainerList from "../Pages/Client/ListTrainer";
 import Payment from "../Pages/payment/Payment";
+import CheckoutForm from "../Components/payment/checkoutForm";
 
 function UserRoutes() {
   const IsAuth = useSelector((state) => state.Client);

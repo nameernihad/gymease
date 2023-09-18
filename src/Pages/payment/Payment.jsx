@@ -1,17 +1,21 @@
 import React from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import CheckoutForm from "../../Components/payment/checkoutForm";
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
-
 function Payment() {
+  const initialOptions = {
+    clientId:
+      "AY77L9LTOMQw_3GWULV1AEH3TVQ3wo3Bmb68wEx-iymLc1DvI_KPd5_ddfMINzFwRAhH0WpN3qPqoO5o",
+    currency: "USD",
+    intent: "capture",
+  };
+
   return (
-    <div>
-      <Elements stripe={stripePromise}>
+    <PayPalScriptProvider options={initialOptions}>
+      <div>
         <CheckoutForm />
-      </Elements>
-    </div>
+      </div>
+    </PayPalScriptProvider>
   );
 }
 
