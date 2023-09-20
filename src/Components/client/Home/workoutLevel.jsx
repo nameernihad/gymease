@@ -2,16 +2,21 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import adminAxios from "../../../Axios/adminAxios";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import LandingPage from "../../../Pages/Client/landing";
 
-const WorkoutLevel = () => {
+const WorkoutLevel = (logout) => {
   const [WorkoutLevels, setWorkoutLevels] = useState([]);
 
   useEffect(() => {
-    adminAxios.get("/getAllLevel").then((res) => {
-      console.log(res.data.allLevel);
-      setWorkoutLevels(res.data.allLevel);
-    });
+    try {
+      adminAxios.get("/getAllLevel").then((res) => {
+        console.log(res.data.allLevel);
+        setWorkoutLevels(res.data.allLevel);
+      });
+    } catch (error) {
+      <LandingPage />;
+    }
   }, []);
 
   return (

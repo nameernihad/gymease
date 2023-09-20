@@ -8,18 +8,24 @@ import React, { useEffect, useState } from "react";
 import userAxios from "../../../Axios/userAxios";
 import adminAxios from "../../../Axios/adminAxios";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import Login from "../../../Pages/Client/Login";
+import LandingPage from "../../../Pages/Client/landing";
 
 const TrainerCard = ({ logout }) => {
-  const navigate = useNavigate(); // Get the navigate function
+  const navigate = useNavigate();
 
   const [trainerdetails, setTrainerDetails] = useState([]);
 
   useEffect(() => {
-    userAxios.get("/getAllTrainer").then((res) => {
-      console.log(res.data);
-      setTrainerDetails(res.data.Trainerdetails);
-    });
+    try {
+      userAxios.get("/getAllTrainer").then((res) => {
+        console.log(res.data);
+        setTrainerDetails(res.data.Trainerdetails);
+      });
+    } catch (error) {
+      <LandingPage />;
+    }
   }, []);
 
   return (

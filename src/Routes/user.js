@@ -14,6 +14,7 @@ import JoinAsTrainer from "../Components/client/joinAsTrainer/joinAsTrainer";
 import TrainerList from "../Pages/Client/ListTrainer";
 import Payment from "../Pages/payment/Payment";
 import CheckoutForm from "../Components/payment/checkoutForm";
+import PaymentSuccessMessage from "../Components/client/ListTrainer/paymentSuccess";
 
 function UserRoutes() {
   const IsAuth = useSelector((state) => state.Client);
@@ -28,27 +29,31 @@ function UserRoutes() {
         <Route path="/restPass/:id" element={<PasswordResetPage />} />
         <Route
           path="/profile"
-          element={IsAuth.Token ? <UserProfile /> : <Login />}
+          element={IsAuth.Token ? <UserProfile /> : <LandingPage />}
         />
         <Route
           path="/Category/:id"
-          element={IsAuth.Token ? <CategoryPage /> : <Login />}
+          element={IsAuth.Token ? <CategoryPage /> : <LandingPage />}
         />
         <Route
           path="/workout/:cateId/:id"
-          element={IsAuth.Token ? <Workout /> : <Login />}
+          element={IsAuth.Token ? <Workout /> : <LandingPage />}
         />
         <Route
           path="/joinAsTrianer"
-          element={IsAuth.Token ? <JoinAsTrainer /> : <Login />}
+          element={IsAuth.Token ? <JoinAsTrainer /> : <LandingPage />}
         />
         <Route
           path="/ListTrainer"
-          element={IsAuth.Token ? <TrainerList /> : <Login />}
+          element={IsAuth.Token ? <TrainerList /> : <LandingPage />}
         />
         <Route
           path="/Payment"
-          element={IsAuth.Token ? <Payment /> : <Login />}
+          element={IsAuth.Token ? <Payment /> : <LandingPage />}
+        />
+        <Route
+          path="/payment-success"
+          element={IsAuth.Token ? <PaymentSuccessMessage /> : <LandingPage />}
         />
       </Routes>
     </div>

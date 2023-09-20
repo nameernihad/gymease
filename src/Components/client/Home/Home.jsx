@@ -15,6 +15,7 @@ import "slick-carousel/slick/slick-theme.css";
 import BeforeWorkout from "./beforeWorkout";
 import TrainerCard from "./TrainerListing";
 import WorkoutLevel from "./workoutLevel";
+import LandingPage from "../../../Pages/Client/landing";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const Home = () => {
   const handleLogout = () => {
     dispatch(ClientLogout());
 
-    navigate("/login");
+    <LandingPage />;
   };
 
   const settings = {
@@ -123,7 +124,7 @@ const Home = () => {
             Select Your Category,As Your Level{" "}
           </p>
 
-          <WorkoutLevel />
+          <WorkoutLevel logout={handleLogout} />
         </div>
         <div className="flex items-center justify-center h-16 my-10 bg-black">
           <p className="font-dancing-script  text-3xl  text-amber-500">
@@ -131,7 +132,7 @@ const Home = () => {
           </p>
         </div>
         <div className="bg-black">
-          <BeforeWorkout />
+          <BeforeWorkout logout={handleLogout} />
         </div>
         <div className="flex items-center justify-center h-16 my-10 bg-black">
           <p className="font-dancing-script bg-black  text-3xl  text-amber-500">

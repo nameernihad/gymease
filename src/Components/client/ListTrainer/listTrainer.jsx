@@ -2,29 +2,49 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
-import Navbar from "../landingPage/navBar";
 import userAxios from "../../../Axios/userAxios";
+import PaymentModal from "./subscriptionModal";
+
+const paymentOptions = [
+  { value: "oneMonth", label: "One Month" },
+  { value: "sixMonths", label: "Six Months" },
+  { value: "oneYear", label: "One Year" },
+];
 
 function ListTrainer() {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [sortBy, setSortBy] = useState("rating");
-  const [trainerdetails, setTrainerDetails] = useState([]);
+  const [trainerDetails, setTrainerDetails] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [trainerId, setTrainerId] = useState();
+  const [selectedPayment, setSelectedPayment] = useState(
+    paymentOptions[0].value
+  );
+
+  // Function to handle payment selection
+  const handlePaymentChange = (e) => {
+    setSelectedPayment(e.target.value);
+  };
+
+  const openPaymentModal = (userId) => {
+    setTrainerId(userId);
+    setModalOpen(true);
+  };
 
   useEffect(() => {
+    // Fetch trainer details from the backend
     userAxios.get("/getAllTrainer").then((res) => {
       setTrainerDetails(res.data.Trainerdetails);
     });
   }, []);
 
-  const addFilter = (filter) => {
-    if (!selectedFilters.includes(filter)) {
-      setSelectedFilters([...selectedFilters, filter]);
-    }
-  };
-
   const removeFilter = (filter) => {
     setSelectedFilters(selectedFilters.filter((f) => f !== filter));
   };
+
+  // useEffect(() => {
+  //   console.log(selectedPayment);
+  // }, [selectedPayment]);
 
   return (
     <div className="bg-black min-h-screen p-5 py-24">
@@ -73,11 +93,10 @@ function ListTrainer() {
       {/* List of Trainers */}
       <div className="flex justify-between">
         <div className="flex-grow p-4 w-full">
-          {trainerdetails.map((trainer) => (
+          {trainerDetails.map((trainer) => (
             <div
               key={trainer.id}
-              className="flex flex-col items-center bg-black border border-gray-300 rounded-lg shadow-md md:flex-row md:max-w-4xl hover:bg-gray-950 mb-4 p-6 w-full"
-              style={{ height: "350px" }} // Set a fixed card height
+              className="flex flex-col items-center bg-black border border-gray-300 rounded-lg shadow-md md:flex-row md:max-w-4xl hover:bg-gray-950 mb-4 p-6 w-full h-80 overflow-hidden"
             >
               {/* Trainer Image */}
               <img
@@ -94,15 +113,12 @@ function ListTrainer() {
                 <p className="mb-3 font-normal">
                   Experience: {trainer.experience.years}
                 </p>
-                <div
-                  className="mb-3 flex"
-                  style={{ maxHeight: "100px", overflow: "hidden" }}
-                >
+                <div className="mb-3 flex">
                   <Box
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      marginRight: "8px", // Add margin-right to create a small gap
+                      marginRight: "8px",
                     }}
                   >
                     <Rating
@@ -119,11 +135,25 @@ function ListTrainer() {
                 </div>
 
                 <p
-                  className="mb-3 font-normal"
-                  style={{ overflow: "hidden", textOverflow: "ellipsis" }}
+                  className="mb-3 font-normal overflow-ellipsis"
+                  style={{
+                    maxHeight: "100px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
                 >
                   Description: {trainer.about}
                 </p>
+
+                {/* Payment Dropdown */}
+                <div className="relative inline-block text-white">
+                  <button
+                    onClick={() => openPaymentModal(trainer._id)}
+                    className="bg-gray-700 text-white py-2 px-4 rounded-md"
+                  >
+                    Subscribe
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -149,6 +179,13 @@ function ListTrainer() {
           <p>{sortBy === "rating" ? "Rating" : "Experience"}</p>
         </div>
       </div>
+      {isModalOpen && (
+        <PaymentModal
+          closeModal={() => setModalOpen(false)}
+          paymentOptions={paymentOptions}
+          trainerId={trainerId}
+        />
+      )}
     </div>
   );
 }
