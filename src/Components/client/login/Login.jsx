@@ -86,6 +86,7 @@ function UserLogin() {
       if (result.token) {
         const token = result.token;
         dispatch(ClientLogin({ token: token }));
+        localStorage.setItem("Client",token);
         navigate("/home");
       }
     } catch (error) {

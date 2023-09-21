@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Login from "../../../Pages/Client/Login";
 import LandingPage from "../../../Pages/Client/landing";
+import { toast } from "react-toastify";
 
 const TrainerCard = ({ logout }) => {
   const navigate = useNavigate();
@@ -19,12 +20,11 @@ const TrainerCard = ({ logout }) => {
 
   useEffect(() => {
     try {
-      userAxios.get("/getAllTrainer").then((res) => {
-        console.log(res.data);
-        setTrainerDetails(res.data.Trainerdetails);
-      });
+      const response = userAxios.get("/getAllTrainer");
+      console.log(response.data);
+      setTrainerDetails(response.data.Trainerdetails);
     } catch (error) {
-      <LandingPage />;
+      console.error("Error fetching data:", error);
     }
   }, []);
 

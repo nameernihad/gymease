@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faUser } from "@fortawesome/free-solid-svg-icons";
 import userAxios from "../../../Axios/userAxios";
 import { toast } from "react-toastify";
+import Navbar from "../../client/landingPage/navBar";
 
 function UserProfile() {
   const [userDetails, setUserDetails] = useState({});
@@ -72,79 +73,121 @@ function UserProfile() {
   };
 
   return (
-    <div className="h-screen w-full bg-white relative">
-      {/* Background Image */}
-      <div className="h-1/3 w-full">
-        <img
-          className="w-full h-full"
-          src="https://media.istockphoto.com/id/996078852/photo/yellow-background.jpg?s=612x612&w=0&k=20&c=cERhT7bY6OWgqDP0r0kqoK2gU1nNhsXpQaUcyB8qGVQ="
-          alt=""
-        />
-      </div>
-
-      {/* Profile Box */}
-      <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 bg-white p-6 rounded-lg shadow-lg sm:w-2/3 lg:w-1/2">
-        {/* Avatar */}
-        <div className="w-32 h-32 mx-auto mb-4 relative">
+    <>
+      <Navbar />
+      <div className="h-screen w-full bg-white relative">
+        {/* Background Image */}
+        <div className="h-1/3 w-full">
           <img
-            className="w-full h-full rounded-full"
-            src={
-              userData.profilePhoto ||
-              "https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg"
-            }
-            alt="Avatar"
+            className="w-full h-full"
+            src="https://media.istockphoto.com/id/996078852/photo/yellow-background.jpg?s=612x612&w=0&k=20&c=cERhT7bY6OWgqDP0r0kqoK2gU1nNhsXpQaUcyB8qGVQ="
+            alt=""
           />
         </div>
 
-        {/* Image Upload Button */}
-        <div className="text-center mb-4">
-          <label htmlFor="profilePhoto" className="cursor-pointer">
-            <div className="text-amber-500 font-bold px-4 rounded">
-              Upload Photo
-            </div>
-            <input
-              type="file"
-              id="profilePhoto"
-              name="profilePhoto"
-              className="hidden"
-              accept="image/*"
-              onChange={handleChange}
+        {/* Profile Box */}
+        <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 bg-white p-6 rounded-lg shadow-lg sm:w-2/3 lg:w-1/2">
+          <p className="text-amber-500 text-lg text-bold">
+            Edit <FontAwesomeIcon icon={faPenToSquare} />
+          </p>
+          <div className="w-32 h-32 mx-auto mb-4 relative">
+            <img
+              className="w-full h-full rounded-full"
+              src={
+                userData.profilePhoto ||
+                "https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg"
+              }
+              alt="Avatar"
             />
-          </label>
-        </div>
+          </div>
 
-        {/* Profile Information */}
-        <h2 className="text-2xl font-semibold">
-          {userData.name || "John Doe"}
-        </h2>
+          {/* Image Upload Button */}
+          <div className="text-center mb-4">
+            <label htmlFor="profilePhoto" className="cursor-pointer">
+              <div className="text-amber-500 font-bold px-4 rounded">
+                Upload Photo
+              </div>
+              <input
+                type="file"
+                id="profilePhoto"
+                name="profilePhoto"
+                className="hidden"
+                accept="image/*"
+                onChange={handleChange}
+              />
+            </label>
+          </div>
 
-        {/* Other Profile Details */}
-        <div className="mt-4">
-          {userData.email && (
-            <p className="text-sm text-gray-700">
-              <strong>Email:</strong> {userData.email}
-            </p>
-          )}
-          {userData.location && (
-            <p className="text-sm text-gray-700">
-              <strong>Location:</strong> {userData.location}
-            </p>
-          )}
-          {userData.phone && (
-            <p className="text-sm text-gray-700">
-              <strong>Phone:</strong> {userData.phone}
-            </p>
-          )}
-          {userData.website && (
-            <p className="text-sm text-gray-700">
-              <strong>Website:</strong>{" "}
-              <a href={userDetails.website}>{userData.website}</a>
-            </p>
-          )}
-          {/* Add more profile fields here */}
+          {/* Profile Information */}
+          <div className="text-center flex justify-center ">
+            <div className="mt-2 w-1/3">
+              {" "}
+              {/* Reduced the margin-top */}
+              <div className="text-lg text-gray-700 flex justify-start">
+                <strong>Name:</strong>{" "}
+                <input
+                  type="text"
+                  placeholder="Name"
+                  value={userData.name}
+                  className="form-input mt-1 block  text-center"
+                  disabled
+                />
+              </div>
+              <div className="text-lg text-gray-700 flex justify-start">
+                <strong>Email:</strong>{" "}
+                <input
+                  type="text"
+                  placeholder="Email"
+                  value={userData.email}
+                  className="form-input mt-1 block  text-center"
+                  disabled
+                />
+              </div>
+              <div className="text-lg text-gray-700 flex justify-start">
+                <strong>Gender:</strong>{" "}
+                <input
+                  type="text"
+                  placeholder="Gender"
+                  value={userData.gender}
+                  className="form-input mt-1 block  text-center"
+                  disabled
+                />
+              </div>
+              <div className="text-lg text-gray-700 flex justify-start">
+                <strong>Height:</strong>{" "}
+                <input
+                  type="text"
+                  placeholder="Height"
+                  value={userData.height}
+                  className="form-input mt-1 block  text-center"
+                  disabled
+                />
+              </div>
+              <div className="text-lg text-gray-700 flex justify-start">
+                <strong>Weight:</strong>{" "}
+                <input
+                  type="text"
+                  placeholder="Weight"
+                  value={userData.weight}
+                  className="form-input mt-1 block  text-center"
+                  disabled
+                />
+              </div>
+              <div className="text-lg text-gray-700 w-full flex justify-start">
+                <strong>Phone:</strong>{" "}
+                <input
+                  type="text"
+                  placeholder="Phone"
+                  value={userData.phone}
+                  className="form-input mt-1 block  text-center"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

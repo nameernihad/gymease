@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import AdminDashboard from "../../Components/admin/Home/adminDashboard";
+import { Outlet } from "react-router-dom";
+import Navbar from "../../Components/admin/Home/adminNav";
 
-function AdminHome() {
+function Adminhome() {
   return (
     <div>
-      <AdminDashboard />
+      <Navbar />
+      <Outlet/>
     </div>
   );
 }
 
-export default AdminHome;
+export default Adminhome;

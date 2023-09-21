@@ -15,6 +15,7 @@ import TrainerList from "../Pages/Client/ListTrainer";
 import Payment from "../Pages/payment/Payment";
 import CheckoutForm from "../Components/payment/checkoutForm";
 import PaymentSuccessMessage from "../Components/client/ListTrainer/paymentSuccess";
+import JoinForm from "../Components/videocall/joinForm";
 
 function UserRoutes() {
   const IsAuth = useSelector((state) => state.Client);
@@ -54,6 +55,10 @@ function UserRoutes() {
         <Route
           path="/payment-success"
           element={IsAuth.Token ? <PaymentSuccessMessage /> : <LandingPage />}
+        />
+        <Route
+          path="/live-setion"
+          element={IsAuth.Token ? <JoinForm /> : <LandingPage />}
         />
       </Routes>
     </div>

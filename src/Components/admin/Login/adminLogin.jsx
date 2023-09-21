@@ -109,44 +109,6 @@ function AdminLogin() {
                   Log in
                 </button>
               </div>
-              <div className="flex flex-col space-y-5">
-                <span className="flex items-center justify-center space-x-2">
-                  <span className="h-px bg-gray-400 w-14"></span>
-                  <span className="font-normal text-gray-100">
-                    or login with
-                  </span>
-                  <span className="h-px bg-gray-400 w-14"></span>
-                </span>
-                <div className="flex flex-col space-y-4">
-                  <a
-                    href="#"
-                    className="flex items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-blue-600 rounded-md group hover:bg-blue-600 focus:outline-none"
-                  >
-                    <img
-                      src="Images/googlelogo.png"
-                      alt="Google Logo"
-                      className="w-6 h-6"
-                    />
-                    <span className="text-sm font-medium text-blue-500 group-hover:text-white">
-                      Google
-                    </span>
-                  </a>
-
-                  <a
-                    href="#"
-                    className="flex items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-blue-500 rounded-md group hover:bg-blue-500 focus:outline-none"
-                  >
-                    <img
-                      src="Images/facbooklogo.png"
-                      alt="Facebook Logo"
-                      className="w-5 h-5"
-                    />
-                    <span className="text-sm font-medium text-blue-500 group-hover:text-white">
-                      Facebook
-                    </span>
-                  </a>
-                </div>
-              </div>
             </form>
           </div>
           <div className="p-4 py-6 md:w-96 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly">

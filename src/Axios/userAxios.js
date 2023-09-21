@@ -8,9 +8,7 @@ export default userInstance;
 
 userInstance.interceptors.request.use(
   (config) => {
-    const userCredentials = localStorage.getItem("persist:Client");
-    const userCredentialObject = JSON.parse(userCredentials);
-    const userToken = userCredentialObject?.Token.replace(/^"(.*)"$/, "$1");
+    const userToken = localStorage.getItem("Client");
 
     config.headers["client"] = `Bearer ${userToken}`;
 
