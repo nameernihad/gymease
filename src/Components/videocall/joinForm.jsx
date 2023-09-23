@@ -30,12 +30,9 @@ function JoinForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-2xl mx-auto mt-8 p-4 bg-white rounded-lg shadow-md"
-    >
-      <h2 className="text-2xl text-amber-500 font-semibold">Join Room</h2>
-      <div className="mt-4">
+    <form onSubmit={handleSubmit}>
+      <h2>Join Room</h2>
+      <div className="input-container">
         <input
           required
           value={inputValues.name}
@@ -44,22 +41,18 @@ function JoinForm() {
           type="text"
           name="name"
           placeholder="Your name"
-          className="w-full border rounded-md py-2 px-3 bg-gray-700 text-white"
         />
       </div>
-      <div className="mt-4">
+      <div className="input-container">
         <input
           id="room-code"
           type="text"
           name="roomCode"
           placeholder="Room code"
           onChange={handleInputChange}
-          className="w-full border rounded-md py-2 px-3 bg-gray-700 text-white"
         />
       </div>
-      <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">
-        Join
-      </button>
+      <button className="btn-primary">Join</button>
     </form>
   );
 }

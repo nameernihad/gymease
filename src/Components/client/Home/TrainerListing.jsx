@@ -20,9 +20,15 @@ const TrainerCard = ({ logout }) => {
 
   useEffect(() => {
     try {
-      const response = userAxios.get("/getAllTrainer");
-      console.log(response.data);
-      setTrainerDetails(response.data.Trainerdetails);
+      userAxios
+        .get("/getAllTrainer")
+        .then((response) => {
+          console.log(response.data);
+          setTrainerDetails(response.data.Trainerdetails);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -35,7 +41,7 @@ const TrainerCard = ({ logout }) => {
           <motion.div
             key={index}
             className="flex flex-col items-center w-80 h-96 p-4 shadow dark:bg-gray-800 dark:border-gray-700 border rounded-lg shadow-md mx-2"
-            whileHover={{ scale: 1.05 }} // Scale up on hover
+            whileHover={{ scale: 1.05 }}
           >
             <div
               key={index}
