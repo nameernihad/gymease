@@ -28,8 +28,6 @@ header {
 
 form {
   max-width: 450px;
-  margin: 30px auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   border-radius: 8px;
   padding: 20px;
 }
@@ -38,11 +36,10 @@ input {
   display: block;
   width: 100%;
   border-radius: 8px;
-  border: 2px solid transparent;
   height: 34px;
   padding: 5px;
-  background: #37474f;
-  color: inherit;
+  background: #fff;
+  color: #000;
   font-family: inherit;
 }
 
