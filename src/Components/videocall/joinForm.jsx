@@ -12,6 +12,10 @@ function JoinForm() {
   const [roomCode, setRoomCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const Managment_token = process.env.REACT_APP_MANAGMENT_TOKEN;
+
+  console.log(Managment_token, "toookent");
+
   useEffect(() => {
     console.log(serverData);
   }, [serverData]);
@@ -48,8 +52,7 @@ function JoinForm() {
       videoAxios
         .get("650f09eef63c67d540929f0d", {
           headers: {
-            Authorization:
-              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTU1NzEzNTksImV4cCI6MTY5NTY1Nzc1OSwianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTU1NzEzNTksImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.zmY4LhlacHPCOmnojxMuDvPlD1IciavuM6x6bXiLToA",
+            Authorization: `Bearer ${Managment_token}`,
           },
         })
         .then((response) => {
@@ -71,6 +74,9 @@ function JoinForm() {
           } else if (response.status === 400) {
             // Handle "Invalid query parameter" error
             setErrorMessage("Invalid query parameter: 400");
+          } else if (response.status === 401) {
+            // Handle "Authentication Error" error
+            setErrorMessage("Authentication Error: 401");
           } else {
             // Handle other status codes
             setErrorMessage("Unknown error: " + response.status);
