@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import videoAxios from "../../../Axios/videoAxios";
 import NavBar from "../NavBar";
 import Sidebar from "../Sidebar";
@@ -7,6 +7,7 @@ import { logRoles } from "@testing-library/react";
 import { useHMSActions } from "@100mslive/react-sdk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import trainerAxios from "../../../Axios/trainerAxios";
 
 function JoinForm() {
   const [inputValues, setInputValues] = useState({
@@ -18,6 +19,8 @@ function JoinForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [roomCode, setRoomCode] = useState();
   const [loading, setLoading] = useState(false);
+  const [userEmails, setUserEmails] = useState([]);
+
   const templateId =
     process.env.REACT_APP_TEMPLATE_ID || "650d77e3f118ad66dc2dd093";
 
@@ -49,7 +52,7 @@ function JoinForm() {
         },
         {
           headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTU3MjI3NjMsImV4cCI6MTY5NTgwOTE2MywianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTU3MjI3NjMsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.0eiyrshx6i0tdC9UI7mcek8rLWop5fU60H56oh8M_Wo`,
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTU3NjEzMzEsImV4cCI6MTY5NTg0NzczMSwianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTU3NjEzMzEsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.KTgdQrnDtrJ8B9aOovA_t87gYtGI4uA3H6-YR6DJ2tE`,
             "Content-Type": "application/json",
           },
         }
@@ -65,11 +68,11 @@ function JoinForm() {
         if (roomId) {
           console.log(roomId);
           const roomCodeResponse = await videoAxios.post(
-            `room-codes/room/${roomId}`,
-            null, // You don't need to send a request body in this case
+            `/room-codes/room/${roomId}`,
+            {},
             {
               headers: {
-                Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTU3MjI3NjMsImV4cCI6MTY5NTgwOTE2MywianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTU3MjI3NjMsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.0eiyrshx6i0tdC9UI7mcek8rLWop5fU60H56oh8M_Wo`,
+                Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTU3NjEzMzEsImV4cCI6MTY5NTg0NzczMSwianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTU3NjEzMzEsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.KTgdQrnDtrJ8B9aOovA_t87gYtGI4uA3H6-YR6DJ2tE`,
                 "Content-Type": "application/json",
               },
             }
@@ -108,6 +111,19 @@ function JoinForm() {
     e.preventDefault();
     createRoom();
   };
+  useEffect(() => {
+    try {
+      setLoading(true);
+      const response = trainerAxios.get("/getSubscription");
+      console.log(response.data); // Log the response data
+      // Handle the response and set the user emails
+      // ...
+    } catch (error) {
+      console.error("Error fetching user emails:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   return (
     <>
