@@ -1,9 +1,9 @@
-import JoinForm from "../../Components/videocall/joinForm";
+import JoinForm from "../../Components/Trainer/videoCall/roomCreatForm";
 import "../../Components/videocall/Style.css";
 import { useEffect } from "react";
 
 import { useHMSActions } from "@100mslive/react-sdk";
-import VideoCall from "../../Components/videocall/videoCall";
+import VideoCall from "../../Components/Trainer/videoCall/videoCall";
 
 export default function VideoCallPage() {
   const hmsActions = useHMSActions();

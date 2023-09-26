@@ -18,7 +18,7 @@ function TrainerProfile() {
 
   return (
     <div className="ml-4 md:ml-8 lg:ml-16 xl:ml-20 2xl:ml-24 mt-4 md:mt-8 lg:mt-16 xl:mt-20 2xl:mt-24 flex justify-center items-center">
-      <section className="w-full md:w-3/4 lg:w-2/3 xl:w-1/2 2xl:w-1/3 bg-white shadow-xl p-3 pt-16 rounded-lg">
+      <section className="w-full md:w-3/4 lg:w-2/3 xl:w-1/2 2xl:w-2/3 bg-white shadow-xl p-3 pt-16 rounded-lg">
         <div className="cover-photo relative">
           <img
             className="absolute w-full h-36 object-cover rounded-t-lg"
@@ -90,9 +90,7 @@ function TrainerProfile() {
             <h1 className="text-2xl font-extrabold mb-4 md:mb-6 lg:mb-8 xl:mb-10 2xl:mb-12">
               About Me
             </h1>
-            <p className="text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
-              {trainer?.about || ""}
-            </p>
+            <p className="text-sm md:text-base ">{trainer?.about || ""}</p>
           </div>
         </div>
       </section>

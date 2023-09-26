@@ -1,4 +1,4 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faTv, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -31,7 +31,7 @@ function Sidebar() {
 
       <aside
         id="logo-sidebar"
-        className="fixed mt-16 top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-gray-50 dark:bg-gray-800"
+        className="fixed mt-16 top-0 left-0 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-gray-50 dark:bg-gray-800"
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto">
@@ -59,26 +59,23 @@ function Sidebar() {
                 to="/trainer/profile"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
-                <FontAwesomeIcon icon={faUser} />
+                <FontAwesomeIcon
+                  icon={faUser}
+                  className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                />
                 <span className="flex-1 ml-3 whitespace-nowrap">Profile</span>
               </Link>
             </li>
             <li>
               <Link
-                to="/projects"
+                to="/trainer/create-room"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
-                <svg
-                  className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M15.293 4.293a1 1 0 0 0-1.414 0L11 7.586V3a1 1 0 1 0-2 0v4.586L6.72 4.293a1 1 0 1 0-1.44 1.414l4 4a1 1 0 0 0 1.44 0l4-4a1 1 0 0 0 0-1.414Z" />
-                  <path d="M9 16a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2H9Z" />
-                </svg>
-                <span className="ml-3">Projects</span>
+                <FontAwesomeIcon
+                  icon={faTv}
+                  className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                />
+                <span className="ml-3">Video Chat</span>
               </Link>
             </li>
             <li>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHMSActions } from "@100mslive/react-sdk";
 import videoAxios from "../../Axios/videoAxios";
+import { logDOM } from "@testing-library/react";
 
 function JoinForm() {
   const hmsActions = useHMSActions();
@@ -12,7 +13,8 @@ function JoinForm() {
   const [roomCode, setRoomCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const Managment_token = process.env.REACT_APP_MANAGMENT_TOKEN;
+  const Managment_token =
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTU3MjI3NjMsImV4cCI6MTY5NTgwOTE2MywianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTU3MjI3NjMsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.0eiyrshx6i0tdC9UI7mcek8rLWop5fU60H56oh8M_Wo";
 
   console.log(Managment_token, "toookent");
 
@@ -38,6 +40,9 @@ function JoinForm() {
     setErrorMessage("");
 
     try {
+      console.log(roomCode);
+
+      // use room code to fetch auth token
       const authToken = await hmsActions.getAuthTokenByRoomCode({ roomCode });
 
       await hmsActions.join({ name, authToken });
@@ -50,9 +55,9 @@ function JoinForm() {
   useEffect(() => {
     try {
       videoAxios
-        .get("650f09eef63c67d540929f0d", {
+        .get("room-codes/room/6512da454a997af3f1201ab9", {
           headers: {
-            Authorization: `Bearer ${Managment_token}`,
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTU3MjI3NjMsImV4cCI6MTY5NTgwOTE2MywianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTU3MjI3NjMsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.0eiyrshx6i0tdC9UI7mcek8rLWop5fU60H56oh8M_Wo`,
           },
         })
         .then((response) => {
