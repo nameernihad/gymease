@@ -4,6 +4,7 @@ import { faPenToSquare, faUser } from "@fortawesome/free-solid-svg-icons";
 import userAxios from "../../../Axios/userAxios";
 import { toast } from "react-toastify";
 import Navbar from "../../client/landingPage/navBar";
+import RatingModal from "../RatingModal";
 
 function UserProfile() {
   const [userDetails, setUserDetails] = useState({});
@@ -187,6 +188,7 @@ function UserProfile() {
           </div>
         </div>
       </div>
+
     </>
   );
 }

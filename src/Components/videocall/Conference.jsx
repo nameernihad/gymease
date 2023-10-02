@@ -8,8 +8,6 @@ import Peer from "./Peer";
 
 function Conference() {
   const peers = useHMSStore(selectPeers);
-  //   for live streem
-  //   const videoTrack = useHMSStore(selectCameraStreamByPeerID(peerId));
 
   return (
     <div className="conference-section">

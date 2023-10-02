@@ -52,14 +52,14 @@ function JoinForm() {
         },
         {
           headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTU3NjEzMzEsImV4cCI6MTY5NTg0NzczMSwianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTU3NjEzMzEsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.KTgdQrnDtrJ8B9aOovA_t87gYtGI4uA3H6-YR6DJ2tE`,
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTYyMjI4MzIsImV4cCI6MTY5NjMwOTIzMiwianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTYyMjI4MzIsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.Zy82wBv7eHjgmqoQ0WF2RMmsWQsKnKfPba8GWZn5vKo`,
             "Content-Type": "application/json",
           },
         }
       );
 
       if (response.status === 200) {
-        toast.success("success");
+        toast.success("Room created Success");
         // Handle successful room creation
         console.log("Room created successfully:", response.data);
 
@@ -72,7 +72,7 @@ function JoinForm() {
             {},
             {
               headers: {
-                Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTU3NjEzMzEsImV4cCI6MTY5NTg0NzczMSwianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTU3NjEzMzEsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.KTgdQrnDtrJ8B9aOovA_t87gYtGI4uA3H6-YR6DJ2tE`,
+                Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTYyMjI4MzIsImV4cCI6MTY5NjMwOTIzMiwianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTYyMjI4MzIsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.Zy82wBv7eHjgmqoQ0WF2RMmsWQsKnKfPba8GWZn5vKo`,
                 "Content-Type": "application/json",
               },
             }
@@ -83,9 +83,14 @@ function JoinForm() {
             const hostRoomCode = roomCodeResponse.data.data.find(
               (room) => room.role === "host"
             );
+            const guestRoomCode = roomCodeResponse.data.data.find(
+              (room) => room.role === "guest"
+            );
 
+            setRoomCode(guestRoomCode.code);
             if (hostRoomCode) {
               const hostRoomCodeValue = hostRoomCode.code;
+
               const authToken = await hmsActions.getAuthTokenByRoomCode({
                 roomCode: hostRoomCodeValue,
               });
@@ -94,16 +99,15 @@ function JoinForm() {
               console.error("Host room code not found in the response");
             }
           } else {
-            setErrorMessage(
-              "Failed to retrieve room code: " + roomCodeResponse.status
-            );
+            setErrorMessage("Failed to retrieve room code: ");
           }
         } else {
-          setErrorMessage("Failed to create the room: " + response.status);
+          setErrorMessage("Failed to create the room: ");
         }
       }
     } catch (error) {
-      setErrorMessage("Request error: " + error.message);
+      console.log(error.message);
+      setErrorMessage("Room Disabled");
     }
   };
 
@@ -111,19 +115,38 @@ function JoinForm() {
     e.preventDefault();
     createRoom();
   };
+
   useEffect(() => {
     try {
-      setLoading(true);
-      const response = trainerAxios.get("/getSubscription");
-      console.log(response.data); // Log the response data
-      // Handle the response and set the user emails
-      // ...
+      trainerAxios.get("/getSubscription").then((response) => {
+        const emails = response.data.subscription.map(
+          (subscription) => subscription.user.email
+        );
+        setUserEmails(emails);
+      });
     } catch (error) {
       console.error("Error fetching user emails:", error);
     } finally {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    try {
+      if (userEmails.length > 0 && roomCode) {
+        trainerAxios
+          .post("/sentEmail", { userEmails, roomCode })
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [userEmails, roomCode]); // Make sure to include userEmails and roomCode in the dependency array
 
   return (
     <>

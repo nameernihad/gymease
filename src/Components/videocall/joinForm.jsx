@@ -6,7 +6,7 @@ function JoinForm() {
   const hmsActions = useHMSActions();
   const [inputValues, setInputValues] = useState({
     name: "",
-    roomCode: "", // Added roomCode field
+    roomCode: "",
   });
   const [serverData, setServerData] = useState();
   const [errorMessage, setErrorMessage] = useState("");
@@ -22,7 +22,7 @@ function JoinForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, roomCode } = inputValues; // Include roomCode from inputValues
+    const { name, roomCode } = inputValues;
 
     if (!name) {
       setErrorMessage("Name is required.");
