@@ -27,11 +27,22 @@ const TrainerCard = ({ logout }) => {
         })
         .catch((error) => {
           console.log(error.message);
-          setIsLoading(false); // Handle error by setting isLoading to false
-          toast.error("Failed to fetch trainers."); // You can use a toast or other error handling method
+          setIsLoading(false); 
+          
+          // if (error.response) {
+          //   if (error.response.status === 401 || error.response.status === 403) {
+              
+          //     localStorage.removeItem('Client'); 
+          //     localStorage.removeItem('persist:Client'); 
+          //     navigate('/login'); 
+          //   } else {
+          //     toast.error("Failed to fetch trainers.");
+          //   }
+          // } else {
+          //   toast.error("Failed to fetch trainers."); 
+          // }
         });
     } catch (error) {
-
       console.error("Error fetching data:", error);
     }
   }, []);

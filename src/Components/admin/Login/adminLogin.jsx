@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import adminAxios from "../../../Axios/adminAxios";
 import { useDispatch } from "react-redux";
 import { AdminauthLogin } from "../../../Redux/AdminAuth";
+import { toast } from "react-toastify";
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -16,8 +17,9 @@ function AdminLogin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const loginForm = (event) => {
+  const loginForm = async (event) => {
     event.preventDefault();
+
     setEmailError("");
     setPasswordError("");
 
@@ -31,18 +33,28 @@ function AdminLogin() {
       return;
     }
 
-    adminAxios.post("/", { email, password }).then((res) => {
-      console.log(res);
-      const result = res.data;
+    try {
+      const response = await adminAxios.post("/", { email, password });
+      const result = response.data;
+
       if (result.token) {
         const token = result.token;
         dispatch(AdminauthLogin({ token: token }));
-
         navigate("/admin/home");
       } else {
         setErrMsg(result.message);
       }
-    });
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 401) {
+          toast.error("You are not an admin");
+        } else {
+          toast.error("An error occurred. Please try again later.");
+        }
+      } else {
+        toast.error("Network error. Please check your internet connection.");
+      }
+    }
   };
 
   return (

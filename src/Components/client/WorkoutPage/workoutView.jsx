@@ -6,8 +6,6 @@ function WorkoutView() {
   const Id = useParams();
   console.log(Id);
   const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0);
-  const [level, setLevel] = useState("");
-  const [category, setCategory] = useState("");
   const [workouts, setWorkouts] = useState([]);
 
   useEffect(() => {
@@ -38,42 +36,52 @@ function WorkoutView() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white rounded-lg p-6 shadow-md max-w-4xl w-full">
-        <h2 className="text-2xl font-semibold mb-4 break-words">
-          Workout View - {currentWorkout?.level?.name} -{" "}
-          {currentWorkout?.category?.name}
-        </h2>
-
-        <div className="mb-6">
+    <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="flex w-full">
+        <div className="w-1/2 p-6 bg-white rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold mb-4 break-words">
+            Workout View - {currentWorkout?.level?.name} -{" "}
+            {currentWorkout?.category?.name}
+          </h2>
           {currentWorkout && (
             <div className="text-center">
               <img
                 src={currentWorkout.gif}
                 alt={`Workout ${currentWorkout._id}`}
-                className="mx-auto mb-4 rounded-lg shadow-lg max-w-full h-auto"
+                className="mx-auto mb-4 rounded-lg  max-w-full h-auto"
               />
-              <p className="text-2xl font-semibold">{currentWorkout.name}</p>
-              <p className="text-gray-600">{currentWorkout.description}</p>
             </div>
           )}
         </div>
 
-        <div className="flex justify-between">
-          <button
-            onClick={handlePrev}
-            disabled={currentWorkoutIndex === 0}
-            className="bg-amber-500 text-white py-2 px-4 rounded hover:bg-amber-600 focus:outline-none"
-          >
-            Prev
-          </button>
-          <button
-            onClick={handleNext}
-            disabled={currentWorkoutIndex === totalWorkouts - 1}
-            className="bg-amber-500 text-white py-2 px-4 rounded hover:bg-amber-600 focus:outline-none"
-          >
-            Next
-          </button>
+        <div className="w-1/2 p-6 flex flex-col justify-between">
+          <div className="h-full w-full grid place-items-center text-center">
+            {currentWorkout && (
+              <div>
+                <p className="text-2xl font-semibold">{currentWorkout.name}</p>
+                <p className="text-gray-600">{currentWorkout.description}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="">
+            <div className="flex justify-around mt-auto ">
+              <button
+                onClick={handlePrev}
+                disabled={currentWorkoutIndex === 0}
+                className="bg-amber-500 text-white py-2 px-4 rounded hover:bg-amber-600 focus:outline-none"
+              >
+                Prev
+              </button>
+              <button
+                onClick={handleNext}
+                disabled={currentWorkoutIndex === totalWorkouts - 1}
+                className="bg-amber-500 text-white py-2 px-4 rounded hover:bg-amber-600 focus:outline-none"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

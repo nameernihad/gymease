@@ -1,9 +1,12 @@
 import axios from "axios";
 import { userAPI } from "../Constants/Api";
+import { toast } from "react-toastify"; // Import toast for displaying error messages
+import "react-toastify/dist/ReactToastify.css"; // Import the CSS for styling
 
 const userInstance = axios.create({
   baseURL: userAPI,
 });
+
 export default userInstance;
 
 userInstance.interceptors.request.use(
@@ -18,11 +21,27 @@ userInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 userInstance.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
+    if (error.response) {
+      const status = error.response.status;
+      const message = error.response.data.message;
+
+      if (status === 403 && message === "Invalid token") {
+        toast.error("Invalid token. Please log in again.");
+        localStorage.removeItem("Client");
+        window.location.href = "/client/login"; 
+      } else if (status === 401 && message === "Not authenticated!") {
+        toast.error("You are not authenticated. Please log in.");
+        localStorage.removeItem("Client");
+        window.location.href = "/client/login";
+      }
+    }
+
     return Promise.reject(error);
   }
 );

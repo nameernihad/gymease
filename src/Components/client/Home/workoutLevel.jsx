@@ -1,23 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import adminAxios from "../../../Axios/adminAxios";
-import { Link, Navigate } from "react-router-dom";
+import userAxios from "../../../Axios/userAxios";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import LandingPage from "../../../Pages/Client/landing";
 
 const WorkoutLevel = (logout) => {
+  const navigate = useNavigate();
   const [WorkoutLevels, setWorkoutLevels] = useState([]);
 
   useEffect(() => {
     try {
-      adminAxios.get("/getAllLevel").then((res) => {
-        console.log(res.data.allLevel);
-        setWorkoutLevels(res.data.allLevel);
-      });
+      userAxios
+        .get("/getAllLevel")
+        .then((res) => {
+          console.log(res.data.allLevel);
+          setWorkoutLevels(res.data.allLevel);
+        })
+        .catch((error) => {
+          if (error.response) {
+            // if (error.response.status === 401 || error.response.status === 403) {
+            //   localStorage.removeItem('Client'); 
+            //   localStorage.removeItem('persist:Client'); 
+            //   navigate('/login'); 
+            // }
+          }
+        });
     } catch (error) {
-      <LandingPage />;
+      console.error("Error fetching data:", error);
     }
-  }, []);
+  }, [navigate]);
+
 
   return (
     <div className="grid gap-10 grid-cols-1 md:grid-cols-3 md:gap-6">

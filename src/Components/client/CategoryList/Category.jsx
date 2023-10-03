@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Navbar from "../landingPage/navBar";
 import Footer from "../landingPage/footer";
-import adminAxios from "../../../Axios/adminAxios";
+import userAxios from "../../../Axios/userAxios";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -49,7 +49,7 @@ function Category() {
   const [CategoryList, setCategoryList] = useState([]);
 
   useEffect(() => {
-    adminAxios.get("/getAllCategory").then((res) => {
+    userAxios.get("/getAllCategory").then((res) => {
       setCategoryList(res.data.allcategory);
     });
   }, []);
