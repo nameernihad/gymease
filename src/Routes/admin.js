@@ -14,6 +14,7 @@ import LevelListing from "../Components/admin/Home/level";
 import TrainerEntry from "../Components/admin/Home/trainerList";
 import TrainerRequestList from "../Components/admin/Home/trainerEntry";
 import Adminhome from "../Pages/Admin/Home";
+import Graph from "../Components/admin/Home/DashBoard/dashBoard";
 
 function AdminRoutes() {
   const IsAdminAuth = useSelector((state) => state.Admin);
@@ -28,7 +29,7 @@ function AdminRoutes() {
         <Route path="/" element={<Adminhome />}>
           <Route
             path="/home"
-            element={IsAdminAuth.Token ? <AdminHome /> : <Login />}
+            element={IsAdminAuth.Token ? <Graph /> : <Login />}
           />
 
           <Route

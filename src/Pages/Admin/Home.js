@@ -7,6 +7,7 @@ function Adminhome() {
   return (
     <div>
       <Navbar />
+      
       <Outlet/>
     </div>
   );
