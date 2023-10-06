@@ -32,7 +32,7 @@ const Navbar = () => {
       >
         <FontAwesomeIcon icon={faBars} />
       </button>
-      <div>
+      <div className="flex" >
         <input
           type="text"
           className="px-3 py-2 mr-2 text-slate-500 bg-gray-200 rounded-lg dark:bg-white focus:ring-2 focus:ring-blue-400 focus:outline-none transition-all duration-500"
