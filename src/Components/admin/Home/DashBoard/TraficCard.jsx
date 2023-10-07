@@ -1,25 +1,17 @@
+import React from 'react';
 import { Button, Card, CardBody, CardHeader, Progress } from "@material-tailwind/react";
-
 
 export default function TrafficCard() {
     return (
         <Card>
-            <CardHeader color="purple" contentPosition="none">
-                <div className="w-full flex items-center justify-between">
-                    <h2 className="text-white text-2xl">Social Media</h2>
-                    <Button
-                        color="transparent"
-                        buttonType="link"
-                        size="lg"
-                        style={{ padding: 0 }}
-                    >
-                        See More
-                    </Button>
-                </div>
+            <CardHeader color="purple" contentPosition="none" className="flex justify-between items-center h-20">
+                <h2 className="text-teal-500 text-2xl ms-5">Social Media</h2>
+                <button type="button" class="px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> See More</button>
+               
             </CardHeader>
             <CardBody>
                 <div className="overflow-x-auto">
-                    <table className="items-center w-full bg-transparent border-collapse">
+                    <table className="w-full bg-transparent border-collapse">
                         <thead className="thead-light">
                             <tr>
                                 <th className="px-2 text-purple-500 align-middle border-b border-solid border-gray-200 py-3 text-sm whitespace-nowrap font-light text-left">
@@ -33,9 +25,9 @@ export default function TrafficCard() {
                         </thead>
                         <tbody>
                             <tr>
-                                <th className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
+                                <td className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
                                     Facebook
-                                </th>
+                                </td>
                                 <td className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
                                     1,480
                                 </td>
@@ -44,9 +36,9 @@ export default function TrafficCard() {
                                 </td>
                             </tr>
                             <tr>
-                                <th className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
+                                <td className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
                                     Google
-                                </th>
+                                </td>
                                 <td className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
                                     4,807
                                 </td>
@@ -55,9 +47,9 @@ export default function TrafficCard() {
                                 </td>
                             </tr>
                             <tr>
-                                <th className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
+                                <td className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
                                     Instagram
-                                </th>
+                                </td>
                                 <td className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
                                     3,678
                                 </td>
@@ -66,9 +58,9 @@ export default function TrafficCard() {
                                 </td>
                             </tr>
                             <tr>
-                                <th className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
+                                <td className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
                                     Twitter
-                                </th>
+                                </td>
                                 <td className="border-b border-gray-200 align-middle font-light text-sm whitespace-nowrap px-2 py-4 text-left">
                                     2,645
                                 </td>

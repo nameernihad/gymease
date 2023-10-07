@@ -37,7 +37,7 @@ function TrainerLogin() {
       if (result.token) {
         const token = result.token;
         dispatch(TrainerauthLogin({ token: token }));
-        navigate("/trainer/home");
+        navigate("/trainer");
       } else {
         setErrMsg(result.message);
       }

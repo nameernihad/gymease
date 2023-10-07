@@ -8,6 +8,7 @@ import Home from "../Components/Trainer/Home/Home";
 import TrainerHome from "../Pages/Trainer/Home";
 import TrainerProfile from "../Components/Trainer/Home/TrainerProfile";
 import VideoCallPage from "../Pages/Trainer/videoCall";
+import Dashboard from "../Pages/Trainer/DashBoard";
 
 function TrainerRoutes() {
   const IstrainerAuth = useSelector((state) => state.Trainer);
@@ -17,8 +18,8 @@ function TrainerRoutes() {
       <Routes>
         <Route path="/" element={<TrainerHome />}>
           <Route
-            path="/home"
-            element={IstrainerAuth.Token ? <Home /> : <Login />}
+            path="/dashboard"
+            element={IstrainerAuth.Token ? <Dashboard /> : <Login />}
           />
           <Route path="/profile" element={<TrainerProfile />} />
         </Route>

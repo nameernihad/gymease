@@ -8,7 +8,6 @@ function TrainerHome() {
   return (
     <div>
       <Navbar />
-      <Sidebar />
       <Outlet />
     </div>
   );
