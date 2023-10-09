@@ -4,21 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { TrainerauthLogout } from "../../Redux/TrainerAuth";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import Sidebar from "./Sidebar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDrowerOpen, setIsDrowerOpen] = useState(true)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true)
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const onOpen = () => {
-    setIsDrowerOpen(true)
-  }
-  const onClose = () => {
-    setIsDrowerOpen(false)
-  }
+  const handleDrawerToggle = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,18 +31,25 @@ function Navbar() {
   return (
     <>
       <nav
-        className="bg-white relative z-50 border-gray-200 dark:bg-gray-900 "
-        style={{ position: "fixed", top: "0", width: "100%" }}
+        className="bg-white relative  border-gray-200 dark:bg-gray-900"
+        style={{ position: "fixed", top: "0", width: "100%", zIndex: "100" }}
       >
+
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <Link to="/" className="flex items-center">
-            {" "}
-            {/* Use Link component */}
-            <img src="/Images/logoMain.png" className="h-10 mr-3" alt="Logo" />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-              Gym Ease
-            </span>
-          </Link>
+          <div className="flex w-1/4 justify-evenly ">
+            <div className="px-5 py-2.5 mr-2">
+              <FontAwesomeIcon icon={faBars} style={{ color: "#cdd6e5", }} className="" onClick={handleDrawerToggle} />
+            </div>
+            <Link to="/" className="flex items-center">
+
+              {" "}
+              {/* Use Link component */}
+              <img src="/Images/logoMain.png" className="h-10 mr-3" alt="Logo" />
+              <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
+                Gym Ease
+              </span>
+            </Link>
+          </div>
           <button
             onClick={toggleMobileMenu}
             type="button"
@@ -113,9 +119,11 @@ function Navbar() {
         </div>
       </nav>
 
-      {isDrowerOpen && (<div>
-        <Sidebar onClose={onClose} onOpen={onOpen} />
-      </div>)}
+      {isDrawerOpen && (
+        <div className="drawer-wrapper transition-all duration-500 ease-in-out" >
+          <Sidebar onClose={() => setIsDrawerOpen(false)} />
+        </div>
+      )}
     </>
   );
 }

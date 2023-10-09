@@ -34,11 +34,12 @@ userInstance.interceptors.response.use(
       if (status === 403 && message === "Invalid token") {
         toast.error("Invalid token. Please log in again.");
         localStorage.removeItem("Client");
-        window.location.href = "/client/login"; 
-      } else if (status === 401 && message === "Not authenticated!") {
+        localStorage.removeItem("persist:Client");
+        window.location.href = "/login"; 
+      } else if (status === 401 && message === "Not authenticated") {
         toast.error("You are not authenticated. Please log in.");
         localStorage.removeItem("Client");
-        window.location.href = "/client/login";
+        window.location.href = "/login";
       }
     }
 

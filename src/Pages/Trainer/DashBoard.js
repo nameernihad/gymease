@@ -16,21 +16,17 @@ export default function Dashboard() {
     { name: 'B', value: 200 },
     { name: 'C', value: 150 },
     { name: 'D', value: 300 },
-    { name: 'E', value: 100 },
-    { name: 'F', value: 125 },
   ];
 
   const chartPieData =[
     { name: "Group A", value: 400 },
     { name: "Group B", value: 300 },
     { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-    { name: "Group E", value: 100 },
   ];
 
   return (
     <>
-      <div className="bg-light-blue-500 px-3 md:px-8 h-5" />
+      <div className="bg-light-blue-500 px-3 mt-16 md:px-8 h-5" />
       <div className="px-3 md:px-8">
         <div className="container mx-auto max-w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 mb-4">

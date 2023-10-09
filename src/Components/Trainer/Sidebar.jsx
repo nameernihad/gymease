@@ -1,10 +1,55 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { faTv, faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+
 function Sidebar({ onClose, onOpen }) {
+
+  const drawerRef = useRef(null);
+  const [isShowing, setIsShowing] = useState(false);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (drawerRef.current && !drawerRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
+    // Set a timeout to show the drawer with a slow transition
+    const showTimeout = setTimeout(() => {
+      setIsShowing(true);
+    }, 100);
+
+    return () => clearTimeout(showTimeout);
+  }, []);
+
+  const handleCloseClick = () => {
+    setIsShowing(false);
+    // Set a timeout to hide the drawer with a slow transition before closing
+    const closeTimeout = setTimeout(() => {
+      onClose();
+    }, 300);
+
+    return () => clearTimeout(closeTimeout);
+  };
+
+
+
   return (
+    <div
+    ref={drawerRef}
+    className={`fixed top-0 left-0 z-40 h-screen p-4  bg-white w-64 dark:bg-gray-800 transform transition-transform ease-in-out duration-300 ${
+      isShowing ? "translate-x-0" : "-translate-x-full"
+    }`}
+  >
     <aside
       id="logo-sidebar"
       className="fixed mt-16 top-0 left-0 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-gray-50 dark:bg-gray-800 z-50"
@@ -13,7 +58,7 @@ function Sidebar({ onClose, onOpen }) {
       <div className="flex justify-end">
         <button
           onClick={onClose}
-          className="p-2 mt-2 mr-3 text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 z-50"
+          className="p-2 mt-2 mr-3 text-gray-500  sm:hidden hover:bg-gray-100  dark:text-gray-400 dark:hover:bg-gray-700 z-50"
         >
           <FontAwesomeIcon icon={faXmark} />
         </button>
@@ -88,6 +133,7 @@ function Sidebar({ onClose, onOpen }) {
         </ul>
       </div>
     </aside>
+    </div>
   );
 }
 

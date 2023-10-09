@@ -40,7 +40,7 @@ trainerInstance.interceptors.response.use(
         toast.error("Invalid token. Please log in again.");
         localStorage.removeItem("persist:Trainer");
         window.location.href = "/trainer/login"; 
-      } else if (status === 401 && message === "Not authenticated!") {
+      } else if (status === 401 && message === "Not authenticated") {
         toast.error("You are not authenticated. Please log in.");
         localStorage.removeItem("persist:Trainer");
         window.location.href = "/trainer/login"; 

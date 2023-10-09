@@ -31,14 +31,17 @@ adminInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response) {
+      console.log(error.response);
       const status = error.response.status;
       const message = error.response.data.message;
 
       if (status === 403 && message === "Invalid token") {
+        console.log("403 error catch",message);
         toast.error("Invalid token. Please log in again.");
         localStorage.removeItem("persist:Admin");
         window.location.href = "/admin/login"; 
-      } else if (status === 401 && message === "Not authenticated!") {
+      } else if (status === 401 && message === "Not authenticated") {
+        console.log("401 error catch",message);
         toast.error("You are not authenticated. Please log in.");
         localStorage.removeItem("persist:Admin");
         window.location.href = "/admin/login";
