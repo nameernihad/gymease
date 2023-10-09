@@ -1,4 +1,4 @@
-export const userAPI = "http://localhost:4000/";
-export const adminAPI = "http://localhost:4000/admin/";
-export const trainerAPI = "http://localhost:4000/trainer/";
+export const userAPI = "http://nn-kicks.online/";
+export const adminAPI = "http://nn-kicks.online/admin/";
+export const trainerAPI = "http://nn-kicks.online/trainer/";
 export const videoAPI = "https://api.100ms.live/v2/";
