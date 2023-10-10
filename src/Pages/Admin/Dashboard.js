@@ -47,7 +47,7 @@ export default function Dashboard() {
     adminAxios.get("/getAllWorkouts").then((res)=>{
       setWorkout(res.data.workout)
     })
-     adminAxios.get("/totalPayments").then((res)=>{
+    adminAxios.get("/totalPayments").then((res)=>{
       console.log(res.data);
       setPayment(res.data.totalAmount)
     })
