@@ -40,15 +40,16 @@ export default function Dashboard() {
       setUser(res.data.userList)
     })
 
-    adminAxios.get("/totalPayments").then((res)=>{
-      console.log(res.data);
-      setPayment(res.data.totalAmount)
-    })
+   
     adminAxios.get("/getAllTrainer").then((res)=>{
       setTrainer(res.data.Trainerdetails)
     })
     adminAxios.get("/getAllWorkouts").then((res)=>{
       setWorkout(res.data.workout)
+    })
+     adminAxios.get("/totalPayments").then((res)=>{
+      console.log(res.data);
+      setPayment(res.data.totalAmount)
     })
   }, [])
 
