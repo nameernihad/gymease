@@ -5,6 +5,8 @@ import TrafficCard from '../../Components/admin/Home/DashBoard/TraficCard';
 import ChartPie from '../../Components/admin/Home/DashBoard/ChartPie';
 
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import GroupIcon from '@mui/icons-material/Group';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PollIcon from '@mui/icons-material/Poll';
@@ -16,29 +18,41 @@ import { useState } from 'react';
 
 export default function Dashboard() {
   const [User, setUser] = useState([])
+  const [Payment, setPayment] = useState()
+  const [Trainer, setTrainer] = useState([])
+  const [Workout, setWorkout] = useState([])
+
+
   const chartBarData = [
-    { name: 'A', value: 100 },
-    { name: 'B', value: 200 },
-    { name: 'C', value: 150 },
-    { name: 'D', value: 300 },
-    { name: 'E', value: 100 },
-    { name: 'F', value: 125 },
+    { name: "Users", value: User.length },
+    { name: "Trainers", value: Trainer.length },
+    { name: "Workout", value: Workout.length },
   ];
 
   const chartPieData =[
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-    { name: "Group E", value: 100 },
+    { name: "Users", value: User.length },
+    { name: "Trainers", value: Trainer.length },
+    { name: "Workout", value: Workout.length },
   ];
 
   useEffect(() => {
     adminAxios.get("/getAllUsers").then((res)=>{
-      console.log(res.data);
       setUser(res.data.userList)
     })
+
+    adminAxios.get("/totalPayments").then((res)=>{
+      console.log(res.data);
+      setPayment(res.data.totalAmount)
+    })
+    adminAxios.get("/getAllTrainer").then((res)=>{
+      setTrainer(res.data.Trainerdetails)
+    })
+    adminAxios.get("/getAllWorkouts").then((res)=>{
+      setWorkout(res.data.workout)
+    })
   }, [])
+
+
   
 
   return (
@@ -48,28 +62,28 @@ export default function Dashboard() {
         <div className="container mx-auto max-w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 mb-4">
         <StatusCard
-          icon={<TrendingUpIcon />}  
-          title="Traffic"
-          amount="350,897"
+          icon={<AssignmentIndIcon />}  
+          title="Trainer"
+          amount={Trainer.length}
           
         />
         <StatusCard
           icon={<GroupIcon />}
           title="New Users"
-          amount="2,356"
+          amount={User.length}
           
         />
         <StatusCard
           icon={<AttachMoneyIcon />} 
           title="Sales"
-          amount="924"
+          amount={Payment}
           
         />
         <StatusCard
           color="white"
-          icon={<PollIcon />}  
-          title="Performance"
-          amount="49.65%"
+          icon={<FitnessCenterIcon />}  
+          title="Workout"
+          amount={Workout.length}
           
         />
       </div>
@@ -94,17 +108,15 @@ export default function Dashboard() {
       </div>
 
       <div className="px-3 md:px-8 h-auto">
-        <div className="container mx-auto max-w-full">
-          <div className="grid grid-cols-1 xl:grid-cols-5">
-            <div className="xl:col-start-1 xl:col-end-4 px-4 mb-14">
-              <PageVisitsCard />
-            </div>
-            <div className="xl:col-start-4 xl:col-end-6 px-4 mb-14">
-              <TrafficCard />
-            </div>
-          </div>
-        </div>
+  <div className="container mx-auto max-w-full">
+    <div className="grid grid-cols-1">
+      <div className="xl:col-start-1 xl:col-end-2 px-4 mb-14">
+        <PageVisitsCard />
       </div>
+    </div>
+  </div>
+</div>
+
     </>
   );
 }

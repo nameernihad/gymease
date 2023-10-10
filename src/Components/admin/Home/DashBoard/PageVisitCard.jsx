@@ -9,7 +9,7 @@ export default function PageVisitsCard() {
                     <table className="w-full bg-transparent border-collapse">
                         <thead>
                             <tr>
-                                <th className="px-4 py-2 text-teal-500 border-b border-gray-200 text-center">ID</th>
+                                <th className="px-4 py-2 text-teal-500 border-b border-gray-200 text-center">Si</th>
                                 <th className="px-4 py-2 text-teal-500 border-b border-gray-200 text-center">Name</th>
                                 <th className="px-4 py-2 text-teal-500 border-b border-gray-200 text-center">Salary</th>
                                 <th className="px-4 py-2 text-teal-500 border-b border-gray-200 text-center">Country</th>
