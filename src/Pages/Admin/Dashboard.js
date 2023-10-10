@@ -8,9 +8,14 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import GroupIcon from '@mui/icons-material/Group';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PollIcon from '@mui/icons-material/Poll';
+import { useEffect } from 'react';
+
+import adminAxios from "../../Axios/adminAxios";
+import { useState } from 'react';
 
 
 export default function Dashboard() {
+  const [User, setUser] = useState([])
   const chartBarData = [
     { name: 'A', value: 100 },
     { name: 'B', value: 200 },
@@ -27,6 +32,14 @@ export default function Dashboard() {
     { name: "Group D", value: 200 },
     { name: "Group E", value: 100 },
   ];
+
+  useEffect(() => {
+    adminAxios.get("/getAllUsers").then((res)=>{
+      console.log(res.data);
+      setUser(res.data.userList)
+    })
+  }, [])
+  
 
   return (
     <>
