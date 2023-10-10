@@ -23,45 +23,45 @@ function UserLogin() {
 
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
 
-  // const login = useGoogleLogin({
-  //   onSuccess: (codeResponse) => setUser(codeResponse),
-  //   onError: (error) => console.log("Login Failed:", error),
-  // });
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log("Login Failed:", error),
+  });
 
-  // useEffect(() => {
-  //   if (user) {
-  //     console.log(user);
-  //     axios
-  //       .get(
-  //         `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${user.access_token}`,
-  //             Accept: "application/json",
-  //           },
-  //         }
-  //       )
-  //       .then((res) => {
-  //         console.log(res.data);
-  //         setProfile(res.data);
-  //         userAxios
-  //           .post("/loginWithGoogle", {
-  //             name: res.data.name,
-  //             email: res.data.email,
-  //             picture: res.data.picture,
-  //           })
-  //           .then((result) => {
-  //             console.log(result);
-  //             if (result.data.token) {
-  //               const token = result.data.token;
-  //               dispatch(ClientLogin({ token: token }));
-  //               navigate("/home");
-  //             }
-  //           });
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+          setProfile(res.data);
+          userAxios
+            .post("/loginWithGoogle", {
+              name: res.data.name,
+              email: res.data.email,
+              picture: res.data.picture,
+            })
+            .then((result) => {
+              console.log(result);
+              if (result.data.token) {
+                const token = result.data.token;
+                dispatch(ClientLogin({ token: token }));
+                navigate("/home");
+              }
+            });
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -191,7 +191,7 @@ function UserLogin() {
                 </span>
                 <div className="flex flex-col space-y-4">
                   <p
-                    // onClick={() => login()}
+                    onClick={() => login()}
                     href="#"
                     className="flex items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-blue-600 rounded-md group hover:bg-blue-600 focus:outline-none"
                   >
