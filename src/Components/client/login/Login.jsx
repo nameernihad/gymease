@@ -205,7 +205,7 @@ function UserLogin() {
                     </span>
                   </p>
 
-                  <a
+                  {/* <a
                     href="#"
                     className="flex items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-blue-500 rounded-md group hover:bg-blue-500 focus:outline-none"
                   >
@@ -217,7 +217,7 @@ function UserLogin() {
                     <span className="text-sm font-medium text-blue-500 group-hover:text-white">
                       Facebook
                     </span>
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </form>
