@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import trainerAxios from "../../../Axios/trainerAxios";
 import { useDispatch } from "react-redux";
 import { TrainerauthLogin } from "../../../Redux/TrainerAuth";
+import { toast } from "react-toastify";
 
 function TrainerLogin() {
   const [email, setEmail] = useState("");
@@ -16,34 +17,73 @@ function TrainerLogin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const loginForm = (event) => {
+  const loginForm = async (event) => {
     event.preventDefault();
     setEmailError("");
     setPasswordError("");
-
+  
     if (!email) {
       setEmailError("Email Address is required");
       return;
     }
-
+  
     if (!password) {
       setPasswordError("Password is required");
       return;
     }
-
-    trainerAxios.post("/", { email, password }).then((res) => {
-      console.log(res.data);
+  
+    try {
+      const res = await trainerAxios.post("/", { email, password });
       const result = res.data;
-      if (result.token) {
-        const token = result.token;
-        dispatch(TrainerauthLogin({ token: token }));
+      console.log(result);
+  
+      if (res.status === 200) {
+        const { token, trainer } = result;
+        dispatch(TrainerauthLogin({ token, trainer }));
+        localStorage.setItem("Trainer", token);
         navigate("/trainer");
-      } else {
-        setErrMsg(result.message);
+      } else if (res.status === 401) {
+        // Check if the response has an "error" field
+        if (result.error === "you are not a trainer") {
+          setErrMsg("You are not authorized as a trainer.");
+        } else {
+          // Handle other error messages
+          if (result.message) {
+            if (Array.isArray(result.message)) {
+              setErrMsg(result.message.join(", "));
+            } else {
+              setErrMsg(result.message.toString());
+            }
+          } else {
+            setErrMsg("An error occurred while processing your request.");
+          }
+        }
       }
-    });
+    } catch (error) {
+      // Handle unexpected errors
+      if (error.response && error.response.data) {
+        if (error.response.data.message) {
+          if (Array.isArray(error.response.data.message)) {
+            setErrMsg(error.response.data.message.join(", "));
+          } else {
+            setErrMsg(error.response.data.message.toString());
+          }
+        } else {
+          setErrMsg("An error occurred while processing your request.");
+        }
+      } else {
+        setErrMsg("An error occurred while processing your request.");
+      }
+    }
   };
-
+  
+  useEffect(() => {
+    if (errMsg) {
+      toast.error(errMsg);
+    }
+  }, [errMsg]);
+  
+  
   return (
     <div className="">
       <div

@@ -8,6 +8,7 @@ import AboutContentImageSection from "./about";
 import ImageWithBotton from "./image&start";
 import PricingSection from "./Package";
 import Footer from "./footer";
+import { Link } from "react-router-dom";
 
 export default function CustomCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -82,9 +83,10 @@ export default function CustomCarousel() {
               <div className="carousel-content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white bg-black bg-opacity-50 p-4 rounded">
                 <h1 className="text-3xl font-bold mb-2">{slide.title}</h1>
                 <p className="text-lg mb-4">{slide.description}</p>
+                <Link to={"/login"} >
                 <button className="bg-transparent hover:bg-amber-500 text-amber-700 font-semibold hover:text-white py-2 px-4 border border-amber-500 hover:border-transparent rounded">
                   Get Started Now
-                </button>
+                </button></Link>
               </div>
             </div>
           ))}

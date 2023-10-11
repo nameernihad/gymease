@@ -51,7 +51,7 @@ function JoinForm() {
         alt=""
         className=""
       />
-      <form onSubmit={handleSubmit} className="">
+      <form  onSubmit={handleSubmit} className="joinForm">
         <h2 className="font-bold text-lg">Join Room</h2>
         <div className="input-container">
           <input

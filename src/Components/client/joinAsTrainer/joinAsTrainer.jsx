@@ -137,7 +137,7 @@ export default function JoinAsTrainer() {
       <div>
         <Navbar />
         <form
-          className="pt-20 px-14 bg-gray-900 text-white"
+          className="pt-20 px-14 bg-gray-900 text-white "
           onSubmit={handleSubmit}
         >
           <div className="space-y-8 md:space-y-12">

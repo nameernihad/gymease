@@ -44,6 +44,10 @@ trainerInstance.interceptors.response.use(
         toast.error("You are not authenticated. Please log in.");
         localStorage.removeItem("persist:Trainer");
         window.location.href = "/trainer/login"; 
+      }else if(status === 403 && message === "You are blocked by admin"){
+        toast.error("You are blocked by admin");
+        localStorage.removeItem("persist:Trainer");
+        window.location.href = "/trainer/login";
       }
     }
 

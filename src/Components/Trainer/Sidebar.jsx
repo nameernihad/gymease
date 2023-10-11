@@ -36,7 +36,7 @@ function Sidebar({ onClose, onOpen }) {
     // Set a timeout to hide the drawer with a slow transition before closing
     const closeTimeout = setTimeout(() => {
       onClose();
-    }, 300);
+    }, 3000);
 
     return () => clearTimeout(closeTimeout);
   };

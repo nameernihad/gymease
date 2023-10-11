@@ -26,7 +26,7 @@ header {
   justify-content: space-between;
 }
 
-form {
+.joinForm {
   max-width: 450px;
   border-radius: 8px;
   padding: 20px;

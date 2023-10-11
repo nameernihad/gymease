@@ -40,6 +40,10 @@ userInstance.interceptors.response.use(
         toast.error("You are not authenticated. Please log in.");
         localStorage.removeItem("Client");
         window.location.href = "/login";
+      }else if(status === 403 && message === "You are blocked by admin"){
+        toast.error("You are blocked by admin");
+        localStorage.removeItem("Client");
+        window.location.href = "/login";
       }
     }
 
