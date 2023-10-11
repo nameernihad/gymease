@@ -77,7 +77,7 @@ function JoinForm() {
               },
             }
           );
-
+  
           if (roomCodeResponse) {
             console.log(roomCodeResponse.data);
             const hostRoomCode = roomCodeResponse.data.data.find(
