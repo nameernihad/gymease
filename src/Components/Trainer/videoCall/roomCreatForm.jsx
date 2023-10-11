@@ -52,7 +52,7 @@ function JoinForm() {
         },
         {
           headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTYyMjI4MzIsImV4cCI6MTY5NjMwOTIzMiwianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTYyMjI4MzIsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.Zy82wBv7eHjgmqoQ0WF2RMmsWQsKnKfPba8GWZn5vKo`,
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTcwMDIyNzcsImV4cCI6MTY5NzA4ODY3NywianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTcwMDIyNzcsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.YFX-dmE08ueknpCbsJZTZlRUDQ167brg8zJzao5QIHs`,
             "Content-Type": "application/json",
           },
         }
@@ -72,7 +72,7 @@ function JoinForm() {
             {},
             {
               headers: {
-                Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTY5OTk4NjMsImV4cCI6MTY5NzA4NjI2MywianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTY5OTk4NjMsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.6HuqeGID5ABgNh8GTukbb_KbzrM2JTzjYBklJStSFt4`,
+                Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTcwMDIyNzcsImV4cCI6MTY5NzA4ODY3NywianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTcwMDIyNzcsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.YFX-dmE08ueknpCbsJZTZlRUDQ167brg8zJzao5QIHs`,
                 "Content-Type": "application/json",
               },
             }
