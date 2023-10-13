@@ -31,6 +31,7 @@ const columns = [
 ];
 
 const TrainerRequestList = () => {
+  // State variables
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [requests, setRequests] = useState([]);
@@ -38,10 +39,16 @@ const TrainerRequestList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
 
+  // Fetch trainer requests from the server
   useEffect(() => {
-    adminAxios.get("/trainerRequest").then((res) => {
-      setRequests(res.data.allTrainerRequest.allRequest || []);
-    });
+    adminAxios.get("/trainerRequest")
+      .then((res) => {
+        setRequests(res.data.allTrainerRequest.allRequest);
+      })
+      .catch((error) => {
+        console.error("Error fetching requests:", error);
+        toast.error("Failed to fetch trainer requests");
+      });
   }, []);
 
   // Handle page change
@@ -68,7 +75,7 @@ const TrainerRequestList = () => {
 
     // Send a request to update the status in the backend
     adminAxios
-      .patch(`/requestValidtion/${requestId}`, { status: newStatus })
+      .patch(`/requestValidation/${requestId}`, { status: newStatus })
       .then((res) => {
         console.log(res.data);
         toast.success("Status successfully updated");
@@ -89,10 +96,6 @@ const TrainerRequestList = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-
-  useEffect(() => {
-    console.log(requests[0]);
-  }, [requests]);
 
   return (
     <div className="bg-slate-100 h-screen p-4">
@@ -124,18 +127,30 @@ const TrainerRequestList = () => {
                   .map((request, index) => (
                     <TableRow key={index}>
                       <TableCell align="center">{index + 1}</TableCell>
-                      <TableCell align="center">{request.user.name}</TableCell>
+                      <TableCell align="center">
+                        {request.user ? request.user.name : "N/A"}
+                      </TableCell>
                       <TableCell align="center">
                         <img
                           src={request.profilePhoto}
-                          alt={request.user.name}
+                          alt={request.user ? request.user.name : "N/A"}
                           style={{ width: "100px", height: "auto" }}
                         />
                       </TableCell>
-                      <TableCell align="center">{request.user.email}</TableCell>
-                      <TableCell align="center">{request.user.phone}</TableCell>
-                      <TableCell align="center">{request.gender}</TableCell>
-                      <TableCell align="center">{`${request.experience.years} years, ${request.experience.months} months`}</TableCell>
+                      <TableCell align="center">
+                        {request.user ? request.user.email : "N/A"}
+                      </TableCell>
+                      <TableCell align="center">
+                        {request.user ? request.user.phone : "N/A"}
+                      </TableCell>
+                      <TableCell align="center">
+                        {request.gender ? request.gender : "N/A"}
+                      </TableCell>
+                      <TableCell align="center">
+                        {request.experience
+                          ? `${request.experience.years} years, ${request.experience.months} months`
+                          : "N/A"}
+                      </TableCell>
                       <TableCell align="center">
                         <FormControl
                           variant="standard"
@@ -218,37 +233,41 @@ const TrainerRequestList = () => {
             </DialogTitle>
             <DialogContent className="p-4">
               <div className="max-h-[70vh] overflow-y-auto">
-                <div className="">
-                  <div className="w-full relative">
-                    <img
-                      src={selectedRequest.coverPhoto}
-                      alt="Cover Photo"
-                      className="w-full h-auto"
-                    />
-                    <img
-                      src={selectedRequest.profilePhoto}
-                      alt={selectedRequest.user.name}
-                      className="rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 border-4 border-white"
-                    />
+                {selectedRequest && (
+                  <div className="">
+                    <div className="w-full relative">
+                      <img
+                        src={selectedRequest.coverPhoto}
+                        alt="Cover Photo"
+                        className="w-full h-auto"
+                      />
+                      <img
+                        src={selectedRequest.profilePhoto}
+                        alt={
+                          selectedRequest.user ? selectedRequest.user.name : "N/A"
+                        }
+                        className="rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 border-4 border-white"
+                      />
+                    </div>
+                    <div className="pl-4">
+                      <h2 className="text-xl font-bold mb-2">
+                        Name: {selectedRequest.user ? selectedRequest.user.name : "N/A"}
+                      </h2>
+                      <p>Email: {selectedRequest.user ? selectedRequest.user.email : "N/A"}</p>
+                      <p>Phone: {selectedRequest.user ? selectedRequest.user.phone : "N/A"}</p>
+                      <p>Gender: {selectedRequest.gender ? selectedRequest.gender : "N/A"}</p>
+                      <p>Height: {selectedRequest.user ? selectedRequest.user.height : "N/A"} cm</p>
+                      <p>Weight: {selectedRequest.user ? selectedRequest.user.weight : "N/A"} kg</p>
+                    </div>
                   </div>
-                  <div className="pl-4">
-                    <h2 className="text-xl font-bold mb-2">
-                      Name: {selectedRequest.user.name}
-                    </h2>
-                    <p>Email: {selectedRequest.user.email}</p>
-                    <p>Phone: {selectedRequest.user.phone}</p>
-                    <p>Gender: {selectedRequest.gender}</p>
-                    <p>Height: {selectedRequest.user.height} cm</p>
-                    <p>Weight: {selectedRequest.user.weight} kg</p>
-                  </div>
-                </div>
+                )}
                 <div className="mt-4">
                   <h2 className="text-xl font-bold">About</h2>
-                  <p>{selectedRequest.about}</p>
+                  <p>{selectedRequest ? selectedRequest.about : "N/A"}</p>
                   <h2 className="text-xl font-bold mt-4">Certifications</h2>
                   <ul className="list-disc ml-6">
-                    {selectedRequest.certifications.map(
-                      (certification, index) => (
+                    {selectedRequest &&
+                      selectedRequest.certifications.map((certification, index) => (
                         <li key={index}>
                           <a
                             href={certification}
@@ -259,23 +278,22 @@ const TrainerRequestList = () => {
                             Certification {index + 1}
                           </a>
                         </li>
-                      )
-                    )}
+                      ))}
                   </ul>
                   <h2 className="text-xl font-bold mt-4">Experience</h2>
                   <p>
-                    {selectedRequest.experience.years} years,{" "}
-                    {selectedRequest.experience.months} months,{" "}
-                    {selectedRequest.experience.days} days
+                    {selectedRequest
+                      ? `${selectedRequest.experience.years} years, ${selectedRequest.experience.months} months, ${selectedRequest.experience.days} days`
+                      : "N/A"}
                   </p>
                   <h2 className="text-xl font-bold mt-4">Payment Details</h2>
-                  <p>One Month: ${selectedRequest.paymentDetails.oneMonth}</p>
-                  <p>Six Months: ${selectedRequest.paymentDetails.sixMonths}</p>
-                  <p>One Year: ${selectedRequest.paymentDetails.oneYear}</p>
+                  <p>One Month: ${selectedRequest.paymentDetails ? selectedRequest.paymentDetails.oneMonth : "N/A"}</p>
+                  <p>Six Months: ${selectedRequest.paymentDetails ? selectedRequest.paymentDetails.sixMonths : "N/A"}</p>
+                  <p>One Year: ${selectedRequest.paymentDetails ? selectedRequest.paymentDetails.oneYear : "N/A"}</p>
                 </div>
                 <br />
                 <hr />
-                <div className="mt-4 ">
+                <div className="mt-4">
                   <h2 className="text-xl font-bold">Status</h2>
                   <div className="flex items-center justify-between mt-2">
                     <FormControl variant="standard" sx={{ minWidth: 120 }}>
@@ -291,14 +309,14 @@ const TrainerRequestList = () => {
                           // Call your status change handler here, passing the newStatus and request ID
                           handleChangeStatus(e, selectedRequest._id, newStatus);
                         }}
-                        value={selectedRequest.status}
+                        value={selectedRequest ? selectedRequest.status : "N/A"}
                         style={{
                           color:
-                            selectedRequest.status === "pending"
+                            selectedRequest && selectedRequest.status === "pending"
                               ? "orange"
-                              : selectedRequest.status === "approve"
+                              : selectedRequest && selectedRequest.status === "approve"
                               ? "green"
-                              : selectedRequest.status === "reject"
+                              : selectedRequest && selectedRequest.status === "reject"
                               ? "red"
                               : "black",
                         }}
@@ -325,7 +343,6 @@ const TrainerRequestList = () => {
                         </MenuItem>
                       </Select>
                     </FormControl>
-
                     <Button
                       variant="contained"
                       className="bg-amber-500"
