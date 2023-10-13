@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import userAxios from "../../../Axios/userAxios";
 import { toast } from "react-toastify";
 import Navbar from "../../client/landingPage/navBar";
@@ -17,13 +17,13 @@ function UserProfile() {
     phone: "",
     profilePhoto: null,
   });
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     // Fetch user data when the component mounts
     userAxios
       .get("/singView")
       .then((res) => {
-        console.log(res.data.user);
         setUserData(res.data.user);
       })
       .catch((err) => {
@@ -71,13 +71,14 @@ function UserProfile() {
       });
       console.error(error.message);
     }
+
+    setIsEditing(false);
   };
 
   return (
     <>
       <Navbar />
       <div className="h-screen w-full bg-white relative">
-        {/* Background Image */}
         <div className="h-1/3 w-full">
           <img
             className="w-full h-full"
@@ -86,10 +87,14 @@ function UserProfile() {
           />
         </div>
 
-        {/* Profile Box */}
         <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 bg-white p-6 rounded-lg shadow-lg sm:w-2/3 lg:w-1/2">
-          <p className="text-amber-500 text-lg text-bold">
-            Edit <FontAwesomeIcon icon={faPenToSquare} />
+          <p className="text-amber-500 text-lg font-bold">
+            Profile{" "}
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              onClick={() => setIsEditing(true)}
+              className="cursor-pointer"
+            />
           </p>
           <div className="w-32 h-32 mx-auto mb-4 relative">
             <img
@@ -102,7 +107,6 @@ function UserProfile() {
             />
           </div>
 
-          {/* Image Upload Button */}
           <div className="text-center mb-4">
             <label htmlFor="profilePhoto" className="cursor-pointer">
               <div className="text-amber-500 font-bold px-4 rounded">
@@ -119,75 +123,220 @@ function UserProfile() {
             </label>
           </div>
 
-          {/* Profile Information */}
-          <div className="text-start flex justify-center ">
-            <div className="mt-2 ">
-              {" "}
-              {/* Reduced the margin-top */}
-              <div className="text-lg text-gray-700 flex justify-between gap-20 ">
-                <strong>Name:</strong>{" "}
+          <div className="text-start flex justify-center">
+            <div className="mt-2">
+              <div className="text-lg text-gray-700 flex justify-between gap-20">
+                <strong>Name:</strong>
                 <input
                   type="text"
                   placeholder="Name"
+                  name="name"
                   value={userData.name}
-                  className="form-input mt-1 block  text-start"
-                  disabled
+                  className="form-input mt-1 block"
+                  disabled={!isEditing}
+                  onChange={handleChange}
                 />
               </div>
               <div className="text-lg text-gray-700 flex justify-between gap-20">
-                <strong>Email:</strong>{" "}
+                <strong>Email:</strong>
                 <input
                   type="text"
                   placeholder="Email"
+                  name="email"
                   value={userData.email}
-                  className="form-input mt-1 block  text-start"
-                  disabled
+                  className="form-input mt-1 block"
+                  disabled={!isEditing}
+                  onChange={handleChange}
                 />
               </div>
               <div className="text-lg text-gray-700 flex justify-between gap-20">
-                <strong>Gender:</strong>{" "}
+                <strong>Gender:</strong>
                 <input
                   type="text"
                   placeholder="Gender"
+                  name="gender"
                   value={userData.gender}
-                  className="form-input mt-1 block  text-start"
-                  disabled
+                  className="form-input mt-1 block"
+                  disabled={!isEditing}
+                  onChange={handleChange}
                 />
               </div>
               <div className="text-lg text-gray-700 flex justify-between gap-20">
-                <strong>Height:</strong>{" "}
+                <strong>Height:</strong>
                 <input
                   type="text"
                   placeholder="Height"
+                  name="height"
                   value={userData.height}
-                  className="form-input mt-1 block  text-start"
-                  disabled
+                  className="form-input mt-1 block"
+                  disabled={!isEditing}
+                  onChange={handleChange}
                 />
               </div>
               <div className="text-lg text-gray-700 flex justify-between gap-20">
-                <strong>Weight:</strong>{" "}
+                <strong>Weight:</strong>
                 <input
                   type="text"
                   placeholder="Weight"
+                  name="weight"
                   value={userData.weight}
-                  className="form-input mt-1 block  text-start"
-                  disabled
+                  className="form-input mt-1 block"
+                  disabled={!isEditing}
+                  onChange={handleChange}
                 />
               </div>
               <div className="text-lg text-gray-700 w-full flex justify-between gap-20">
-                <strong>Phone:</strong>{" "}
+                <strong>Phone:</strong>
                 <input
                   type="text"
                   placeholder="Phone"
+                  name="phone"
                   value={userData.phone}
-                  className="form-input mt-1 block  text-start"
-                  disabled
+                  className="form-input mt-1 block"
+                  disabled={!isEditing}
+                  onChange={handleChange}
                 />
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Edit Profile Modal */}
+      {isEditing && (
+  <div className="fixed inset-0 flex items-center justify-center z-50">
+    <div className="bg-black bg-opacity-25 absolute inset-0"></div>
+    <div className="bg-white rounded-lg p-4 sm:w-2/3 lg:w-1/2 relative">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">Edit Profile</h2>
+        <button
+          onClick={() => setIsEditing(false)}
+          className="text-amber-500 hover:text-amber-600 cursor-pointer"
+        >
+          Close
+        </button>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="mb-4">
+            <label htmlFor="name" className="text-gray-700 font-bold">
+              Name:
+            </label>
+          </div>
+          <div className="mb-4">
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={userData.name}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="text-gray-700 font-bold">
+              Email:
+            </label>
+          </div>
+          <div className="mb-4">
+            <input
+              type="text"
+              id="email"
+              name="email"
+              value={userData.email}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="gender" className="text-gray-700 font-bold">
+              Gender:
+            </label>
+          </div>
+          <div className="mb-4">
+            <input
+              type="text"
+              id="gender"
+              name="gender"
+              value={userData.gender}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="height" className="text-gray-700 font-bold">
+              Height:
+            </label>
+          </div>
+          <div className="mb-4">
+            <input
+              type="text"
+              id="height"
+              name="height"
+              value={userData.height}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="weight" className="text-gray-700 font-bold">
+              Weight:
+            </label>
+          </div>
+          <div className="mb-4">
+            <input
+              type="text"
+              id="weight"
+              name="weight"
+              value={userData.weight}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="phone" className="text-gray-700 font-bold">
+              Phone:
+            </label>
+          </div>
+          <div className="mb-4">
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              value={userData.phone}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="profilePhoto" className="text-gray-700 font-bold">
+              Profile Photo:
+            </label>
+          </div>
+          <div className="mb-4">
+            <input
+              type="file"
+              id="profilePhoto"
+              name="profilePhoto"
+              accept="image/*"
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+        </div>
+        <div className="text-center">
+          <button
+            type="submit"
+            className="bg-amber-500 text-white py-2 px-4 rounded-lg hover:bg-amber-600"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
+
 
     </>
   );
