@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import userAxios from "../../../Axios/userAxios.js";
-import { Await, useNavigate } from "react-router-dom";
+import { Await, Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ClientLogin } from "../../../Redux/ClientAuth.js";
 import { toast } from "react-toastify";
@@ -88,7 +88,7 @@ function UserLogin() {
       if (result.token) {
         const token = result.token;
         dispatch(ClientLogin({ token: token }));
-        localStorage.setItem("Client",token);
+        localStorage.setItem("Client", token);
         navigate("/home");
       }
     } catch (error) {
@@ -204,7 +204,15 @@ function UserLogin() {
                       Google
                     </span>
                   </p>
-
+                  <p className="mt-10 text-center text-sm text-gray-300">
+                    Don't Have an account?{" "}
+                    <Link
+                      to={"/Register"}
+                      className="font-semibold leading-6 text-sky-500 hover:text-blue-200"
+                    >
+                      Sign Up
+                    </Link>
+                  </p>
                   {/* <a
                     href="#"
                     className="flex items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-blue-500 rounded-md group hover:bg-blue-500 focus:outline-none"

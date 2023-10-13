@@ -136,9 +136,9 @@ export default function CustomCarousel() {
       <div className="bg-black">
         <PricingSection />
       </div>
-      <div className="bg-black">
+      {/* <div className="bg-black">
         <Footer />
-      </div>
+      </div> */}
       <style>
         {`.slick-next {
           display: none !important;

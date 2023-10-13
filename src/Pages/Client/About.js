@@ -6,9 +6,9 @@ import FooterAbout from "../../Components/client/AboutPage/footer";
 function About() {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <AboutPage />
-      <FooterAbout />
+      {/* <FooterAbout /> */}
     </div>
   );
 }

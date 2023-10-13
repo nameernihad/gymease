@@ -120,67 +120,67 @@ function UserProfile() {
           </div>
 
           {/* Profile Information */}
-          <div className="text-center flex justify-center ">
-            <div className="mt-2 w-1/3">
+          <div className="text-start flex justify-center ">
+            <div className="mt-2 ">
               {" "}
               {/* Reduced the margin-top */}
-              <div className="text-lg text-gray-700 flex justify-start">
+              <div className="text-lg text-gray-700 flex justify-between gap-20 ">
                 <strong>Name:</strong>{" "}
                 <input
                   type="text"
                   placeholder="Name"
                   value={userData.name}
-                  className="form-input mt-1 block  text-center"
+                  className="form-input mt-1 block  text-start"
                   disabled
                 />
               </div>
-              <div className="text-lg text-gray-700 flex justify-start">
+              <div className="text-lg text-gray-700 flex justify-between gap-20">
                 <strong>Email:</strong>{" "}
                 <input
                   type="text"
                   placeholder="Email"
                   value={userData.email}
-                  className="form-input mt-1 block  text-center"
+                  className="form-input mt-1 block  text-start"
                   disabled
                 />
               </div>
-              <div className="text-lg text-gray-700 flex justify-start">
+              <div className="text-lg text-gray-700 flex justify-between gap-20">
                 <strong>Gender:</strong>{" "}
                 <input
                   type="text"
                   placeholder="Gender"
                   value={userData.gender}
-                  className="form-input mt-1 block  text-center"
+                  className="form-input mt-1 block  text-start"
                   disabled
                 />
               </div>
-              <div className="text-lg text-gray-700 flex justify-start">
+              <div className="text-lg text-gray-700 flex justify-between gap-20">
                 <strong>Height:</strong>{" "}
                 <input
                   type="text"
                   placeholder="Height"
                   value={userData.height}
-                  className="form-input mt-1 block  text-center"
+                  className="form-input mt-1 block  text-start"
                   disabled
                 />
               </div>
-              <div className="text-lg text-gray-700 flex justify-start">
+              <div className="text-lg text-gray-700 flex justify-between gap-20">
                 <strong>Weight:</strong>{" "}
                 <input
                   type="text"
                   placeholder="Weight"
                   value={userData.weight}
-                  className="form-input mt-1 block  text-center"
+                  className="form-input mt-1 block  text-start"
                   disabled
                 />
               </div>
-              <div className="text-lg text-gray-700 w-full flex justify-start">
+              <div className="text-lg text-gray-700 w-full flex justify-between gap-20">
                 <strong>Phone:</strong>{" "}
                 <input
                   type="text"
                   placeholder="Phone"
                   value={userData.phone}
-                  className="form-input mt-1 block  text-center"
+                  className="form-input mt-1 block  text-start"
                   disabled
                 />
               </div>

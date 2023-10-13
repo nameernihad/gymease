@@ -5,7 +5,7 @@ import Navbar from "../../Components/client/landingPage/navBar";
 function TrainerList() {
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <ListTrainer />
     </div>
   );

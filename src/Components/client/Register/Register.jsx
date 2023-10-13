@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import userAxios from "../../../Axios/userAxios.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -165,12 +165,12 @@ function UserRegister() {
 
         <p className="mt-10 text-center text-sm text-gray-300">
           Have an account?{" "}
-          <a
-            href="#"
+          <Link
+            to={"/login"}
             className="font-semibold leading-6 text-sky-500 hover:text-blue-200"
           >
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </div>

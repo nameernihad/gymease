@@ -17,7 +17,7 @@ import TrainerCard from "./TrainerListing";
 import WorkoutLevel from "./workoutLevel";
 import LandingPage from "../../../Pages/Client/landing";
 
-const Home = () => {
+const  Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -77,9 +77,9 @@ const Home = () => {
   return (
     <>
       <div className="bg-black">
-        <div>
+        {/* <div>
           <NavBar logout={handleLogout} />
-        </div>
+        </div> */}
         <div>
           <div className="bg-black">
             <Slider ref={sliderRef} {...settings} autoplay pauseOnHover={false}>

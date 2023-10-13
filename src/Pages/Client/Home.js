@@ -5,7 +5,6 @@ function Register() {
   return (
     <div>
       <Home />
-      <Footer />
     </div>
   );
 }
