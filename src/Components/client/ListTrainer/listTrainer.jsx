@@ -50,8 +50,7 @@ function ListTrainer() {
     <div className="bg-black min-h-screen p-5 py-24">
       {/* Horizontal Navigation Bar */}
       <div className="bg-amber-500 p-4 rounded-xl flex justify-between">
-        {/* Search Input */}
-        <input
+        {/* <input
           type="text"
           placeholder="Search..."
           className="bg-white p-2 rounded-full w-1/4"
@@ -69,11 +68,9 @@ function ListTrainer() {
             >
               <option value="rating">Rating</option>
               <option value="experience">Experience</option>
-              {/* Add more sorting options */}
             </select>
           </div>
 
-          {/* Filter Dropdown */}
           <div className="relative inline-block text-white">
             <label htmlFor="filter" className="mr-2">
               Filter by:
@@ -84,10 +81,9 @@ function ListTrainer() {
             >
               <option value="male">Male</option>
               <option value="female">Female</option>
-              {/* Add more filter options */}
             </select>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* List of Trainers */}
@@ -160,7 +156,7 @@ function ListTrainer() {
         </div>
 
         {/* Selected Filters and Sort Option */}
-        <div className="bg-slate-950 text-white rounded-md my-3 p-4 w-1/4 ml-4">
+        {/* <div className="bg-slate-950 text-white rounded-md my-3 p-4 w-1/4 ml-4">
           <h2 className="text-2xl font-semibold mb-2">Applied Filters</h2>
           <ul>
             {selectedFilters.map((filter) => (
@@ -177,7 +173,7 @@ function ListTrainer() {
           </ul>
           <h2 className="text-2xl font-semibold mt-4">Sort By</h2>
           <p>{sortBy === "rating" ? "Rating" : "Experience"}</p>
-        </div>
+        </div> */}
       </div>
       {isModalOpen && (
         <PaymentModal

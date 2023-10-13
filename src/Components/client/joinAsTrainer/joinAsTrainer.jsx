@@ -453,7 +453,6 @@ export default function JoinAsTrainer() {
             </button>
           </div>
         </form>
-        <Footer />
       </div>
       <CustomModal
         showModal={showModal}
