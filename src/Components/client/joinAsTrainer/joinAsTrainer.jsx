@@ -66,7 +66,7 @@ export default function JoinAsTrainer() {
     try {
       const base64 = await convertBase64(file);
       setLoading(true);
-      const response = await adminAxios.post("uploadImage", { image: base64 });
+      const response = await userAxios.post("uploadImage", { image: base64 });
       setImageUrl(response.data);
 
       if (imageType === "profilePhoto") {
