@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
@@ -113,6 +113,7 @@ const TrainerCard = ({ logout }) => {
                   </span>
                 )}
               </p>
+              <Link to={"/ListTrainer"}>
               <button
                 type="button"
                 className="text-amber-400 mt-3 text-xs hover:text-white border border-amber-400 hover:bg-amber-500  focus:outline-none focus:ring-amber-300 font-medium rounded-lg px-2.5 py-1.5 text-center mr-2 mb-2 dark:border-amber-300 dark:text-amber-300 dark:hover:text-white dark:hover:bg-amber-400"
@@ -123,6 +124,7 @@ const TrainerCard = ({ logout }) => {
                   className="ml-1 text-white"
                 />
               </button>
+              </Link>
             </motion.div>
           ))}
       </div>
