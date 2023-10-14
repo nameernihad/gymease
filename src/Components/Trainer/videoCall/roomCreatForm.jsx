@@ -123,6 +123,7 @@ function JoinForm() {
           (subscription) => subscription.user.email
         );
         setUserEmails(emails);
+          console.log(userEmails);
       });
     } catch (error) {
       console.error("Error fetching user emails:", error);
