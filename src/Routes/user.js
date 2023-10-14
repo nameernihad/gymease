@@ -28,7 +28,10 @@ function UserRoutes() {
         
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={IsAuth.Token ? <Home /> : <Login />} />
-
+        <Route
+          path="/live-setion"
+          element={IsAuth.Token ? <VideoCallPage /> : <LandingPage />}
+        />
         <Route path="/" element={<UserHome />}>
 
         <Route path="/" element={IsAuth.Token ? <Home /> : <LandingPage />} />
@@ -63,10 +66,7 @@ function UserRoutes() {
           path="/payment-success"
           element={IsAuth.Token ? <PaymentSuccessMessage /> : <LandingPage />}
         />
-        <Route
-          path="/live-setion"
-          element={IsAuth.Token ? <VideoCallPage /> : <LandingPage />}
-        />
+       
         </Route>
       </Routes>
     </div>
