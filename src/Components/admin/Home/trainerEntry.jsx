@@ -75,7 +75,7 @@ const TrainerRequestList = () => {
 
     // Send a request to update the status in the backend
     adminAxios
-      .patch(`/requestValidation/${requestId}`, { status: newStatus })
+      .post(`/requestValidation/${requestId}`, { status: newStatus })
       .then((res) => {
         console.log(res.data);
         toast.success("Status successfully updated");
