@@ -122,8 +122,8 @@ function JoinForm() {
         const emails = response.data.subscription.map(
           (subscription) => subscription.user.email
         );
+        console.log(emails);
         setUserEmails(emails);
-          console.log(userEmails);
       });
     } catch (error) {
       console.error("Error fetching user emails:", error);
@@ -135,6 +135,7 @@ function JoinForm() {
   useEffect(() => {
     try {
       if (userEmails.length > 0 && roomCode) {
+        console.log(userEmails,roomCode,"ohsdfhajsdhfkajsdfh");
         trainerAxios
           .post("/sentEmail", { userEmails, roomCode })
           .then((res) => {
