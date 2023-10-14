@@ -138,7 +138,8 @@ function JoinForm() {
         trainerAxios
           .post("/sentEmail", { userEmails, roomCode })
           .then((res) => {
-            console.log(res.data);
+            
+            console.log(res.data,"kgfjjhgjhvjhvhgvn");
           })
           .catch((err) => {
             console.log(err);
