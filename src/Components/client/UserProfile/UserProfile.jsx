@@ -217,13 +217,11 @@ function UserProfile() {
         </button>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="mb-4">
+        <div className="mb-4">
+          <div className="flex flex-col mb-4">
             <label htmlFor="name" className="text-gray-700 font-bold">
               Name:
             </label>
-          </div>
-          <div className="mb-4">
             <input
               type="text"
               id="name"
@@ -233,12 +231,10 @@ function UserProfile() {
               className="form-input"
             />
           </div>
-          <div className="mb-4">
+          <div className="flex flex-col mb-4">
             <label htmlFor="email" className="text-gray-700 font-bold">
               Email:
             </label>
-          </div>
-          <div className="mb-4">
             <input
               type="text"
               id="email"
@@ -248,12 +244,10 @@ function UserProfile() {
               className="form-input"
             />
           </div>
-          <div className="mb-4">
+          <div className="flex flex-col mb-4">
             <label htmlFor="gender" className="text-gray-700 font-bold">
               Gender:
             </label>
-          </div>
-          <div className="mb-4">
             <input
               type="text"
               id="gender"
@@ -263,12 +257,10 @@ function UserProfile() {
               className="form-input"
             />
           </div>
-          <div className="mb-4">
+          <div className="flex flex-col mb-4">
             <label htmlFor="height" className="text-gray-700 font-bold">
               Height:
             </label>
-          </div>
-          <div className="mb-4">
             <input
               type="text"
               id="height"
@@ -278,12 +270,10 @@ function UserProfile() {
               className="form-input"
             />
           </div>
-          <div className="mb-4">
+          <div className="flex flex-col mb-4">
             <label htmlFor="weight" className="text-gray-700 font-bold">
               Weight:
             </label>
-          </div>
-          <div className="mb-4">
             <input
               type="text"
               id="weight"
@@ -293,12 +283,10 @@ function UserProfile() {
               className="form-input"
             />
           </div>
-          <div className="mb-4">
+          <div className="flex flex-col mb-4">
             <label htmlFor="phone" className="text-gray-700 font-bold">
               Phone:
             </label>
-          </div>
-          <div className="mb-4">
             <input
               type="text"
               id="phone"
@@ -308,12 +296,10 @@ function UserProfile() {
               className="form-input"
             />
           </div>
-          <div className="mb-4">
+          <div className="flex flex-col mb-4">
             <label htmlFor="profilePhoto" className="text-gray-700 font-bold">
               Profile Photo:
             </label>
-          </div>
-          <div className="mb-4">
             <input
               type="file"
               id="profilePhoto"
@@ -336,6 +322,7 @@ function UserProfile() {
     </div>
   </div>
 )}
+
 
 
     </>
