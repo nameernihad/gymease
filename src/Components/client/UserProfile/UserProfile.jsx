@@ -45,7 +45,7 @@ function UserProfile() {
 
     try {
       console.log(userData);
-      const response = await userAxios.put("/updateUser", userData);
+      const response = await userAxios.put("/userUpdate", userData);
 
       if (response.data.user) {
         toast.success(response.data.message, {
