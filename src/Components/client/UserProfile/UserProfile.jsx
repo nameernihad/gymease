@@ -4,7 +4,7 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import userAxios from "../../../Axios/userAxios";
 import { toast } from "react-toastify";
 import Navbar from "../../client/landingPage/navBar";
-import RatingModal from "../RatingModal";
+import EditProfileModal from './EditProfile'; 
 
 function UserProfile() {
   const [userDetails, setUserDetails] = useState({});
@@ -20,15 +20,16 @@ function UserProfile() {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    // Fetch user data when the component mounts
-    userAxios
-      .get("/singView")
-      .then((res) => {
-        setUserData(res.data.user);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
+    const fetchUserData = async () => {
+      try {
+        const response = await userAxios.get("/singView");
+        setUserData(response.data.user);
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+
+    fetchUserData();
   }, []);
 
   const handleChange = (event) => {
@@ -42,17 +43,9 @@ function UserProfile() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const formData = new FormData();
-    formData.append("profilePhoto", userData.profilePhoto);
-    formData.append("name", userData.name);
-    formData.append("email", userData.email);
-    formData.append("gender", userData.gender);
-    formData.append("height", userData.height);
-    formData.append("weight", userData.weight);
-    formData.append("phone", userData.phone);
-
     try {
-      const response = await userAxios.put("/updateUser", formData);
+      console.log(userData);
+      const response = await userAxios.put("/updateUser", userData);
 
       if (response.data.user) {
         toast.success(response.data.message, {
@@ -64,6 +57,8 @@ function UserProfile() {
 
       setUserDetails(response.data.user);
     } catch (error) {
+      console.log(error);
+      console.error(error);
       toast.error(error.message, {
         position: "bottom-right",
         autoClose: 5000,
@@ -72,7 +67,7 @@ function UserProfile() {
       console.error(error.message);
     }
 
-    setIsEditing(false);
+    // setIsEditing(false);
   };
 
   return (
@@ -99,10 +94,7 @@ function UserProfile() {
           <div className="w-32 h-32 mx-auto mb-4 relative">
             <img
               className="w-full h-full rounded-full"
-              src={
-                userData.profilePhoto ||
-                "https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg"
-              }
+              src={userData.profilePhoto || "https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg"}
               alt="Avatar"
             />
           </div>
@@ -202,129 +194,16 @@ function UserProfile() {
         </div>
       </div>
 
-      {/* Edit Profile Modal */}
       {isEditing && (
-  <div className="fixed inset-0 flex items-center justify-center z-50">
-    <div className="bg-black bg-opacity-25 absolute inset-0"></div>
-    <div className="bg-white rounded-lg p-4 sm:w-2/3 lg:w-1/2 relative">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Edit Profile</h2>
-        <button
-          onClick={() => setIsEditing(false)}
-          className="text-amber-500 hover:text-amber-600 cursor-pointer"
-        >
-          Close
-        </button>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <div className="flex flex-col mb-4">
-            <label htmlFor="name" className="text-gray-700 font-bold">
-              Name:
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={userData.name}
-              onChange={handleChange}
-              className="form-input"
-            />
-          </div>
-          <div className="flex flex-col mb-4">
-            <label htmlFor="email" className="text-gray-700 font-bold">
-              Email:
-            </label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              value={userData.email}
-              onChange={handleChange}
-              className="form-input"
-            />
-          </div>
-          <div className="flex flex-col mb-4">
-            <label htmlFor="gender" className="text-gray-700 font-bold">
-              Gender:
-            </label>
-            <input
-              type="text"
-              id="gender"
-              name="gender"
-              value={userData.gender}
-              onChange={handleChange}
-              className="form-input"
-            />
-          </div>
-          <div className="flex flex-col mb-4">
-            <label htmlFor="height" className="text-gray-700 font-bold">
-              Height:
-            </label>
-            <input
-              type="text"
-              id="height"
-              name="height"
-              value={userData.height}
-              onChange={handleChange}
-              className="form-input"
-            />
-          </div>
-          <div className="flex flex-col mb-4">
-            <label htmlFor="weight" className="text-gray-700 font-bold">
-              Weight:
-            </label>
-            <input
-              type="text"
-              id="weight"
-              name="weight"
-              value={userData.weight}
-              onChange={handleChange}
-              className="form-input"
-            />
-          </div>
-          <div className="flex flex-col mb-4">
-            <label htmlFor="phone" className="text-gray-700 font-bold">
-              Phone:
-            </label>
-            <input
-              type="text"
-              id="phone"
-              name="phone"
-              value={userData.phone}
-              onChange={handleChange}
-              className="form-input"
-            />
-          </div>
-          <div className="flex flex-col mb-4">
-            <label htmlFor="profilePhoto" className="text-gray-700 font-bold">
-              Profile Photo:
-            </label>
-            <input
-              type="file"
-              id="profilePhoto"
-              name="profilePhoto"
-              accept="image/*"
-              onChange={handleChange}
-              className="form-input"
-            />
-          </div>
-        </div>
-        <div className="text-center">
-          <button
-            type="submit"
-            className="bg-amber-500 text-white py-2 px-4 rounded-lg hover:bg-amber-600"
-          >
-            Save
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-)}
-
-
-
+        <EditProfileModal
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+          userData={userData}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+        />
+      )
+      }
     </>
   );
 }
