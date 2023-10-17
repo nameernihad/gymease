@@ -67,7 +67,7 @@ function UserProfile() {
       console.error(error.message);
     }
 
-    // setIsEditing(false);
+    setIsEditing(false);
   };
 
   return (
