@@ -21,11 +21,11 @@ function WorkoutView() {
       });
   }, []);
 
-  const totalWorkouts = workouts.length;
+  const totalWorkouts = workouts.length-1;
   const currentWorkout = workouts[currentWorkoutIndex];
 
   const handleNext = () => {
-    if (currentWorkoutIndex < totalWorkouts - 1) {
+    if (currentWorkoutIndex < totalWorkouts) {
       setCurrentWorkoutIndex((prevIndex) => prevIndex + 1);
       setShowNextCategoryButton(false);
     } else {
