@@ -119,8 +119,9 @@ function JoinForm() {
   useEffect(() => {
     try {
       trainerAxios.get("/getSubscription").then((response) => {
-        const emails = response.data.subscription.map(
-          (subscription) => subscription.user.email
+        console.log(response.data)
+        const emails = response?.data?.subscription.map(
+          (subscription) => subscription?.user?.email
         );
         console.log(emails);
         setUserEmails(emails);
@@ -135,12 +136,12 @@ function JoinForm() {
   useEffect(() => {
     try {
       if (userEmails.length > 0 && roomCode) {
-        console.log(userEmails,roomCode,"ohsdfhajsdhfkajsdfh");
+        console.log(userEmails,roomCode);
         trainerAxios
           .post("/sentEmail", { userEmails, roomCode })
           .then((res) => {
             
-            console.log(res.data,"kgfjjhgjhvjhvhgvn");
+            console.log(res.data);
           })
           .catch((err) => {
             console.log(err);
