@@ -4,18 +4,17 @@ import adminAxios from "../../../Axios/adminAxios";
 
 function WorkoutView() {
   const Id = useParams();
-  console.log(Id);
   const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0);
   const [workouts, setWorkouts] = useState([]);
+  const [showNextCategoryButton, setShowNextCategoryButton] = useState(false);
 
   useEffect(() => {
     adminAxios
       .get(`/filteredWorkout/${Id.id}/${Id.cateId}`)
       .then((response) => {
-        console.log(response.data.filteredWorkout);
-        console.log("response.data.filteredWorkout");
         setWorkouts(response.data.filteredWorkout);
         setCurrentWorkoutIndex(0);
+        setShowNextCategoryButton(false);
       })
       .catch((error) => {
         console.error("Error fetching workouts:", error);
@@ -26,13 +25,24 @@ function WorkoutView() {
   const currentWorkout = workouts[currentWorkoutIndex];
 
   const handleNext = () => {
-    setCurrentWorkoutIndex((prevIndex) => (prevIndex + 1) % totalWorkouts);
+    if (currentWorkoutIndex < totalWorkouts - 1) {
+      setCurrentWorkoutIndex((prevIndex) => prevIndex + 1);
+      setShowNextCategoryButton(false);
+    } else {
+      setShowNextCategoryButton(true);
+    }
   };
 
   const handlePrev = () => {
-    setCurrentWorkoutIndex(
-      (prevIndex) => (prevIndex - 1 + totalWorkouts) % totalWorkouts
-    );
+    if (currentWorkoutIndex > 0) {
+      setCurrentWorkoutIndex((prevIndex) => prevIndex - 1);
+      setShowNextCategoryButton(false);
+    }
+  };
+
+  const handleNextCategory = () => {
+    // Handle what to do when the "Next Category" button is clicked
+    // For example, navigate to the next category or perform some action
   };
 
   return (
@@ -48,7 +58,7 @@ function WorkoutView() {
               <img
                 src={currentWorkout.gif}
                 alt={`Workout ${currentWorkout._id}`}
-                className="mx-auto mb-4 rounded-lg  max-w-full h-auto"
+                className="mx-auto mb-4 rounded-lg max-w-full h-auto"
               />
             </div>
           )}
@@ -63,9 +73,8 @@ function WorkoutView() {
               </div>
             )}
           </div>
-
           <div className="">
-            <div className="flex justify-around mt-auto ">
+            <div className="flex justify-around mt-auto">
               <button
                 onClick={handlePrev}
                 disabled={currentWorkoutIndex === 0}
@@ -73,13 +82,22 @@ function WorkoutView() {
               >
                 Prev
               </button>
-              <button
-                onClick={handleNext}
-                disabled={currentWorkoutIndex === totalWorkouts - 1}
-                className="bg-amber-500 text-white py-2 px-4 rounded hover:bg-amber-600 focus:outline-none"
-              >
-                Next
-              </button>
+              {showNextCategoryButton ? (
+                <button
+                  onClick={handleNextCategory}
+                  className="bg-amber-500 text-white py-2 px-4 rounded hover:bg-amber-600 focus:outline-none"
+                >
+                  Next Category
+                </button>
+              ) : (
+                <button
+                  onClick={handleNext}
+                  disabled={currentWorkoutIndex === totalWorkouts - 1}
+                  className="bg-amber-500 text-white py-2 px-4 rounded hover:bg-amber-600 focus:outline-none"
+                >
+                  Next
+                </button>
+              )}
             </div>
           </div>
         </div>
