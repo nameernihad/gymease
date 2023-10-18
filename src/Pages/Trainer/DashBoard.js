@@ -8,9 +8,18 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import GroupIcon from '@mui/icons-material/Group';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PollIcon from '@mui/icons-material/Poll';
+import { useEffect } from 'react';
+import trainerAxios from "../../Axios/trainerAxios";
 
 
 export default function Dashboard() {
+
+  useEffect(()=>{
+    trainerAxios.get("/getSubscription").then((res)=>{
+      console.log(res.data)
+    })
+
+  },[])
   const chartBarData = [
     { name: 'A', value: 100 },
     { name: 'B', value: 200 },
