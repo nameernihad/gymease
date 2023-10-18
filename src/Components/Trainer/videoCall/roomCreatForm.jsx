@@ -119,7 +119,6 @@ function JoinForm() {
   useEffect(() => {
     try {
       trainerAxios.get("/getSubscription").then((response) => {
-        console.log(response.data)
         const emails = response?.data?.subscription.map(
           (subscription) => subscription?.user?.email
         );
@@ -150,7 +149,7 @@ function JoinForm() {
     } catch (error) {
       console.log(error.message);
     }
-  }, [userEmails, roomCode]); // Make sure to include userEmails and roomCode in the dependency array
+  }, [roomCode]); 
 
   return (
     <>
