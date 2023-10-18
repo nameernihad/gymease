@@ -27,6 +27,9 @@ function UserRoutes() {
       <Routes> 
         
         <Route path="/register" element={<Register />} />
+        
+        <Route path="/restPass/:id" element={<PasswordResetPage />} />
+        
         <Route path="/login" element={IsAuth.Token ? <Home /> : <Login />} />
         <Route
           path="/live-setion"
@@ -37,7 +40,6 @@ function UserRoutes() {
         <Route path="/" element={IsAuth.Token ? <Home /> : <LandingPage />} />
         <Route path="/home" element={IsAuth.Token ? <Home /> : <Login />} />
         <Route path="/about" element={<About />} />
-        <Route path="/restPass/:id" element={<PasswordResetPage />} />
         <Route
           path="/profile"
           element={IsAuth.Token ? <UserProfile /> : <LandingPage />}
