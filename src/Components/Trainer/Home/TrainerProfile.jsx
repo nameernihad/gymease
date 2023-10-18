@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import trainerAxios from "../../../Axios/trainerAxios";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import EditProfileModal from "./editProfile";
+import EditTrainerProfile from "./editProfile";
 
 function TrainerProfile() {
   const [trainer, setTrainer] = useState(null);
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
 
   useEffect(() => {
     trainerAxios
@@ -16,9 +21,13 @@ function TrainerProfile() {
       });
   }, []);
 
+  const handleEditUserClick = () => {
+    setIsEditProfileModalOpen(true);
+  };
+
   return (
     <div className="ml-4 md:ml-8 lg:ml-16 xl:ml-20 2xl:ml-24 mt-4 md:mt-8 lg:mt-16 xl:mt-20 2xl:mt-24 flex justify-center items-center">
-      <section className="w-full md:w-3/4 lg:w-2/3 xl:w-1/2 2xl:w-2/3 bg-white shadow-xl p-3 pt-16 rounded-lg">
+      <section className="w-full md:w-3/4 lg:w-2/3 xl:w-1/2 2xl:w-2/3 bg-white shadow-xl p-3 pt-16 rounded-lg relative">
         <div className="cover-photo relative">
           <img
             className="absolute w-full h-36 object-cover rounded-t-lg"
@@ -45,6 +54,7 @@ function TrainerProfile() {
               </label>
               <p className="profile-field">
                 Name : {trainer?.user?.name || ""}
+                
               </p>
             </div>
             <div className="form-group">
@@ -75,25 +85,61 @@ function TrainerProfile() {
               <label htmlFor="email">
                 <i className="zmdi zmdi-email"></i>
               </label>
-              <p className="profile-field">Height : {trainer?.height} cm</p>
+              <p className="profile-field">Height : {trainer?.user?.height} cm</p>
             </div>
             <div className="form-group">
               <label htmlFor="email">
                 <i className="zmdi zmdi-email"></i>
               </label>
-              <p className="profile-field">Weight : {trainer?.weight} kg</p>
+              <p className="profile-field">Weight : {trainer?.user?.weight} kg</p>
             </div>
           </div>
         </div>
         <div className="mx-4 md:mx-8 lg:mx-16 xl:mx-20 2xl:mx-24 text-center">
-          <div className="flex flex-wrap justify-center">
-            <h1 className="text-2xl font-extrabold mb-4 md:mb-6 lg:mb-8 xl:mb-10 2xl:mb-12">
-              About Me
-            </h1>
-            <p className="text-sm md:text-base ">{trainer?.about || ""}</p>
+          <div className="mt-4">
+            <h2 className="text-xl font-bold">About</h2>
+            <p>{trainer?.about || "N/A"}</p>
+            <h2 className="text-xl font-bold mt-4">Certifications</h2>
+            <ul className="list-disc ml-6">
+              {trainer &&
+                trainer.certifications.map((certification, index) => (
+                  <li key={index}>
+                    <a
+                      href={certification}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      Certification {index + 1}
+                    </a>
+                  </li>
+                ))}
+            </ul>
+            <h2 className="text-xl font-bold mt-4">Experience</h2>
+            <p>
+              {trainer
+                ? `${trainer?.experience?.years} years, ${trainer?.experience?.months} months, ${trainer?.experience?.days} days`
+                : "N/A"}
+            </p>
+            <h2 className="text-xl font-bold mt-4">Payment Details</h2>
+            <p>One Month: ${trainer?.paymentDetails ? trainer.paymentDetails.oneMonth : "N/A"}</p>
+            <p>Six Months: ${trainer?.paymentDetails ? trainer.paymentDetails.sixMonths : "N/A"}</p>
+            <p>One Year: ${trainer?.paymentDetails ? trainer.paymentDetails.oneYear : "N/A"}</p>
           </div>
         </div>
+        
+        <button className="edit-button   absolute top-4 left-4" onClick={handleEditUserClick}>
+          <FontAwesomeIcon icon={faEdit} />
+        </button>
       </section>
+      {/* {isEditProfileModalOpen && (
+      <EditTrainerProfile
+        isOpen={isEditProfileModalOpen}
+        onRequestClose={() => setIsEditProfileModalOpen(false)}
+        defaultData={trainer} 
+      />
+    )} */}
+  
     </div>
   );
 }

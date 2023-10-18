@@ -8,14 +8,17 @@ import EditProfileModal from './EditProfile';
 
 function UserProfile() {
   const [userDetails, setUserDetails] = useState({});
+  const [userCredentials, setUserCredentials] = useState({});
+  const [imageUrl, setImageUrl] = useState("");
+
+
   const [userData, setUserData] = useState({
     name: "",
     email: "",
-    gender: "male",
+    gender: "",
     height: "",
     weight: "",
     phone: "",
-    profilePhoto: null,
   });
   const [isEditing, setIsEditing] = useState(false);
 
@@ -33,42 +36,61 @@ function UserProfile() {
   }, []);
 
   const handleChange = (event) => {
-    const { name, value, files } = event.target;
+    const { name, value } = event.target;
     setUserData((prevData) => ({
       ...prevData,
-      [name]: name === "profilePhoto" ? files[0] : value,
     }));
   };
 
+  useEffect(() => {
+    console.log(userData.gender,"gendeeeeer")
+  }, [userData])
+  
+ 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log(userData,"trherhgdrfghrgherth")
+    const {name,email,gender,height, weight,phone} = userData
 
-    try {
-      console.log(userData);
-      const response = await userAxios.put("/userUpdate", userData);
-
-      if (response.data.user) {
-        toast.success(response.data.message, {
-          position: "bottom-left",
-          autoClose: 5000,
-          hideProgressBar: true,
-        });
-      }
-
-      setUserDetails(response.data.user);
-    } catch (error) {
-      console.log(error);
-      console.error(error);
-      toast.error(error.message, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-      });
-      console.error(error.message);
+    const updatedData = {
+      name,
+      email,
+      gender,
+      height,
+      weight,
+      phone,
+      profilePhoto:imageUrl
     }
+    
+  // console.log(updatedData,"daaaaaaata")
+    // try {
+    //   const response = await userAxios.put("/userUpdate", updatedData);
 
-    setIsEditing(false);
+    //   if (response.data.user) {
+    //     toast.success(response.data.message, {
+    //       position: "bottom-left",
+    //       autoClose: 5000,
+    //       hideProgressBar: true,
+    //     });
+    //   }
+
+    //   setUserDetails(response.data.user);
+    // } catch (error) {
+    //   console.log(error);
+    //   console.error(error);
+    //   toast.error(error.message, {
+    //     position: "bottom-right",
+    //     autoClose: 5000,
+    //     hideProgressBar: true,
+    //   });
+    //   console.error(error.message);
+    // }
+
+    // setIsEditing(false);
   };
+
+
 
   return (
     <>
@@ -97,22 +119,6 @@ function UserProfile() {
               src={userData.profilePhoto || "https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg"}
               alt="Avatar"
             />
-          </div>
-
-          <div className="text-center mb-4">
-            <label htmlFor="profilePhoto" className="cursor-pointer">
-              <div className="text-amber-500 font-bold px-4 rounded">
-                Upload Photo
-              </div>
-              <input
-                type="file"
-                id="profilePhoto"
-                name="profilePhoto"
-                className="hidden"
-                accept="image/*"
-                onChange={handleChange}
-              />
-            </label>
           </div>
 
           <div className="text-start flex justify-center">
@@ -189,7 +195,8 @@ function UserProfile() {
                   onChange={handleChange}
                 />
               </div>
-            </div>
+            </div> .
+
           </div>
         </div>
       </div>
@@ -201,6 +208,7 @@ function UserProfile() {
           userData={userData}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
+          setImageUrl={setImageUrl}
         />
       )
       }

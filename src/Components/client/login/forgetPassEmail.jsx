@@ -6,7 +6,7 @@ import userAxios from "../../../Axios/userAxios";
 function ForgotPasswordModal({ onClose }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [msg, setmsg] = useState("");
+  const [msg, setmsg] = useState("Add your email to reset your password.");
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -14,9 +14,8 @@ function ForgotPasswordModal({ onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email);
+    setmsg("Check your email to reset the password")
     const res = await userAxios.post(`/sentMail`, { email });
-    console.log(res.data);
     onClose();
   };
 
@@ -31,13 +30,14 @@ function ForgotPasswordModal({ onClose }) {
           <FontAwesomeIcon icon={faXmark} size="lg" />
         </button>
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-semibold text-amber-500">
-            Forgot Password
-          </h2>
-          <p className="text-gray-600 mt-2">
-            Add your email to reset your password.
-          </p>
+          <h2 className="text-3xl font-semibold text-amber-500">Forgot Password</h2>
+          {msg === "Add your email to reset your password." ? (
+            <p className="text-gray-600 mt-2">{msg}</p>
+          ) : (
+            <p className="text-green-500 mt-2">{msg}</p>
+          )}
         </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block font-medium">

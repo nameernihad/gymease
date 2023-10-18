@@ -17,6 +17,16 @@ function UserRegister() {
   const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
 
+  const validateEmail = (email) => {
+    const regex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+    return regex.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const regex = /^[0-9]{10}$/;
+    return regex.test(phone);
+  };
+
   const signUpForm = (event) => {
     event.preventDefault();
     setEmailError("");
@@ -29,13 +39,13 @@ function UserRegister() {
       return;
     }
 
-    if (!email) {
-      setEmailError("Email Address is required");
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
       return;
     }
 
-    if (!phone) {
-      setPhoneError("Phone is required");
+    if (!validatePhone(phone)) {
+      setPhoneError("Please enter a valid 10-digit phone number");
       return;
     }
 
@@ -131,7 +141,7 @@ function UserRegister() {
               name="phone"
               type="tel"
               autoComplete="tel"
-              className="w-full py-2 text-white bg-gray-100 bg-opacity-30 rounded-md shadow-sm  focus:ring-1 focus:ring-amber-500 focus:outline-none text-center"
+              className="w-full py-2 text-white bg-gray-100 bg-opacity-30 rounded-md shadow-sm focus:ring-1 focus:ring-amber-500 focus:outline-none text-center"
               onChange={(e) => setPhone(e.target.value)}
               placeholder="Phone"
             />
