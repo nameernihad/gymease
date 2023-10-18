@@ -8,7 +8,6 @@ const PasswordResetPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const { id } = useParams();
-  console.log(id);
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
