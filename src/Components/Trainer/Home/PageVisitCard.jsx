@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Card, CardBody, CardHeader } from "@material-tailwind/react";
 
-export default function PageVisitsCard({SubData}) {
+export default function PageVisitsCard({ subData }) {
     return (
         <Card>
             <CardBody>
@@ -10,17 +10,15 @@ export default function PageVisitsCard({SubData}) {
                         <thead>
                             <tr>
                                 <th className="px-4 py-2 text-teal-500 border-b border-gray-200 text-center">Si</th>
-                                <th className="px-4 py-2 text-teal-500 border-b border-gray-200 text-center">Trainer Name</th>
-                                <th className="px-4 py-2 text-teal-500 border-b border-gray-200 text-center">User Name</th>
+                                <th className="px-4 py-2 text-teal-500 border-b border-gray-200 text-center">Name</th>
                                 <th className="px-4 py-2 text-teal-500 border-b border-gray-200 text-center">Amount</th>
                                 <th className="px-4 py-2 text-teal-500 border-b border-gray-200 text-center">Duration</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {SubData.map((data, index) => (
+                            {subData.map((data, index) => (
                                 <tr key={index}>
                                     <td className="px-4 py-2 border-b border-gray-200 text-center">{index + 1}</td>
-                                    <td className="px-4 py-2 border-b border-gray-200 text-center">{data?.trainer?.user?.name}</td>
                                     <td className="px-4 py-2 border-b border-gray-200 text-center">{data?.user?.name}</td>
                                     <td className="px-4 py-2 border-b border-gray-200 text-center">{`$${data.amount}`}</td>
                                     <td className="px-4 py-2 border-b border-gray-200 text-center">{data.duration}</td>

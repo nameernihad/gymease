@@ -25,7 +25,6 @@ const PasswordResetPage = () => {
       return;
     }
 
-    // Passwords match, proceed with reset request
     setMessage("Password reset successful.");
   };
 
@@ -71,7 +70,7 @@ const PasswordResetPage = () => {
             </button>
           </div>
         </form>
-        {message && <p className="mt-4 text-sm text-gray-600">{message}</p>}
+        {message === "Password reset successful." ? (<h2 className="mt-4 text-sm text-center text-green-500">{message}</h2>) : (<h2 className="mt-4 text-sm text-center text-red-500">{message}</h2>)}
       </div>
     </div>
   );

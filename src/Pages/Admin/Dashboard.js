@@ -21,6 +21,7 @@ export default function Dashboard() {
   const [Payment, setPayment] = useState()
   const [Trainer, setTrainer] = useState([])
   const [Workout, setWorkout] = useState([])
+  const [SubData, setSubData] = useState([])
 
 
   const chartBarData = [
@@ -36,7 +37,8 @@ export default function Dashboard() {
   ];
 
   useEffect(() => {
-    adminAxios.get("/getAllUsers").then((res)=>{
+    try {
+       adminAxios.get("/getAllUsers").then((res)=>{
       setUser(res.data.userList)
     })
 
@@ -48,9 +50,17 @@ export default function Dashboard() {
       setWorkout(res.data.workout)
     })
     adminAxios.get("/totalPayments").then((res)=>{
-      console.log(res.data);
       setPayment(res.data.totalAmount)
     })
+    adminAxios.get("/getAllSubscriptions").then((res)=>{
+      console.log(res.data.subData);
+      setSubData(res.data.subData)
+    })
+    } catch (error) {
+      console.log(error.message)
+    }
+   
+
   }, [])
 
 
@@ -112,7 +122,7 @@ export default function Dashboard() {
   <div className="container mx-auto max-w-full">
     <div className="grid grid-cols-1">
       <div className="xl:col-start-1 xl:col-end-2 px-4 mb-14">
-        <PageVisitsCard />
+        <PageVisitsCard SubData={SubData} />
       </div>
     </div>
   </div>
