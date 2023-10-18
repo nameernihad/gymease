@@ -25,7 +25,7 @@ function WorkoutView() {
   const currentWorkout = workouts[currentWorkoutIndex];
 
   const handleNext = () => {
-    if (currentWorkoutIndex < totalWorkouts - 2) {
+    if (currentWorkoutIndex < totalWorkouts - 1) {
       setCurrentWorkoutIndex((prevIndex) => prevIndex + 1);
       setShowNextCategoryButton(false);
     } else {
