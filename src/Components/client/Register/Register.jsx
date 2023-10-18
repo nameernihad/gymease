@@ -55,40 +55,42 @@ function UserRegister() {
     }
 
     userAxios
-      .post("/register", { name, email, phone, password })
-      .then((res) => {
-        console.log(res);
-        if (res.data.user) {
-          toast.success(res.data.message, {
-            position: "bottom-left",
-            autoClose: 5000,
-            hideProgressBar: true,
-          });
-          navigate("/login");
-        } else {
-          setErrMsg("Something went wrong");
-          toast.error(errMsg, {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-          });
-        }
-      })
-      .catch((error) => {
-        if (error.response) {
-          console.log(error.response);
-          setErrMsg("Error: " + error.response.data.message);
-        } else if (error.request) {
-          setErrMsg("Network Error: Please check your internet connection.");
-        } else {
-          setErrMsg("An error occurred while processing your request.");
-        }
-        toast.error(errMsg, {
+    .post("/register", { name, email, phone, password })
+    .then((res) => {
+      // Success case
+      console.log(res);
+      if (res.data.user) {
+        toast.success(res.data.message, {
           position: "bottom-left",
           autoClose: 5000,
           hideProgressBar: true,
         });
+        navigate("/login");
+      } else {
+        setErrMsg("Something went wrong");
+        toast.error("Something went wrong", { // Show the error message directly
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+        });
+      }
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response);
+        setErrMsg("Error: " + error.response.data.message);
+      } else if (error.request) {
+        setErrMsg("Network Error: Please check your internet connection.");
+      } else {
+        setErrMsg("An error occurred while processing your request.");
+      }
+      toast.error(errMsg, { // Show the error message directly
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: true,
       });
+    });
+  
   };
 
   return (
