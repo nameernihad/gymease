@@ -1,21 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import adminAxios from "../../../Axios/adminAxios";
 import { toast } from "react-toastify";
 
-const WorkoutFormModal = ({ isOpen, closeModal, setWorkOut }) => {
-  const [selectedOption, setSelectedOption] = useState("timer");
+const EditWorkoutModal = ({ isOpen, closeModal, workout, setWorkouts }) => {
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(workout.gif);
+  const [categories, setCategories] = useState([]);
+  const [levels, setLevels] = useState([]);
+
+  useEffect(() => {
+    adminAxios.get("/getAllCategory").then((res) => {
+      setCategories(res.data.allcategory);
+    });
+
+    adminAxios.get("/getAllLevel").then((res) => {
+      setLevels(res.data.allLevel);
+    });
+  }, []);
+
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const base64 = await convertBase64(file);
+      setLoading(true);
+      const response = await adminAxios.post("uploadImage", { image: base64 });
+      setImageUrl(response.data);
+      toast.success("Image uploaded successfully");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    category: "",
-    level: "Beginner",
-    gif: "",
-    count: 0,
-    timer: 0,
+    name: workout.name,
+    description: workout.description,
+    category: workout.category,
+    level: workout.level,
+    gif: imageUrl,
+    count: workout.count,
+    timer: workout.timer,
   });
+
   const handleTimerChange = (e) => {
     const { value } = e.target;
     setFormData((prevData) => ({ ...prevData, timer: value }));
@@ -25,44 +71,29 @@ const WorkoutFormModal = ({ isOpen, closeModal, setWorkOut }) => {
     const { value } = e.target;
     setFormData((prevData) => ({ ...prevData, count: value }));
   };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === "level") {
-      setFormData((prevData) => ({ ...prevData, level: value }));
-    } else {
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
-    }
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const updatedFormData = {
-      ...formData,
-      name: e.target.name.value,
-      description: e.target.description.value,
-      category: e.target.category.value,
-      level: e.target.level.value,
-      // Add other fields as needed
-    };
-
-    setFormData(updatedFormData);
-
+    const updatedFormData = { ...formData };
     adminAxios
-      .post("/deleteWorkout/:workoutId", updatedFormData)
+      .put(`/updateWorkout/${workout._id}`, updatedFormData)
       .then((res) => {
-        console.log(res.data);
         toast.success(res.data.message);
-
         adminAxios.get("/getAllWorkouts").then((res) => {
-          setWorkOut(res.data.workout);
+          setWorkouts(res.data.workout);
         });
       })
       .catch((error) => {
         toast.error(error.message);
       });
-
     closeModal();
   };
+
   return (
     <div
       className={`fixed top-0 left-0 right-0 bottom-0 z-10 ${
@@ -80,10 +111,9 @@ const WorkoutFormModal = ({ isOpen, closeModal, setWorkOut }) => {
         <form onSubmit={handleSubmit}>
           <div className="bg-gray-100 px-6 py-8 sm:p-10">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-              Add Workout
+              Edit Workout
             </h2>
 
-            {/* Workout Information */}
             <div className="space-y-6 mb-8">
               <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <div>
@@ -111,16 +141,20 @@ const WorkoutFormModal = ({ isOpen, closeModal, setWorkOut }) => {
                   >
                     Category
                   </label>
-                  <input
-                    type="text"
+                  <select
                     id="category"
                     name="category"
-                    autoComplete="off"
                     value={formData.category}
                     onChange={handleInputChange}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    placeholder="Enter workout category"
-                  />
+                  >
+                    <option value="">Select a category</option>
+                    {categories.map((category) => (
+                      <option key={category._id} value={category.name}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
@@ -138,16 +172,16 @@ const WorkoutFormModal = ({ isOpen, closeModal, setWorkOut }) => {
                     onChange={handleInputChange}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
-                    <option value="Beginner">Beginner</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Advanced">Advanced</option>
+                    {levels.map((level) => (
+                      <option key={level._id} value={level.name}>
+                        {level.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
-                {/* ... Other fields ... */}
               </div>
             </div>
 
-            {/* Description */}
             <div className="space-y-6 mb-8">
               <label
                 htmlFor="description"
@@ -166,24 +200,40 @@ const WorkoutFormModal = ({ isOpen, closeModal, setWorkOut }) => {
               />
             </div>
 
-            {/* Media */}
-            <div className="space-y-6 mb-8">
-              <label
-                htmlFor="image-upload"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Upload Image
-              </label>
-              <input
-                type="file"
-                id="image-upload"
-                name="image-upload"
-                accept="image/*"
-                // Rest of the input attributes...
-              />
-            </div>
+            {loading ? (
+              <div className="flex item-center justify-center w-14 h-14">
+                <img src="/Images/Pulse-1s-200px.gif" alt="" />
+              </div>
+            ) : (
+              <div className="space-y-6 mb-8">
+                {imageUrl && (
+                  <img
+                    src={imageUrl}
+                    alt="Image Preview"
+                    style={{
+                      maxWidth: "100px",
+                      maxHeight: "100px",
+                      display: "block",
+                      margin: "0 auto",
+                    }}
+                  />
+                )}
+                <label
+                  htmlFor="image-upload"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Upload Image
+                </label>
+                <input
+                  type="file"
+                  id="image-upload"
+                  name="image-upload"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                />
+              </div>
+            )}
 
-            {/* Timer and Count */}
             <div className="space-y-6">
               <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <div>
@@ -196,8 +246,15 @@ const WorkoutFormModal = ({ isOpen, closeModal, setWorkOut }) => {
                   <select
                     id="timerOrCount"
                     name="timerOrCount"
-                    value={selectedOption}
-                    onChange={(e) => setSelectedOption(e.target.value)}
+                    value={formData.timer ? "timer" : "count"}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        timer: value === "timer" ? 0 : "",
+                        count: value === "count" ? 0 : "",
+                      }));
+                    }}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
                     <option value="timer">Timer</option>
@@ -209,31 +266,20 @@ const WorkoutFormModal = ({ isOpen, closeModal, setWorkOut }) => {
                     htmlFor="timerOrCountValue"
                     className="text-sm font-medium text-gray-700"
                   >
-                    {selectedOption === "timer" ? "Timer (sec)" : "Count"}
+                    {formData.timer ? "Timer (sec)" : "Count"}
                   </label>
-                  {selectedOption === "timer" ? (
-                    <input
-                      type="number"
-                      id="timerOrCountValue"
-                      name="timerOrCountValue"
-                      autoComplete="off"
-                      value={formData.timer}
-                      onChange={handleTimerChange}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Enter timer duration"
-                    />
-                  ) : (
-                    <input
-                      type="number"
-                      id="timerOrCountValue"
-                      name="timerOrCountValue"
-                      autoComplete="off"
-                      value={formData.count}
-                      onChange={handleCountChange}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Enter count"
-                    />
-                  )}
+                  <input
+                    type="number"
+                    id="timerOrCountValue"
+                    name="timerOrCountValue"
+                    autoComplete="off"
+                    value={formData.timer || formData.count}
+                    onChange={formData.timer ? handleTimerChange : handleCountChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder={
+                      formData.timer ? "Enter timer duration" : "Enter count"
+                    }
+                  />
                 </div>
               </div>
             </div>
@@ -248,9 +294,9 @@ const WorkoutFormModal = ({ isOpen, closeModal, setWorkOut }) => {
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 text-sm font-medium text-white bg-amber-500 rounded-md shadow-md hover:bg-amber-600 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-50"
+                className="px-4 py-2 text-sm font-medium text-white bg-amber-500 rounded-md shadow-md hover-bg-amber-600 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-50"
               >
-                Add Workout
+                Update Workout
               </button>
             </div>
           </div>
@@ -260,4 +306,4 @@ const WorkoutFormModal = ({ isOpen, closeModal, setWorkOut }) => {
   );
 };
 
-export default WorkoutFormModal;
+export default EditWorkoutModal;

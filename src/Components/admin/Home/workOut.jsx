@@ -18,7 +18,7 @@ import {
 import adminAxios from "../../../Axios/adminAxios";
 import WorkoutFormModal from "./addWorkoutModal"; // Import your workout form modal component
 import { toast } from "react-toastify";
-import EditWorkoutModal from "./addWorkoutModal";
+import EditWorkoutModal from "./editWorkout";
 
 const columns = [
   { id: "index", label: "Si/no", minWidth: 50 },
@@ -107,6 +107,15 @@ const WorkoutListing = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const openEditModal = () => {
+    setEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setEditModalOpen(false);
+  };
+
+  
 
   return (
     <>
@@ -219,6 +228,8 @@ const WorkoutListing = () => {
           </Paper>
         </div>
       </div>
+     {EditModalOpen && <EditWorkoutModal isOpen={openEditModal} closeModal={closeEditModal} workout={workoutdetails} setWorkouts={setWorkoutDetails}  />}
+
       <WorkoutFormModal
         setWorkOut={setWorkoutDetails}
         isOpen={isModalOpen}
