@@ -112,7 +112,7 @@ const WorkoutListing = () => {
     <>
       <div className="bg-slate-100 h-screen p-4">
         <div className="flex justify-between items-center mb-4 px-5 pt-5 ">
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <button className="text-slate-600">
               <FontAwesomeIcon icon={faSort} className="mr-1" />
               Sort
@@ -121,7 +121,7 @@ const WorkoutListing = () => {
               <FontAwesomeIcon icon={faFilter} className="mr-1" />
               Filter
             </button>
-          </div>
+          </div> */}
           <button
             className="bg-amber-500 text-white py-2 px-4 rounded"
             onClick={openModal}
