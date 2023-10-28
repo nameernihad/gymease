@@ -41,7 +41,7 @@ function JoinForm() {
     setRoomDescription(e.target.value);
   };
 useEffect(() => {
-  trainerAxios.get("ManagementTokenCreation").then((res)=>{
+  trainerAxios.get("/ManagementTokenCreation").then((res)=>{
     console.log(res.data.token)
     setManagementToken(res.data.token)
   })
