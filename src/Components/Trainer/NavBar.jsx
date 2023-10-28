@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TrainerauthLogout } from "../../Redux/TrainerAuth";
@@ -27,6 +27,11 @@ function Navbar() {
 
     navigate("/trainer/login");
   };
+
+  useEffect(() => {
+    console.log(isDrawerOpen,"likjhguyhb")
+  }, [isDrawerOpen])
+  
 
   return (
     <>

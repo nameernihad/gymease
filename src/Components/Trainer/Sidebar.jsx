@@ -2,47 +2,48 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { faTv, faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Try } from "@mui/icons-material";
 
 
 function Sidebar({ onClose, onOpen }) {
+  useEffect(() => {
+    console.log(onClose,"hhhhhh")
+  }, [onClose])
+  
 
   const drawerRef = useRef(null);
   const [isShowing, setIsShowing] = useState(false);
 
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (drawerRef.current && !drawerRef.current.contains(event.target)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [onClose]);
 
   useEffect(() => {
-    // Set a timeout to show the drawer with a slow transition
-    const showTimeout = setTimeout(() => {
+    try {
+       const showTimeout = setTimeout(() => {
       setIsShowing(true);
     }, 100);
 
     return () => clearTimeout(showTimeout);
+    } catch (error) {
+      console.log(error.message)
+    }
+   
   }, []);
 
-  const handleCloseClick = () => {
+  useEffect(() => {
+
+    const handleCloseClick = () => {
     setIsShowing(false);
-    // Set a timeout to hide the drawer with a slow transition before closing
     const closeTimeout = setTimeout(() => {
       onClose();
     }, 3000);
 
     return () => clearTimeout(closeTimeout);
   };
-
-
-
+  
+  }, [])
+  
+    
+    
+ 
   return (
     <div
     ref={drawerRef}
@@ -113,23 +114,7 @@ function Sidebar({ onClose, onOpen }) {
               <span className="ml-3">Video Chat</span>
             </Link>
           </li>
-          <li>
-            <Link
-              to="/tasks"
-              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-            >
-              <svg
-                className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M3 0C1.343 0 0 1.343 0 3v16c0 1.657 1.343 3 3 3h16c1.657 0 3-1.343 3-3V3c0-1.657-1.343-3-3-3H3zm1 2h14c.553 0 1 .447 1 1v10h-2V6a1 1 0 0 0-2 0v10h-2V6a1 1 0 0 0-2 0v10H6V6a1 1 0 0 0-2 0v10H4V3a1 1 0 0 1 1-1Z" />
-              </svg>
-              <span className="ml-3">Calendar</span>
-            </Link>
-          </li>
+       
         </ul>
       </div>
     </aside>

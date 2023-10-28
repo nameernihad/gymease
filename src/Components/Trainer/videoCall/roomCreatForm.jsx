@@ -20,6 +20,7 @@ function JoinForm() {
   const [roomCode, setRoomCode] = useState();
   const [loading, setLoading] = useState(false);
   const [userEmails, setUserEmails] = useState([]);
+  const [managementToken, setManagementToken] = useState(null);
 
   const templateId =
     process.env.REACT_APP_TEMPLATE_ID || "650d77e3f118ad66dc2dd093";
@@ -39,7 +40,12 @@ function JoinForm() {
   const handleRoomDescriptionChange = (e) => {
     setRoomDescription(e.target.value);
   };
-
+useEffect(() => {
+  trainerAxios.get("ManagementTokenCreation").then((res)=>{
+    console.log(res.data.token)
+    setManagementToken(res.data.token)
+  })
+}, [])
   const createRoom = async () => {
     try {
       setLoading(true);
@@ -52,7 +58,7 @@ function JoinForm() {
         },
         {
           headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTc2ODgwOTUsImV4cCI6MTY5Nzc3NDQ5NSwianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTc2ODgwOTUsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.CX5gYgVYGif2F7U6kqSeYXd1qieOW77FlSyA9CXLsJo`,
+            Authorization: `Bearer ${managementToken}`,
             "Content-Type": "application/json",
           },
         }
@@ -72,7 +78,7 @@ function JoinForm() {
             {},
             {
               headers: {
-                Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTc2ODgwOTUsImV4cCI6MTY5Nzc3NDQ5NSwianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE2OTc2ODgwOTUsImFjY2Vzc19rZXkiOiI2NTBkNzY1N2NhNTg0OGYwZTNkNDY5OWUifQ.CX5gYgVYGif2F7U6kqSeYXd1qieOW77FlSyA9CXLsJo`,
+                Authorization: `Bearer ${managementToken}`,
                 "Content-Type": "application/json",
               },
             }
@@ -110,11 +116,13 @@ function JoinForm() {
       setErrorMessage("Room Disabled");
     }
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    createRoom();
-  };
+  
+  
+const handleSubmit = (e) => {
+  e.preventDefault();
+  createRoom();
+};
+  
 
   useEffect(() => {
     try {
@@ -197,6 +205,7 @@ function JoinForm() {
             {errorMessage && (
               <div className="error-message text-red-500">{errorMessage}</div>
             )}
+            {managementToken && (
             <button type="submit" className="btn-primary">
               {loading ? (
                 <FontAwesomeIcon
@@ -207,7 +216,8 @@ function JoinForm() {
               ) : (
                 "Create Room"
               )}
-            </button>
+            </button>)}
+            
           </form>
         </div>
       </div>
