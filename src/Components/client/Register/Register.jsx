@@ -5,16 +5,16 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function UserRegister() {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(null);
+  const [name, setName] = useState(null);
+  const [phone, setPhone] = useState(null);
+  const [password, setPassword] = useState(null);
 
-  const [emailError, setEmailError] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [errMsg, setErrMsg] = useState("");
+  const [emailError, setEmailError] = useState(null);
+  const [nameError, setNameError] = useState(null);
+  const [phoneError, setPhoneError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+  const [errMsg, setErrMsg] = useState(null);
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
@@ -68,7 +68,7 @@ function UserRegister() {
         navigate("/login");
       } else {
         setErrMsg("Something went wrong");
-        toast.error("Something went wrong", { // Show the error message directly
+        toast.error("Something went wrong", { 
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: true,
