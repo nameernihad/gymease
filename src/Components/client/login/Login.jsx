@@ -55,6 +55,7 @@ function UserLogin() {
               if (result.data.token) {
                 const token = result.data.token;
                 dispatch(ClientLogin({ token: token }));
+                localStorage.setItem("Client", token);
                 navigate("/home");
               }
             });

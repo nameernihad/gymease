@@ -29,10 +29,6 @@ function UserRegister() {
 
   const signUpForm = (event) => {
     event.preventDefault();
-    setEmailError("");
-    setNameError("");
-    setPhoneError("");
-    setPasswordError("");
 
     if (!name) {
       setNameError("User Name is required");
@@ -57,7 +53,6 @@ function UserRegister() {
     userAxios
     .post("/register", { name, email, phone, password })
     .then((res) => {
-      // Success case
       console.log(res);
       if (res.data.user) {
         toast.success(res.data.message, {
@@ -76,15 +71,20 @@ function UserRegister() {
       }
     })
     .catch((error) => {
+      let errorText = '';
+  
       if (error.response) {
         console.log(error.response);
-        setErrMsg("Error: " + error.response.data.message);
+        errorText = "Error: " + error.response.data.message;
       } else if (error.request) {
-        setErrMsg("Network Error: Please check your internet connection.");
+        errorText = "Network Error: Please check your internet connection.";
       } else {
-        setErrMsg("An error occurred while processing your request.");
+        errorText = "An error occurred while processing your request.";
       }
-      toast.error(errMsg, { // Show the error message directly
+  
+      setErrMsg(errorText);
+  
+      toast.error(errorText, {
         position: "bottom-left",
         autoClose: 5000,
         hideProgressBar: true,
