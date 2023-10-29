@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import adminAxios from "../../../Axios/adminAxios";
-
+import userAxios from "../../../Axios/userAxios";
 function WorkoutView() {
   const Id = useParams();
   const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0);
@@ -9,7 +8,7 @@ function WorkoutView() {
   const [showNextCategoryButton, setShowNextCategoryButton] = useState(false);
 
   useEffect(() => {
-    adminAxios
+    userAxios
       .get(`/filteredWorkout/${Id.id}/${Id.cateId}`)
       .then((response) => {
         setWorkouts(response.data.filteredWorkout);
